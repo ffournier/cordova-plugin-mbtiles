@@ -36,4 +36,19 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	<source-file src="src/android/MBTilesPlugin.java" target-dir="src/com/makina/offline/mbtiles" />
 
     </platform>
+     <platform name="wp8">
+        <config-file target="config.xml" parent="/*">
+            <feature name="MBTilesPlugin">
+                <param name="wp-package" value="MBTilesPlugin"/>
+            </feature>
+        </config-file>
+
+        <source-file src="src/wp/MBTilesPlugin.cs"/>
+	<source-file src="src/wp/IMBTilesActions.cs"/>
+	<source-file src="src/wp/MBTilesActionsDatabaseImpl.cs"/>
+	<source-file src="src/wp/MBTilesActionsFileImpl.cs"/>
+	<source-file src="src/wp/SQLite.cs"/>
+	<source-file src="src/wp/SQLiteAsync.cs"/>
+	<source-file src="src/wp/TableData.cs"/>
+    </platform>
 </plugin>
