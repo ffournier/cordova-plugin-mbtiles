@@ -51,13 +51,20 @@ namespace MBTilesPlugin
 		    }
 	    }
 
-	    public string getMetadata()
+        public metadata_output getMetadata()
 	    {
-            string metadata = "{";
+            metadata_output result = new metadata_output();
             string filePath = mapDirectory + "\\metadata.json";
-            metadata += readText(filePath);
-            metadata += "}";
-            return metadata;
+            string text = readText(filePath);
+            metadata[] args = JsonHelper.Deserialize<metadata[]>(text);
+
+            foreach (metadata arg in args)
+            {
+               // TODO not implemented
+                result.setValue(arg);
+            }
+
+            return result;
 		}
 
         public minzoom_output getMinZoom()
@@ -124,17 +131,19 @@ namespace MBTilesPlugin
 
             try
 		    {
-                string metadata = getMetadata();
-                string[] args = JsonHelper.Deserialize<string[]>(metadata);
-                string name = args[0];
-                string version = args[1]; 
-                string format = args[2]; 
+                metadata_output metadata = getMetadata();
+                if (metadata != null)
+                {
+                    string name = metadata.name;
+                    string version = metadata.version;
+                    string format = metadata.format;
 
-                string tileFile = this.mapDirectory + "\\" + version + "\\" + name + "\\" + 
-                                        currentZoomLevel.ToString() + "\\" + column.ToString() + "\\" + row.ToString() + "." + format;
+                    string tileFile = this.mapDirectory + "\\" + version + "\\" + name + "\\" +
+                                            currentZoomLevel.ToString() + "\\" + column.ToString() + "\\" + row.ToString() + "." + format;
 
-                string data = ConstantMbTilePlugin.Base64Encode(readText(tileFile));
-                result = new tiles_output(data);
+                    string data = ConstantMbTilePlugin.Base64Encode(readText(tileFile));
+                    result = new tiles_output(data);
+                }
             }
             catch(Exception)
             {
@@ -177,16 +186,14 @@ namespace MBTilesPlugin
 
         private List<int> getZoomLevels()
         {
-            string metadata = getMetadata();
+            metadata_output metadata = getMetadata();
             List<int> zoomLevels = new List<int>();
-            if (metadata != null && !metadata.Equals("{}"))
+            if (metadata != null && metadata.name != null && metadata.version != null)
             {
                 try
                 {
-                    // name, type
-                    string[] args = JsonHelper.Deserialize<string[]>(metadata);
-                    string name = args[0];
-                    string version = args[1];
+                    string name = metadata.name;
+                    string version = metadata.version;
 
                     string dirPath = this.mapDirectory + "\\" + version + "\\" + name;
                     using (IsolatedStorageFile isoFile = IsolatedStorageFile.GetUserStoreForApplication())

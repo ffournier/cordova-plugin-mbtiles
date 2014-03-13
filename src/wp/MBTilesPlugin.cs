@@ -91,7 +91,7 @@ namespace WPCordovaClassLib.Cordova.Commands
 
                 if (mbTilesActions != null && mbTilesActions.isOpen())
                 {
-                    string metadata = mbTilesActions.getMetadata();
+                    metadata_output metadata = mbTilesActions.getMetadata();
                     DispatchCommandResult(new PluginResult(PluginResult.Status.OK, metadata), callbackId);
                 }
                 else
@@ -194,23 +194,4 @@ namespace WPCordovaClassLib.Cordova.Commands
         }
     }
 	
-	[DataContract]
-	public class EntryOpen 
-	{
-		[DataMember(Name = "name")]
-		public string name{ get; set; }
-		[DataMember(Name = "type")]
-		public string type{ get; set; }
-	}
-	
-	[DataContract]
-	public class EntryTile 
-	{
-		[DataMember(Name = "z")]
-		public int z{ get; set; }
-		[DataMember(Name = "x")]
-		public int x{ get; set; }
-		[DataMember(Name = "y")]
-		public int y{ get; set; }
-	}
 }

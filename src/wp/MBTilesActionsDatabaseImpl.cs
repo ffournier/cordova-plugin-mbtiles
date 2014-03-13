@@ -41,23 +41,22 @@ namespace MBTilesPlugin
 		    }
 	    }
 
-        public string getMetadata()
+        public metadata_output getMetadata()
 	    {
-
-            string result = "{";
+            metadata_output result = new metadata_output();
             using (SQLiteConnection db = new SQLiteConnection(dbPath))
             {
                 List<metadata> list = db.Query<metadata>("SELECT * FROM metadata");
 
                 if (list != null)
                 {
+                    bool first = true;
                     foreach(metadata data in list)
                     {
-                        result += data.name + " : \"" + data.value + "\"";
+                       result.setValue(data);
                     }
                 }
             }
-            result += "}";
             return result;
 		}
 

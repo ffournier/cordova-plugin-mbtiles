@@ -7,62 +7,7 @@ using System.Runtime.Serialization;
 
 namespace MBTilesPlugin
 {
-    [DataContract]
-    public class tiles_output
-    {
-        [DataMember(Name = "tile_data")]
-        public string tile_data { get; set; }
-
-        public tiles_output(string data)
-        {
-           tile_data = data;
-        }
-
-    }
-
-    [DataContract]
-    public class metadata_output
-    {
-        public List<metadata> list;
-
-        public metadata_output(List<metadata> data)
-        {
-            this.list = data;
-        }
-
-        [OnSerializing]
-        void OnSerializing(StreamingContext context)
-        {
-
-        }
-    }
-
-    [DataContract]
-    public class minzoom_output
-    {
-        [DataMember(Name = "min_zoom")]
-        public int value { get; set; }
-
-        public minzoom_output(int value)
-        {
-            this.value = value;
-        }
-    }
-
-    [DataContract]
-    public class maxzoom_output
-    {
-
-        [DataMember(Name = "max_zoom")]
-        public int value { get; set; }
-
-        public maxzoom_output(int value)
-        {
-            this.value = value;
-        }
-    }
-
-
+    
     public static class ConstantMbTilePlugin {
         public static string KEY_NAME = "name";
         public static string KEY_VERSION = "version";
@@ -117,7 +62,7 @@ namespace MBTilesPlugin
 	     * </ul>
 	     * @return the metadata as <code>JSONObject</code>
 	     */
-        string getMetadata();
+        metadata_output getMetadata();
 	
 	    /**
 	     * Gets the minimal zoom level as <code>JSONObject</code>.
