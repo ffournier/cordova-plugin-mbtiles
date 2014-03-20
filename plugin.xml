@@ -50,7 +50,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	<source-file src="src/wp/SQLite.cs"/>
 	<source-file src="src/wp/SQLiteAsync.cs"/>
 	<source-file src="src/wp/TableData.cs"/>
-	<source-file src="MBTilesJson.cs"/>
+	<source-file src="src/wp/MBTilesJson.cs"/>
     </platform>
 
 
