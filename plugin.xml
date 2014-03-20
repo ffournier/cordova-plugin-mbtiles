@@ -52,4 +52,25 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	<source-file src="src/wp/TableData.cs"/>
 	<source-file src="MBTilesJson.cs"/>
     </platform>
+
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="MBTilesPlugin">
+                <param name="ios-package" value="MBTilesPlugin" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+        <header-file src="src/ios/MBTilesAction.h" />
+        <header-file src="src/ios/MBTilesActionsDataBaseImpl.h" />
+        <source-file src="src/ios/MBTilesActionsDataBaseImpl.m" />
+        <header-file src="src/ios/MBTilesPlugin.h" />
+        <source-file src="src/ios/MBTilesPlugin.m" />
+        <header-file src="src/ios/MBTilesConstant.h" />
+        <source-file src="src/ios/MBTilesConstant.m" />
+
+        <framework src="libsqlite3.dylib" />
+        <framework src="MobileCoreServices.framework" />
+        <framework src="AssetsLibrary.framework" />
+    </platform>
 </plugin>
