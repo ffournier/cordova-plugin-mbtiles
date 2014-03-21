@@ -14,19 +14,10 @@
 
 - (void)open:(NSString*) path {
     NSFileManager *filemgr =  [NSFileManager defaultManager];
-   /* NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    
-    for (NSString *dir in dirs) {
-        NSError* error;
-        NSLog(@"DocumentsDirectories: %@", [filemgr contentsOfDirectoryAtPath:dir error:&error]);
-    }
-    
-    NSString* drPath = [dirs objectAtIndex:0];
-    NSString* absolutePath = [dirPath stringByAppendingPathComponent:path];*/
-    
+   
     NSArray* list = [path componentsSeparatedByString:@"."];
     NSString* absolutePath = [[NSBundle mainBundle] pathForResource:[list objectAtIndex:0] ofType:[list objectAtIndex:1]];
-    /*NSString* absolutePath = @"/Users/florian/Library/Application Support/iPhone Simulator/7.1/Applications/7FE0B4A1-A4C5-4623-9B9C-C2507A89A15B/Documents/tiles-ign.mbtiles";*/
+    
     if ([filemgr fileExistsAtPath: absolutePath ] == YES) {
         const char *dbpath = [absolutePath UTF8String];
         
