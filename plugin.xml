@@ -68,6 +68,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <source-file src="src/ios/MBTilesPlugin.m" />
         <header-file src="src/ios/MBTilesConstant.h" />
         <source-file src="src/ios/MBTilesConstant.m" />
+	<header-file src="src/ios/MBTilesActionsFileImpl.h" />
+        <source-file src="src/ios/MBTilesActionsFileImpl.m" />
 
         <framework src="libsqlite3.dylib" />
         <framework src="MobileCoreServices.framework" />
