@@ -205,6 +205,7 @@ namespace MBTilesPlugin
                             {
                                 zoomLevels.Add(int.Parse(filePath));
                             }
+			    zoomLevels.Sort();
                         }
                     }
                 }
