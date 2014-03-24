@@ -153,7 +153,7 @@
     return dict;
 }
 
-- (NSDictionary*)getExecuteStatment:(NSString*) query withParams:(NSArray*) params {
+- (NSDictionary*)executeStatment:(NSString*) query withParams:(NSArray*) params {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     if ([self isOpen]) {
         // not implemented

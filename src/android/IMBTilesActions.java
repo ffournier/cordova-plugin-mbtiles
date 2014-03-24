@@ -95,5 +95,5 @@ public interface IMBTilesActions
 	 * @param params
 	 * @return the tile as <code>JSONObject</code>
 	 */
-	JSONObject getExecuteStatment(String query, String... params);
+	JSONObject executeStatment(String query, String... params);
 }

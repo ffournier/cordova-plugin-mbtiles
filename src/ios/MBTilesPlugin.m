@@ -142,7 +142,7 @@
             // test is open
             if ([tilesActions isOpen]) {
                 // execute request
-                NSDictionary* data = [tilesActions getExecuteStatment:query withParams:params];
+                NSDictionary* data = [tilesActions executeStatment:query withParams:params];
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
             } else {
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];

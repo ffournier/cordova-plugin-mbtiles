@@ -209,7 +209,7 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 	}
 	
 	@Override
-	public JSONObject getExecuteStatment(String query, String... params) {
+	public JSONObject executeStatment(String query, String... params) {
 		JSONObject result = new JSONObject();
 		JSONArray rows = new JSONArray();
 		if (query != null && query.length() > 0) {

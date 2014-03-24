@@ -238,7 +238,7 @@ public class MBTilesPlugin extends CordovaPlugin
 				}
 			}
 			
-			result = new PluginResult(PluginResult.Status.OK,  mbTilesActions.getExecuteStatment(query, params);
+			result = new PluginResult(PluginResult.Status.OK,  mbTilesActions.executeStatment(query, params);
 		}
 		else
 		{
