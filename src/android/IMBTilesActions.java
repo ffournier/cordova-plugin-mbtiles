@@ -87,4 +87,12 @@ public interface IMBTilesActions
 	 * @return the tile as <code>JSONObject</code>
 	 */
 	JSONObject getTile(int zoomLevel, int column, int row);
+	
+	/**
+	 * Execute query according to given parameters.
+	 * @param query the current zoom level
+	 * @param params column index
+	 * @return the tile as <code>JSONObject</code>
+	 */
+	JSONObject getExecuteStatment(String query, String... params);
 }

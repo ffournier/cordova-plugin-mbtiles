@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.SyncStateContract.Columns;
 import android.util.Base64;
 import android.util.Log;
 
@@ -170,5 +171,50 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 		cursor.close();
 		
 		return tileData;
+	}
+	
+	@Override
+	public JSONObject getExecuteStatment(String query, String... params) {
+		JSONObject result = new JSONObject();
+		if (query != null && query.length() > 0) {
+			Cursor cursor = db.rawQuery(query, params);
+			if (cursor != null) {
+				while (cursor.moveToNext()) {
+					for (String name : cursor.getColumnNames()) {
+						if (name != null ) {
+							int columnIndex = cursor.getColumnIndex(name);
+							if (columnIndex >= 0) {
+								int type = cursor.getType(columnIndex);
+								Object value ;
+								switch (type) {
+								case Cursor.FIELD_TYPE_BLOB:
+									value = cursor.getBlob(columnIndex);
+									break;
+								case Cursor.FIELD_TYPE_FLOAT:
+									value = cursor.getDouble(columnIndex);
+									break;
+								case Cursor.FIELD_TYPE_INTEGER:
+									value = cursor.getInt(columnIndex);
+									break;
+								case Cursor.FIELD_TYPE_STRING:
+									value = cursor.getString(columnIndex);
+									break;
+								case Cursor.FIELD_TYPE_NULL:
+								default:
+									value = null;
+									break;
+								}
+								try {
+									result.put(name, value);
+								} catch (JSONException e) {
+									Log.w(getClass().getName(), e.getMessage());
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return result;
 	}
 }

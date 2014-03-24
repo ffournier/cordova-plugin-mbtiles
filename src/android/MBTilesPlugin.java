@@ -24,6 +24,7 @@ public class MBTilesPlugin extends CordovaPlugin
 	public static final String ACTION_GET_MIN_ZOOM = "get_min_zoom";
 	public static final String ACTION_GET_MAX_ZOOM = "get_max_zoom";
 	public static final String ACTION_GET_TILE = "get_tile";
+	public static final String ACTION_EXECUTE_STATMENT = "execute_statment";
 	
 	private IMBTilesActions mbTilesActions = null;
 	
@@ -33,12 +34,14 @@ public class MBTilesPlugin extends CordovaPlugin
 	 */
 	@Override
 	 public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
+		Log.i(getClass().getName(), "execute Tiles");
+		
 		final JSONArray dataFinal = data;
 		final String actionFinal = action;
 		final CallbackContext callbackContextFinal = callbackContext;
 		
 		cordova.getThreadPool().execute(new Runnable() {
-           	   public void run() {
+            public void run() {
 		
 	            PluginResult result = null;
 				try
@@ -67,6 +70,12 @@ public class MBTilesPlugin extends CordovaPlugin
 					{
 						Log.i(getClass().getName(), "get Tiles");
 						result = actionGetTile(dataFinal);
+					}
+					
+					if (actionFinal.equals(ACTION_EXECUTE_STATMENT))
+					{
+						Log.i(getClass().getName(), "execute statment");
+						result = actionExecuteStatment(dataFinal);
 					}
 					
 					if (result == null)
@@ -192,6 +201,44 @@ public class MBTilesPlugin extends CordovaPlugin
 		{
 			Log.i(getClass().getName(), "isOpen Tiles");
 			result = new PluginResult(PluginResult.Status.OK, mbTilesActions.getTile(data.getJSONObject(0).getInt("z"), data.getJSONObject(0).getInt("x"), data.getJSONObject(0).getInt("y")));
+		}
+		else
+		{
+			Log.i(getClass().getName(), "isOpen Error Tiles");
+			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
+		}
+		
+		return result;
+	}
+	
+	private PluginResult actionExecuteStatment(JSONArray data) throws JSONException
+	{
+		PluginResult result = null;
+		
+		Log.i(getClass().getName(), "actionExecuteStatment");
+		
+		if ((mbTilesActions != null) && mbTilesActions.isOpen())
+		{
+			Log.i(getClass().getName(), "isOpen Execute Statment");
+				
+			String query= data.getJSONObject(0).getString("query");
+			
+			JSONArray jparams = (data.getJSONObject(0).length() < 3) ? null : data.getJSONObject(0).getJSONArray("params"));
+
+			String[] params = null;
+
+			if (jparams != null) {
+				params = new String[jparams.length()];
+
+				for (int j = 0; j < jparams.length(); j++) {
+					if (jparams.isNull(j))
+						params[j] = "";
+					else
+						params[j] = jparams.getString(j);
+				}
+			}
+			
+			result = new PluginResult(PluginResult.Status.OK,  mbTilesActions.getExecuteStatment(query, params);
 		}
 		else
 		{

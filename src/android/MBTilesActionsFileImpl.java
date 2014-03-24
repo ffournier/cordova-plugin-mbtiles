@@ -198,4 +198,10 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 		
 		return zoomLevels;
 	}
+	
+	@Override
+	public JSONObject getExecuteStatment(String query, String... params) {
+		// not implemented
+		return null;
+	}
 }
