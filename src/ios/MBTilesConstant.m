@@ -20,6 +20,8 @@ NSString * const KEY_FORMAT = @"format";
 NSString * const KEY_MIN_ZOOM = @"min_zoom";
 NSString * const KEY_MAX_ZOOM = @"max_zoom";
 NSString * const KEY_TILE_DATA = @"tile_data";
+NSString * const KEY_QUERY = @"query";
+NSString * const KEY_PARAMS = @"params";
 
 + (NSString*)base64forData:(NSData*)theData {
     

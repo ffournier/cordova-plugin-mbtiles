@@ -19,6 +19,7 @@
 - (NSDictionary*)getMinZoom;
 - (NSDictionary*)getMaxZoom;
 - (NSDictionary*)getTile:(int) zoom_level columnValue:(int) column rowValue:(int) row;
+- (NSDictionary*)getExecuteStatment:(NSString*) query withParams:(NSArray*) params;
 
 @end
 

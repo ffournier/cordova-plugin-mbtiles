@@ -128,5 +128,33 @@
     }];
 }
 
+- (void)execute_statment:(CDVInvokedUrlCommand*)command {
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult* pluginResult = nil;
+        
+        NSDictionary* dict = [command.arguments objectAtIndex:0];
+        
+        // get the type and name
+        NSString* query = dict[KEY_QUERY];
+        NSArray* params = dict[KEY_PARAMS];
+        if (query && params) {
+            
+            // test is open
+            if ([tilesActions isOpen]) {
+                // execute request
+                NSDictionary* data = [tilesActions getExecuteStatment:query withParams:params];
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+            }
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_JSON_EXCEPTION];
+        }
+        
+        // The sendPluginResult method is thread-safe.
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+
+}
 
 @end

@@ -12,18 +12,25 @@
 @implementation MBTilesActionsDataBaseImpl
 @synthesize database = _database;
 
+- (id) init {
+    self = [super init];
+    _database = nil;
+    return self;
+}
+
 - (void)open:(NSString*) path {
     NSFileManager *filemgr =  [NSFileManager defaultManager];
    
     NSArray* list = [path componentsSeparatedByString:@"."];
     NSString* absolutePath = [[NSBundle mainBundle] pathForResource:[list objectAtIndex:0] ofType:[list objectAtIndex:1]];
-    
     if ([filemgr fileExistsAtPath: absolutePath ] == YES) {
         const char *dbpath = [absolutePath UTF8String];
         
         if (sqlite3_open_v2(dbpath, &_database, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK) {
             _database = nil;
         }
+    } else {
+        _database = nil;
     }
 }
 
@@ -125,6 +132,96 @@
         }
     }
     return dict;
+}
+
+- (NSDictionary*)getExecuteStatment:(NSString*) query withParams:(NSArray*) params {
+    
+    NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
+    NSMutableArray* rows = [NSMutableArray arrayWithCapacity:0];
+    if ([self isOpen]) {
+        
+        const char* sql_stmt = [query UTF8String];
+        sqlite3_stmt* stmt;
+        int ret = sqlite3_prepare_v2(_database, sql_stmt, -1, &stmt, NULL);
+        if( ret == SQLITE_OK) {
+           
+            // bind value
+            BOOL result = [self bindValue:stmt withParams:params];
+            if (result == YES) {
+                NSMutableDictionary* row;
+                
+                while (sqlite3_step(stmt) == SQLITE_ROW) {
+                    int count = sqlite3_column_count(stmt);
+                    row = [NSMutableDictionary dictionaryWithCapacity:0];
+                    for (int i = 0; i < count ; i++) {
+                        int type = sqlite3_column_type(stmt, i);
+                        NSString* name = [NSString stringWithFormat:@"%s",sqlite3_column_name(stmt, i)];
+                        NSObject* object;
+                        switch(type) {
+                            case SQLITE_INTEGER:
+                                object = [NSNumber numberWithInt:sqlite3_column_int(stmt, i)];
+                                break;
+                            case SQLITE_FLOAT:
+                                object = [NSNumber numberWithDouble:sqlite3_column_double(stmt, i)];
+                                break;
+                            case SQLITE_TEXT:
+                                object = [NSString stringWithUTF8String:(char*)sqlite3_column_text(stmt, i)];
+                                break;
+                            case SQLITE_BLOB:
+                                {
+                                    NSUInteger blobLenght = sqlite3_column_bytes(stmt, i);
+                                    NSData * data = [NSData dataWithBytes:sqlite3_column_blob(stmt, i) length:blobLenght];
+                                    object = [MBTilesConstant base64forData:data];
+                                }
+                                break;
+                            case SQLITE_NULL:
+                            default:
+                                object = [NSNull null];
+                                break;
+                        }
+                        
+                        if (object) {
+                            [row setObject:object forKey:name];
+                        }
+                    }
+                    
+                    [rows addObject:row];
+                }
+            }
+        }
+        sqlite3_finalize(stmt);
+        
+        [dict setObject:rows forKey:@"result"];
+    }
+    return dict;
+}
+
+- (BOOL) bindValue:(sqlite3_stmt*)stmt withParams:(NSArray*)params {
+    for (int i = 0; i < [params count]; i++) {
+        NSObject* object = [params objectAtIndex:i];
+        if (object) {
+            if ([object isEqual:[NSNull null]]) {
+                sqlite3_bind_null(stmt, i);
+            } else if ([object isKindOfClass:[NSNumber class]]) {
+                NSNumber* arg = (NSNumber*) object;
+                const char* numberType = [arg objCType];
+                if (strcmp(numberType, @encode(int))) {
+                    sqlite3_bind_int(stmt, i, [arg integerValue]);
+                } else if (strcmp(numberType, @encode(long long int))) {
+                    sqlite3_bind_int64(stmt, i, [arg longLongValue]);
+                } else if (strcmp(numberType, @encode(double))) {
+                    sqlite3_bind_double(stmt, i, [arg doubleValue]);
+                } else if (strcmp(numberType, @encode(float))) {
+                    sqlite3_bind_double(stmt, i, [arg floatValue]);
+                } else {
+                    sqlite3_bind_text(stmt, i, [[NSString stringWithFormat:@"%@", object] UTF8String], -1, SQLITE_TRANSIENT);
+                }
+            } else {
+                sqlite3_bind_text(stmt, i, [[NSString stringWithFormat:@"%@", object] UTF8String], -1, SQLITE_TRANSIENT);
+            }
+        }
+    }
+    return YES;
 }
 
 - (void)dealloc {

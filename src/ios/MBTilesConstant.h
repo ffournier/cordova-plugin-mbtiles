@@ -20,6 +20,8 @@
     extern NSString * const KEY_MIN_ZOOM;
     extern NSString * const KEY_MAX_ZOOM;
     extern NSString * const KEY_TILE_DATA;
+    extern NSString * const KEY_QUERY;
+    extern NSString * const KEY_PARAMS;
 
 + (NSString*)base64forData:(NSData*)theData;
 

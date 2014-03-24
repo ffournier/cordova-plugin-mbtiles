@@ -15,5 +15,6 @@
     sqlite3* database;
 }
 
+- (BOOL) bindValue:(sqlite3_stmt*)stmt withParams:(NSArray*)params;
 @property(readwrite, assign)sqlite3* database;
 @end

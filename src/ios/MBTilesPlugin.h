@@ -24,5 +24,6 @@
 - (void)get_min_zoom:(CDVInvokedUrlCommand*)command;
 - (void)get_max_zoom:(CDVInvokedUrlCommand*)command;
 - (void)get_tile:(CDVInvokedUrlCommand*)command;
+- (void)execute_statment:(CDVInvokedUrlCommand*)command;
 
 @end
