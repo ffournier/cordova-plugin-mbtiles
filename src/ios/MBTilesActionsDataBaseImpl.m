@@ -197,29 +197,31 @@
 }
 
 - (BOOL) bindValue:(sqlite3_stmt*)stmt withParams:(NSArray*)params {
-    for (int i = 0; i < [params count]; i++) {
-        NSObject* object = [params objectAtIndex:i];
-        if (object) {
-            if ([object isEqual:[NSNull null]]) {
-                sqlite3_bind_null(stmt, i);
-            } else if ([object isKindOfClass:[NSNumber class]]) {
-                NSNumber* arg = (NSNumber*) object;
-                const char* numberType = [arg objCType];
-                if (strcmp(numberType, @encode(int))) {
-                    sqlite3_bind_int(stmt, i, [arg integerValue]);
-                } else if (strcmp(numberType, @encode(long long int))) {
-                    sqlite3_bind_int64(stmt, i, [arg longLongValue]);
-                } else if (strcmp(numberType, @encode(double))) {
-                    sqlite3_bind_double(stmt, i, [arg doubleValue]);
-                } else if (strcmp(numberType, @encode(float))) {
-                    sqlite3_bind_double(stmt, i, [arg floatValue]);
-                } else {
-                    sqlite3_bind_text(stmt, i, [[NSString stringWithFormat:@"%@", object] UTF8String], -1, SQLITE_TRANSIENT);
-                }
-            } else {
-                sqlite3_bind_text(stmt, i, [[NSString stringWithFormat:@"%@", object] UTF8String], -1, SQLITE_TRANSIENT);
-            }
-        }
+    if (params) {
+	for (int i = 0; i < [params count]; i++) {
+	NSObject* object = [params objectAtIndex:i];
+	if (object) {
+	    if ([object isEqual:[NSNull null]]) {
+		sqlite3_bind_null(stmt, i);
+	    } else if ([object isKindOfClass:[NSNumber class]]) {
+		NSNumber* arg = (NSNumber*) object;
+		const char* numberType = [arg objCType];
+		if (strcmp(numberType, @encode(int))) {
+		    sqlite3_bind_int(stmt, i, [arg integerValue]);
+		} else if (strcmp(numberType, @encode(long long int))) {
+		    sqlite3_bind_int64(stmt, i, [arg longLongValue]);
+		} else if (strcmp(numberType, @encode(double))) {
+		    sqlite3_bind_double(stmt, i, [arg doubleValue]);
+		} else if (strcmp(numberType, @encode(float))) {
+		    sqlite3_bind_double(stmt, i, [arg floatValue]);
+		} else {
+		    sqlite3_bind_text(stmt, i, [[NSString stringWithFormat:@"%@", object] UTF8String], -1, SQLITE_TRANSIENT);
+		}
+	    } else {
+		sqlite3_bind_text(stmt, i, [[NSString stringWithFormat:@"%@", object] UTF8String], -1, SQLITE_TRANSIENT);
+	    }
+	}
+	}
     }
     return YES;
 }

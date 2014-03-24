@@ -136,8 +136,8 @@
         
         // get the type and name
         NSString* query = dict[KEY_QUERY];
-        NSArray* params = dict[KEY_PARAMS];
-        if (query && params) {
+	NSArray* params = dict[KEY_PARAMS];
+	if (query) {
             
             // test is open
             if ([tilesActions isOpen]) {
