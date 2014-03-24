@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SQLite;
 using MBTilesPlugin;
+using SQLite;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using WPCordovaClassLib.Cordova.JSON;
 
 namespace MBTilesPlugin
@@ -13,64 +15,62 @@ namespace MBTilesPlugin
     class MBTilesActionsDatabaseImpl : IMBTilesActions
     {
 
-        private string dbPath = null;
+        private Database db = null;
 	
 	    public void open(string path)
 	    {
 		    try
             {
-                SQLiteConnection db = new SQLiteConnection(path);
-                dbPath = path;
+                db = new Database(path);
             }
             catch (SQLiteException)
             {
-                dbPath = null;
+                db = null;
             }
 	    }
 
 	    public bool isOpen()
 	    {
-            return (this.dbPath != null);
+            return (this.db != null);
 	    }
 
 	    public void close()
 	    {
 		    if (isOpen())
 		    {
-			    this.dbPath = null;
+                this.db.Close();
+			    this.db = null;
 		    }
 	    }
 
-        public metadata_output getMetadata()
+        public JObject getMetadataObject()
 	    {
-            metadata_output result = new metadata_output();
-            using (SQLiteConnection db = new SQLiteConnection(dbPath))
-            {
-                List<metadata> list = db.Query<metadata>("SELECT * FROM metadata");
+            JObject obj = new JObject();
+            List<metadata> list = db.Query<metadata>("SELECT * FROM metadata");
 
-                if (list != null)
+            if (list != null)
+            {
+                foreach(metadata data in list)
                 {
-                    bool first = true;
-                    foreach(metadata data in list)
-                    {
-                       result.setValue(data);
-                    }
+                    obj.Add(data.name, data.value);
                 }
             }
-            return result;
+            return obj;
 		}
+
+        public string getMetadata()
+        {
+            JObject obj = getMetadataObject();
+            return obj.ToString(); ;
+        }
 
         public minzoom_output getMinZoom()
 	    {
             minzoom_output result = null;
-            using (SQLiteConnection db = new SQLiteConnection(dbPath))
+            tiles zoom_min = db.Query<tiles>("SELECT * FROM tiles ORDER BY zoom_level ASC LIMIT 1").FirstOrDefault();
+            if (zoom_min != null)
             {
-                tiles zoom_min = db.Query<tiles>("SELECT * FROM tiles ORDER BY zoom_level ASC LIMIT 1").FirstOrDefault();
-                if (zoom_min != null)
-                {
-                   result = new minzoom_output(zoom_min.zoom_level);
-                }
-               
+                result = new minzoom_output(zoom_min.zoom_level);
             }
             return result;
 		}
@@ -78,14 +78,10 @@ namespace MBTilesPlugin
         public maxzoom_output getMaxZoom()
 	    {
             maxzoom_output result = null;
-            using (SQLiteConnection db = new SQLiteConnection(dbPath))
+            tiles zoom_max = db.Query<tiles>("SELECT * FROM tiles ORDER BY zoom_level DESC LIMIT 1").FirstOrDefault();
+            if (zoom_max != null)
             {
-                tiles zoom_max = db.Query<tiles>("SELECT * FROM tiles ORDER BY zoom_level DESC LIMIT 1").FirstOrDefault();
-                if (zoom_max != null)
-                {
-                    result = new maxzoom_output(zoom_max.zoom_level); 
-                }
-
+                result = new maxzoom_output(zoom_max.zoom_level); 
             }
             return result;
 		}
@@ -110,21 +106,37 @@ namespace MBTilesPlugin
 		    {
 			}
 
-            using (SQLiteConnection db = new SQLiteConnection(dbPath))
+            
+            tiles til = db.Query<tiles>("SELECT * FROM tiles WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?", currentZoomLevel, column, row).FirstOrDefault();
+
+            // try to load the last zoom level if zoomLevel is too high
+            if (til != null)
             {
-
-                tiles til = db.Query<tiles>("SELECT * FROM tiles WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?", currentZoomLevel, column, row).FirstOrDefault();
-
-                // try to load the last zoom level if zoomLevel is too high
-                if (til != null)
-                {
-                    string data = ConstantMbTilePlugin.Base64EncodeByte(til.tile_data);
-                    result = new tiles_output(data);
-                }
-
+                string data = ConstantMbTilePlugin.Base64EncodeByte(til.tile_data);
+                result = new tiles_output(data);
             }
             return result;
 		}
 
+        public string executeStatment(String query, List<object> param)
+        {
+            string result = "";
+            if (query != null && query.Length > 0)
+            {
+                JArray array = new JArray();
+                if (param != null)
+                {
+                    array = db.execute(query, param.ToArray());
+                }
+                else
+                {
+                    array = db.execute(query, null);
+                }
+                JObject obj = new JObject();
+                obj.Add(ConstantMbTilePlugin.KEY_EXECUTE_STATMENT, array);
+                result = obj.ToString();
+            }
+            return result;
+        }
     }
 }

@@ -51,6 +51,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	<source-file src="src/wp/SQLiteAsync.cs"/>
 	<source-file src="src/wp/TableData.cs"/>
 	<source-file src="src/wp/MBTilesJson.cs"/>
+	<source-file src="src/wp/Database.cs"/>
     </platform>
 
 

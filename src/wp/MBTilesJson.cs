@@ -21,88 +21,7 @@ namespace MBTilesPlugin
 
     }
 
-    [DataContract]
-    public class metadata_output
-    {
-        [DataMember(Name = "center")]
-        public string center { get; set; }
-
-        [DataMember(Name = "format")]
-        public string format { get; set; }
-
-        [DataMember(Name = "minzoom")]
-        public string minzoom { get; set; }
-
-        [DataMember(Name = "bounds")]
-        public string bounds { get; set; }
-
-        [DataMember(Name = "maxzoom")]
-        public string maxzoom { get; set; }
-
-        [DataMember(Name = "template")]
-        public string template { get; set; }
-
-        [DataMember(Name = "name")]
-        public string name { get; set; }
-
-        [DataMember(Name = "version")]
-        public string version { get; set; }
-
-        public metadata_output()
-        {
-            center = null;
-            format = null;
-            bounds = null;
-            maxzoom = null;
-            minzoom = null;
-            template = null;
-            name = null;
-            version = null;
-        }
-
-        public void setValue(metadata data)
-        {
-            if (data != null)
-            {
-                if (data.name != null && data.name.Equals("center"))
-                {
-                    center = data.value;
-                }
-                else if (data.name != null && data.name.Equals("bounds"))
-                {
-                    bounds = data.value;
-                }
-                else if (data.name != null && data.name.Equals("maxzoom"))
-                {
-                    maxzoom = data.value;
-                }
-                else if (data.name != null && data.name.Equals("minzoom"))
-                {
-                    minzoom = data.value;
-                }
-                else if (data.name != null && data.name.Equals("format"))
-                {
-                    format = data.value;
-                }
-                else if (data.name != null && data.name.Equals("template"))
-                {
-                    template = data.value;
-                }
-                else if (data.name != null && data.name.Equals("name"))
-                {
-                    name = data.value;
-                }
-                else if (data.name != null && data.name.Equals("version"))
-                {
-                    version = data.value;
-                }
-            }
-        }
-
-    }
-
-
-
+    
     [DataContract]
     public class minzoom_output
     {
@@ -149,5 +68,16 @@ namespace MBTilesPlugin
 
         [DataMember(Name = "y")]
         public int y { get; set; }
+    }
+
+    [DataContract]
+    public class EntryExecuteStatment
+    {
+        [DataMember(Name = "query")]
+        public string query { get; set; }
+
+        [DataMember(Name = "params")]
+        public List<object> param { get; set; }
+
     }
 }

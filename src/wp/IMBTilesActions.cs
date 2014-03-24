@@ -15,6 +15,9 @@ namespace MBTilesPlugin
         public static string KEY_MIN_ZOOM = "min_zoom";
         public static string KEY_MAX_ZOOM = "max_zoom";
         public static string KEY_TILE_DATA = "tile_data";
+        public static string KEY_QUERY = "query";
+        public static string KEY_PARAMS = "params";
+        public static string KEY_EXECUTE_STATMENT = "result_execute";
         
         public static string Base64Encode(string plainText)
         {
@@ -62,7 +65,7 @@ namespace MBTilesPlugin
 	     * </ul>
 	     * @return the metadata as <code>JSONObject</code>
 	     */
-        metadata_output getMetadata();
+        string getMetadata();
 	
 	    /**
 	     * Gets the minimal zoom level as <code>JSONObject</code>.
@@ -103,5 +106,12 @@ namespace MBTilesPlugin
 	     */
         tiles_output getTile(int zoomLevel, int column, int row);
 
+        /**
+	     * Execute query according to given parameters.
+	     * @param query
+	     * @param params
+	     * @return the tile as <code>JSONObject</code>
+	     */
+        string executeStatment(String query, List<object> param);
     }
 }

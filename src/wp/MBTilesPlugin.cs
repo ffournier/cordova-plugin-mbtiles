@@ -91,8 +91,10 @@ namespace WPCordovaClassLib.Cordova.Commands
 
                 if (mbTilesActions != null && mbTilesActions.isOpen())
                 {
-                    metadata_output metadata = mbTilesActions.getMetadata();
-                    DispatchCommandResult(new PluginResult(PluginResult.Status.OK, metadata), callbackId);
+                    string metadata = mbTilesActions.getMetadata();
+                    PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+                    pluginResult.Message = metadata;
+                    DispatchCommandResult(pluginResult, callbackId);
                 }
                 else
                 {
@@ -180,6 +182,40 @@ namespace WPCordovaClassLib.Cordova.Commands
                 {
                     tiles_output tile = mbTilesActions.getTile(z,x,y);
                     DispatchCommandResult(new PluginResult(PluginResult.Status.OK, tile), callbackId);
+                }
+                else
+                {
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.IO_EXCEPTION), callbackId);
+                }
+
+            }
+            catch (Exception)
+            {
+                DispatchCommandResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
+            }
+        }
+
+        public void execute_statment(string options)
+        {
+            string callbackId;
+            options = options.Replace("{}", ""); // empty objects screw up the Deserializer
+            try
+            {
+                // z, x, y
+                string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
+                // to test maybe is not an integer but a JSONObject
+                EntryExecuteStatment entryExecute = JSON.JsonHelper.Deserialize<EntryExecuteStatment>(args[0]);
+                string query = entryExecute.query;
+                // to test not sure that's work
+                List<object> param = entryExecute.param;
+                callbackId = args[1];
+
+                if (mbTilesActions != null && mbTilesActions.isOpen())
+                {
+                    string result = mbTilesActions.executeStatment(query, param);
+                    PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
+                    pluginResult.Message = result;
+                    DispatchCommandResult(pluginResult, callbackId);
                 }
                 else
                 {

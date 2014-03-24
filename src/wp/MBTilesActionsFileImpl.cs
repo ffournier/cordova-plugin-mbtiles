@@ -7,6 +7,8 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using WPCordovaClassLib.Cordova.JSON;
 using MBTilesPlugin;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace MBTilesPlugin
@@ -51,20 +53,25 @@ namespace MBTilesPlugin
 		    }
 	    }
 
-        public metadata_output getMetadata()
-	    {
-            metadata_output result = new metadata_output();
+        private JObject getMetadataObject()
+        {
             string filePath = mapDirectory + "\\metadata.json";
             string text = readText(filePath);
-            metadata[] args = JsonHelper.Deserialize<metadata[]>(text);
+            metadata[] list = JsonHelper.Deserialize<metadata[]>(text);
 
-            foreach (metadata arg in args)
+            JObject obj = new JObject();
+            foreach (metadata data in list)
             {
-               // TODO not implemented
-                result.setValue(arg);
+                obj.Add(data.name, data.value);
             }
+           
+            return obj;
+        }
 
-            return result;
+        public string getMetadata()
+	    {
+            JObject obj = getMetadataObject();
+            return obj.ToString(); ;
 		}
 
         public minzoom_output getMinZoom()
@@ -131,12 +138,12 @@ namespace MBTilesPlugin
 
             try
 		    {
-                metadata_output metadata = getMetadata();
+                JObject metadata = getMetadataObject();
                 if (metadata != null)
                 {
-                    string name = metadata.name;
-                    string version = metadata.version;
-                    string format = metadata.format;
+                    string name = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_NAME);
+                    string version = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_VERSION);
+                    string format = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_FORMAT);
 
                     string tileFile = this.mapDirectory + "\\" + version + "\\" + name + "\\" +
                                             currentZoomLevel.ToString() + "\\" + column.ToString() + "\\" + row.ToString() + "." + format;
@@ -186,26 +193,28 @@ namespace MBTilesPlugin
 
         private List<int> getZoomLevels()
         {
-            metadata_output metadata = getMetadata();
+            JObject metadata = getMetadataObject();
             List<int> zoomLevels = new List<int>();
-            if (metadata != null && metadata.name != null && metadata.version != null)
+            if (metadata != null)
             {
                 try
                 {
-                    string name = metadata.name;
-                    string version = metadata.version;
-
-                    string dirPath = this.mapDirectory + "\\" + version + "\\" + name;
-                    using (IsolatedStorageFile isoFile = IsolatedStorageFile.GetUserStoreForApplication())
+                    string name = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_NAME);
+                    string version = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_VERSION);
+                    if (name != null && version != null)
                     {
-                        // create the file if not exists
-                        if (isoFile.DirectoryExists(dirPath))
+
+                        string dirPath = this.mapDirectory + "\\" + version + "\\" + name;
+                        using (IsolatedStorageFile isoFile = IsolatedStorageFile.GetUserStoreForApplication())
                         {
-                            foreach (string filePath in isoFile.GetFileNames(dirPath))
+                            // create the file if not exists
+                            if (isoFile.DirectoryExists(dirPath))
                             {
-                                zoomLevels.Add(int.Parse(filePath));
+                                foreach (string filePath in isoFile.GetFileNames(dirPath))
+                                {
+                                    zoomLevels.Add(int.Parse(filePath));
+                                }
                             }
-			    zoomLevels.Sort();
                         }
                     }
                 }
@@ -216,6 +225,13 @@ namespace MBTilesPlugin
 			   
             }   
 		    return zoomLevels;
+        }
+
+        public string executeStatment(String query, List<object> param)
+        {
+            string result = "";
+            // not implemented
+            return result;
         }
 
     }
