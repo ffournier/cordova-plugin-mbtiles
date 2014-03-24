@@ -198,7 +198,7 @@
 
 - (BOOL) bindValue:(sqlite3_stmt*)stmt withParams:(NSArray*)params {
     if (params) {
-	for (int i = 0; i < [params count]; i++) {
+	for (int i = 1; i <= [params count]; i++) {
 	NSObject* object = [params objectAtIndex:i];
 	if (object) {
 	    if ([object isEqual:[NSNull null]]) {
