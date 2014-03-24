@@ -242,7 +242,7 @@ public class MBTilesPlugin extends CordovaPlugin
 		}
 		else
 		{
-			Log.i(getClass().getName(), "isOpen Error Tiles");
+			Log.i(getClass().getName(), "isOpen Error Execute Statment");
 			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
 		}
 		

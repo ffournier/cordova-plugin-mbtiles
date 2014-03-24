@@ -191,7 +191,7 @@
         }
         sqlite3_finalize(stmt);
         
-        [dict setObject:rows forKey:@"result"];
+        [dict setObject:rows forKey:KEY_EXECUTE_STATMENT];
     }
     return dict;
 }

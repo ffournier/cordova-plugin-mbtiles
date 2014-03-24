@@ -22,6 +22,7 @@
     extern NSString * const KEY_TILE_DATA;
     extern NSString * const KEY_QUERY;
     extern NSString * const KEY_PARAMS;
+    extern NSString * const KEY_EXECUTE_STATMENT;
 
 + (NSString*)base64forData:(NSData*)theData;
 

@@ -15,6 +15,7 @@ public interface IMBTilesActions
 	static final String KEY_MIN_ZOOM = "min_zoom";
 	static final String KEY_MAX_ZOOM = "max_zoom";
 	static final String KEY_TILE_DATA = "tile_data";
+	static final String KEY_EXECUTE_STATMENT = "result_execute";
 	
 	/**
 	 * Tries to open MBTiles resource

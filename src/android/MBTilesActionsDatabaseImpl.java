@@ -255,7 +255,7 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 			}
 		}
 		try {
-			result.put("result", rows);
+			result.put(KEY_EXECUTE_STATMENT, rows);
 		} catch (JSONException e) {
 			Log.w(getClass().getName(), e.getMessage());
 		}

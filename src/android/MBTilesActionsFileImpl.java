@@ -202,6 +202,7 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 	@Override
 	public JSONObject getExecuteStatment(String query, String... params) {
 		// not implemented
-		return null;
+		JSONObject result = new JSONObject();
+		return result;
 	}
 }
