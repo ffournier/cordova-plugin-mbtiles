@@ -5,6 +5,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.database.Cursor;
+import android.database.CursorWindow;
+import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
 import android.util.Log;
@@ -17,6 +19,13 @@ import android.util.Log;
 public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 {
 	private SQLiteDatabase db = null;
+	
+	protected static final int FIELD_TYPE_BLOB = 4;
+    protected static final int FIELD_TYPE_FLOAT = 2;
+    protected static final int FIELD_TYPE_INTEGER = 1;
+    protected static final int FIELD_TYPE_NULL = 0;
+    protected static final int FIELD_TYPE_STRING = 3;
+
 	
 	@Override
 	public void open(String path)
@@ -173,6 +182,32 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 		return tileData;
 	}
 	
+	private int getType(Cursor cursor, int index) {
+		int type = FIELD_TYPE_NULL;
+		if (cursor != null) {
+			int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+			if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB){
+			    type = cursor.getType(index);
+			} else {
+				SQLiteCursor sqLiteCursor = (SQLiteCursor) cursor;
+		        CursorWindow cursorWindow = sqLiteCursor.getWindow();
+		        int pos = cursor.getPosition();
+		        if (cursorWindow.isNull(pos, index)) {
+		            type = FIELD_TYPE_NULL;
+		        } else if (cursorWindow.isLong(pos, index)) {
+		            type = FIELD_TYPE_INTEGER;
+		        } else if (cursorWindow.isFloat(pos, index)) {
+		            type = FIELD_TYPE_FLOAT;
+		        } else if (cursorWindow.isString(pos, index)) {
+		            type = FIELD_TYPE_STRING;
+		        } else if (cursorWindow.isBlob(pos, index)) {
+		            type = FIELD_TYPE_BLOB;
+		        }
+			}
+		}
+		return type;
+	}
+	
 	@Override
 	public JSONObject getExecuteStatment(String query, String... params) {
 		JSONObject result = new JSONObject();
@@ -186,22 +221,22 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 						if (name != null ) {
 							int columnIndex = cursor.getColumnIndex(name);
 							if (columnIndex >= 0) {
-								int type = cursor.getType(columnIndex);
+								int type = getType(cursor, columnIndex);
 								Object value ;
 								switch (type) {
-								case Cursor.FIELD_TYPE_BLOB:
-									value = Base64.encodeToString(cursor.getBlob(columnIndex), Base64.DEFAULT);
+								case FIELD_TYPE_BLOB:
+									value = Base64.encodeToString(cursor.getBlob(columnIndex),Base64.DEFAULT);
 									break;
-								case Cursor.FIELD_TYPE_FLOAT:
+								case FIELD_TYPE_FLOAT:
 									value = cursor.getDouble(columnIndex);
 									break;
-								case Cursor.FIELD_TYPE_INTEGER:
+								case FIELD_TYPE_INTEGER:
 									value = cursor.getInt(columnIndex);
 									break;
-								case Cursor.FIELD_TYPE_STRING:
+								case FIELD_TYPE_STRING:
 									value = cursor.getString(columnIndex);
 									break;
-								case Cursor.FIELD_TYPE_NULL:
+								case FIELD_TYPE_NULL:
 								default:
 									value = null;
 									break;
@@ -216,6 +251,7 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 					}
 					rows.put(row);
 				}
+				cursor.close();
 			}
 		}
 		try {
