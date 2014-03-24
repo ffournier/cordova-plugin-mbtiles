@@ -1,11 +1,11 @@
 package com.makina.offline.mbtiles;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.SyncStateContract.Columns;
 import android.util.Base64;
 import android.util.Log;
 
@@ -176,10 +176,12 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 	@Override
 	public JSONObject getExecuteStatment(String query, String... params) {
 		JSONObject result = new JSONObject();
+		JSONArray rows = new JSONArray();
 		if (query != null && query.length() > 0) {
 			Cursor cursor = db.rawQuery(query, params);
 			if (cursor != null) {
 				while (cursor.moveToNext()) {
+					JSONObject row = new JSONObject();
 					for (String name : cursor.getColumnNames()) {
 						if (name != null ) {
 							int columnIndex = cursor.getColumnIndex(name);
@@ -188,7 +190,7 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 								Object value ;
 								switch (type) {
 								case Cursor.FIELD_TYPE_BLOB:
-									value = cursor.getBlob(columnIndex);
+									value = Base64.encodeToString(cursor.getBlob(columnIndex), Base64.DEFAULT);
 									break;
 								case Cursor.FIELD_TYPE_FLOAT:
 									value = cursor.getDouble(columnIndex);
@@ -205,15 +207,21 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 									break;
 								}
 								try {
-									result.put(name, value);
+									row.put(name, value);
 								} catch (JSONException e) {
 									Log.w(getClass().getName(), e.getMessage());
 								}
 							}
 						}
 					}
+					rows.put(row);
 				}
 			}
+		}
+		try {
+			result.put("result", rows);
+		} catch (JSONException e) {
+			Log.w(getClass().getName(), e.getMessage());
 		}
 		return result;
 	}
