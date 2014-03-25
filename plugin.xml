@@ -44,15 +44,20 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         </config-file>
 
         <source-file src="src/wp/MBTilesPlugin.cs"/>
-	<source-file src="src/wp/IMBTilesActions.cs"/>
-	<source-file src="src/wp/MBTilesActionsDatabaseImpl.cs"/>
-	<source-file src="src/wp/MBTilesActionsFileImpl.cs"/>
-	<source-file src="src/wp/SQLite.cs"/>
-	<source-file src="src/wp/SQLiteAsync.cs"/>
-	<source-file src="src/wp/TableData.cs"/>
-	<source-file src="src/wp/MBTilesJson.cs"/>
-	<source-file src="src/wp/Database.cs"/>
-    </platform>
+		<source-file src="src/wp/IMBTilesActions.cs"/>
+		<source-file src="src/wp/MBTilesActionsDatabaseImpl.cs"/>
+		<source-file src="src/wp/MBTilesActionsFileImpl.cs"/>
+		<source-file src="src/wp/SQLite.cs"/>
+		<source-file src="src/wp/SQLiteAsync.cs"/>
+		<source-file src="src/wp/TableData.cs"/>
+		<source-file src="src/wp/MBTilesJson.cs"/>
+		<source-file src="src/wp/Database.cs"/>
+		
+		<source-file src="src/wp/res/sqlite-wp80-winrt-3080301.zip"/>
+		
+		<framework src="src/wp/res/SQLite.winmd" custom="true"/>
+		<framework src="src/wp/res/Newtonsoft.Json.dll" custom="true"/>
+	</platform>
 
 
     <platform name="ios">
@@ -69,7 +74,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <source-file src="src/ios/MBTilesPlugin.m" />
         <header-file src="src/ios/MBTilesConstant.h" />
         <source-file src="src/ios/MBTilesConstant.m" />
-	<header-file src="src/ios/MBTilesActionsFileImpl.h" />
+		<header-file src="src/ios/MBTilesActionsFileImpl.h" />
         <source-file src="src/ios/MBTilesActionsFileImpl.m" />
 
         <framework src="libsqlite3.dylib" />
