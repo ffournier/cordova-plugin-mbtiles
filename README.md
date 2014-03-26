@@ -38,5 +38,28 @@ cordova platform add wp8
 cordova add plugin <path_to_src>
 
 
-After need to add reference on SQlite For Windows and project  sqlite-net.
+After need to istall and add reference SQlite For Windows.
+
+======================
+iOS
+
+======================
+
+create project by cordova 
+
+cordova create <project_name> <package_name> <name_class>
+
+Then
+
+cordova platform add ios
+
+cordova add plugin <path_to_src>
+
+======================
+BlackBerry
+
+======================
+
+
+
 
