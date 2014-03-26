@@ -26,5 +26,10 @@ MBTilesPlugin.prototype.getTile = function(params, onSuccess, onError)
 {
 	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "get_tile", [params]);
 };
+
+MBTilesPlugin.prototype.getTile = function(params, onSuccess, onError)
+{
+	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "execute_statment", [params]);
+};
 	
 module.exports = MBTilesPlugin;
