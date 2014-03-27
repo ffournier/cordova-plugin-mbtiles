@@ -25,6 +25,10 @@ public class FileUtils
 		
 	}
 	
+	/**
+	 * check if there are an external storage present
+	 * @return true or false
+	 */
 	public static boolean checkExternalStorageState()
 	{
 		String state = Environment.getExternalStorageState();
@@ -32,6 +36,11 @@ public class FileUtils
 		return  (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
 	}
 	
+	/**
+	 * read file 
+	 * @param the file to treat
+	 * @return the raw of file (string)
+	 */
 	public static String readFileAsString(File textFile) throws IOException
 	{
 		StringBuilder contents = new StringBuilder();
@@ -55,6 +64,10 @@ public class FileUtils
 		return contents.toString();
 	}
 	
+	/**
+	 * delete a directory or file
+	 * @param the path of file
+	 */
 	public static void deleteRecursively(File path)
 	{
 		if ((path != null) && (path.exists()))
@@ -71,6 +84,11 @@ public class FileUtils
 		}
 	}
 	
+	/**
+	 * copy an inputStream in OutputStream
+	 * @param in : the InputStream to copy
+	 * @param out : the OutputStream has copied
+	 */
 	public static void copyInputStream(InputStream in, OutputStream out) throws IOException
 	{
 		byte[] buffer = new byte[1024];

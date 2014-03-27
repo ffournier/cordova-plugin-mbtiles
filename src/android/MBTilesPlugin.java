@@ -17,6 +17,7 @@ import android.util.Log;
  */
 public class MBTilesPlugin extends CordovaPlugin
 {
+	// declaration of static variable 
 	public static final String ACTION_OPEN = "open";
 	public static final String ACTION_OPEN_TYPE_DB = "db";
 	public static final String ACTION_OPEN_TYPE_FILE = "file";
@@ -26,6 +27,7 @@ public class MBTilesPlugin extends CordovaPlugin
 	public static final String ACTION_GET_TILE = "get_tile";
 	public static final String ACTION_EXECUTE_STATMENT = "execute_statment";
 	
+	// interface to treat action of plugin 
 	private IMBTilesActions mbTilesActions = null;
 	
 	/*
@@ -34,7 +36,6 @@ public class MBTilesPlugin extends CordovaPlugin
 	 */
 	@Override
 	 public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
-		Log.i(getClass().getName(), "execute Tiles");
 		
 		final JSONArray dataFinal = data;
 		final String actionFinal = action;
@@ -94,9 +95,13 @@ public class MBTilesPlugin extends CordovaPlugin
 		return true;
 	}
 	
+	/**
+	 * Override of onDestroy method
+	 */
 	@Override
 	public void onDestroy()
 	{
+		// close db if is not case
 		if ((mbTilesActions != null) && mbTilesActions.isOpen())
 		{
 			mbTilesActions.close();
@@ -104,13 +109,19 @@ public class MBTilesPlugin extends CordovaPlugin
 		
 		super.onDestroy();
 	}
-
+	
+	/**
+	 * open database or file with given name
+	 * @param data : the parameters (name:'name' type:'type') 
+	 * @return the pluginResult
+	 */
 	private PluginResult actionOpen(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
 		
 		String type = data.getJSONObject(0).getString("type");
 		
+		// database
 		if (type.equals(ACTION_OPEN_TYPE_DB))
 		{
 			mbTilesActions = new MBTilesActionsDatabaseImpl();
@@ -122,6 +133,7 @@ public class MBTilesPlugin extends CordovaPlugin
 			
 		}
 		
+		// file
 		if (type.equals(ACTION_OPEN_TYPE_FILE))
 		{
 			mbTilesActions = new MBTilesActionsFileImpl();
@@ -132,6 +144,7 @@ public class MBTilesPlugin extends CordovaPlugin
 			}
 		}
 		
+		// test if file or database is opened
 		if ((mbTilesActions != null) && mbTilesActions.isOpen())
 		{
 			result = new PluginResult(PluginResult.Status.OK);
@@ -144,6 +157,11 @@ public class MBTilesPlugin extends CordovaPlugin
 		return result;
 	}
 	
+	/**
+	 * get metadata of the database opened
+	  * @param data : the parameters ()
+	 * @return the pluginResult
+	 */
 	private PluginResult actionGetMetadata(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
@@ -160,6 +178,11 @@ public class MBTilesPlugin extends CordovaPlugin
 		return result;
 	}
 	
+	/**
+	 * get min zoom of the database opened
+	 * @param data : the parameters ()
+	 * @return the pluginResult
+	 */
 	private PluginResult actionGetMinZoom(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
@@ -176,6 +199,11 @@ public class MBTilesPlugin extends CordovaPlugin
 		return result;
 	}
 	
+	/**
+	 * get max zoom of the database opened
+	 * @param data : the parameters () 
+	 * @return the pluginResult
+	 */
 	private PluginResult actionGetMaxZoom(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
@@ -192,6 +220,11 @@ public class MBTilesPlugin extends CordovaPlugin
 		return result;
 	}
 	
+	/**
+	 * get tile of the database opened with given parameters
+	 * @param data : the parameters (z:'z', x:'x', y:'y') 
+	 * @return the pluginResult
+	 */
 	private PluginResult actionGetTile(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
@@ -211,6 +244,11 @@ public class MBTilesPlugin extends CordovaPlugin
 		return result;
 	}
 	
+	/**
+	 * execute given query in on the database opened
+	 * @param data : the parameters (query:'query', params:{'param', 'param'}) 
+	 * @return the pluginResult
+	 */
 	private PluginResult actionExecuteStatment(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
@@ -227,6 +265,7 @@ public class MBTilesPlugin extends CordovaPlugin
 
 			String[] params = null;
 
+			// get parameters
 			if (jparams != null) {
 				params = new String[jparams.length()];
 

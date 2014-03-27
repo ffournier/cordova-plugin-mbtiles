@@ -23,6 +23,7 @@ import android.util.Log;
  */
 public class MBTilesActionsFileImpl implements IMBTilesActions
 {
+	// declaration of path of file
 	private File mapDirectory = null;
 	
 	@Override
@@ -140,6 +141,7 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 			
 			File tileFile = new File(this.mapDirectory.getAbsolutePath() + File.separator + version + File.separator + name + File.separator + String.valueOf(currentZoomLevel) + File.separator + String.valueOf(column) + File.separator + String.valueOf(row) + "." + format);
 			
+			// test if file exist
 			if (tileFile.exists())
 			{
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();

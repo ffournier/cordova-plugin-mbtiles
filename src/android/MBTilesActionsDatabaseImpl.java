@@ -20,6 +20,7 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 {
 	private SQLiteDatabase db = null;
 	
+	// declaration of static variable
 	protected static final int FIELD_TYPE_BLOB = 4;
     protected static final int FIELD_TYPE_FLOAT = 2;
     protected static final int FIELD_TYPE_INTEGER = 1;
@@ -182,6 +183,12 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 		return tileData;
 	}
 	
+	/**
+	 * get type of data in column
+	 * @param cursor, the selected cursor
+	 * @param index, the column to treat
+	 * @return the type of data 
+	 */
 	private int getType(Cursor cursor, int index) {
 		int type = FIELD_TYPE_NULL;
 		if (cursor != null) {
@@ -213,16 +220,21 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 		JSONObject result = new JSONObject();
 		JSONArray rows = new JSONArray();
 		if (query != null && query.length() > 0) {
+			// run the query
 			Cursor cursor = db.rawQuery(query, params);
 			if (cursor != null) {
+				// loop the row
 				while (cursor.moveToNext()) {
 					JSONObject row = new JSONObject();
+					// loop the column
 					for (String name : cursor.getColumnNames()) {
 						if (name != null ) {
 							int columnIndex = cursor.getColumnIndex(name);
 							if (columnIndex >= 0) {
+								// get type of data in column
 								int type = getType(cursor, columnIndex);
 								Object value ;
+								// treat the data
 								switch (type) {
 								case FIELD_TYPE_BLOB:
 									value = Base64.encodeToString(cursor.getBlob(columnIndex),Base64.DEFAULT);
@@ -241,6 +253,7 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 									value = null;
 									break;
 								}
+								// put in JSONObject
 								try {
 									row.put(name, value);
 								} catch (JSONException e) {
@@ -249,11 +262,13 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 							}
 						}
 					}
+					// put in JSONArray
 					rows.put(row);
 				}
 				cursor.close();
 			}
 		}
+		// put all rows in JSONObject
 		try {
 			result.put(KEY_EXECUTE_STATMENT, rows);
 		} catch (JSONException e) {
