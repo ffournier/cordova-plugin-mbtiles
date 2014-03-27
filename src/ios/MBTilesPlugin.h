@@ -1,29 +1,55 @@
 //
 //  MBTilesPlugin.h
-//  TestCordova2
 //
-//  Created by florian on 19/03/14.
+//  Created on 19/03/14.
 //
 //
 
 #import <Foundation/Foundation.h>
 #import <Cordova/CDVPlugin.h>
 #import "MBTilesActionsDataBaseImpl.h"
+#import "MBTilesActionsFileImpl.h"
 
 
-
+/**
+* MBTilesPlugin, the plugin to treat *.mbtiles
+*/
 @interface MBTilesPlugin : CDVPlugin {
     
+    // the interface
     id<MBTilesAction> tilesActions;
 }
 
 @property(retain) id tilesActions;
 
+/**
+* action open 
+*/
 - (void)open:(CDVInvokedUrlCommand*)command;
+
+/**
+* action get_metadata 
+*/
 - (void)get_metadata:(CDVInvokedUrlCommand*)command;
+
+/**
+* action get_min_zoom 
+*/
 - (void)get_min_zoom:(CDVInvokedUrlCommand*)command;
+
+/**
+* action get_max_zoom 
+*/
 - (void)get_max_zoom:(CDVInvokedUrlCommand*)command;
+
+/**
+* action get_tile 
+*/
 - (void)get_tile:(CDVInvokedUrlCommand*)command;
+
+/**
+* action execute_statment
+*/
 - (void)execute_statment:(CDVInvokedUrlCommand*)command;
 
 @end

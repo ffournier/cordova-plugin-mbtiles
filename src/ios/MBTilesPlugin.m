@@ -1,8 +1,7 @@
 //
 //  MBTilesPlugin.m
-//  TestCordova2
 //
-//  Created by florian on 19/03/14.
+//  Created on 19/03/14.
 //
 //
 
@@ -33,12 +32,16 @@
                 } else {
                      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
                 }
-                
+            // open file name     
             } else if ([type isEqualToString:@"file"]) {
-                // else
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_INVALID_ACTION];
+ 		tilesActions = [[MBTilesActionsFileImpl alloc] init];
+                [tilesActions open:name];
+                if ([tilesActions isOpen]) {
+                   pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                } else {
+                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+                }
             } else {
-                // else
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_INVALID_ACTION];
             }
         }
@@ -87,7 +90,7 @@
         CDVPluginResult* pluginResult = nil;
         // test is open
         if ([tilesActions isOpen]) {
-            // get min zoom
+            // get max zoom
             NSDictionary* data = [tilesActions getMaxZoom];
             pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
         } else {
@@ -105,7 +108,7 @@
         
         NSDictionary* dict = [command.arguments objectAtIndex:0];
         
-        // get the type and name
+        // get zoom_level column and row
         int z = [dict[KEY_Z] intValue];
         int x = [dict[KEY_X] intValue];
         int y = [dict[KEY_Y] intValue];
@@ -113,7 +116,7 @@
             
             // test is open
             if ([tilesActions isOpen]) {
-                // get min zoom
+                // get tiles
                 NSDictionary* data = [tilesActions getTile:z columnValue:x rowValue:y];
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
             } else {
@@ -134,7 +137,7 @@
         
         NSDictionary* dict = [command.arguments objectAtIndex:0];
         
-        // get the type and name
+        // get query and params
         NSString* query = dict[KEY_QUERY];
 	NSArray* params = dict[KEY_PARAMS];
 	if (query) {

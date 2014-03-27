@@ -1,8 +1,7 @@
 //
 //  MBTilesConstant.m
-//  TestCordova2
 //
-//  Created by florian on 19/03/14.
+//  Created on 19/03/14.
 //
 //
 

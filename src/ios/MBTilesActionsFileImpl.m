@@ -1,8 +1,7 @@
 //
 //  MBTilesActionsFileImpl.m
-//  TestCordovaPlugin
 //
-//  Created by florian on 21/03/14.
+//  Created on 21/03/14.
 //
 //
 
@@ -12,6 +11,9 @@
 @implementation MBTilesActionsFileImpl
 @synthesize file = _file;
 
+/**
+* initialisation
+*/
 - (id) init {
     self = [super init];
     _file = nil;
@@ -27,6 +29,7 @@
     NSFileManager *filemgr =  [NSFileManager defaultManager];
     
     BOOL isDir;
+    // test if directory exist
     if ([filemgr fileExistsAtPath: folderPath isDirectory:&isDir] == YES) {
         if (isDir) {
             _file = folderPath;
@@ -43,7 +46,7 @@
 }
 
 - (void)close {
-   
+   _file = nil;
 }
 
 + (BOOL) isFileExist: (NSString*) path {

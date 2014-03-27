@@ -1,15 +1,18 @@
 //
 //  MBTilesConstant.h
-//  TestCordova2
 //
-//  Created by florian on 19/03/14.
+//  Created on 19/03/14.
 //
 //
 
 #import <Foundation/Foundation.h>
 
+/**
+* Constant
+*/
 @interface MBTilesConstant : NSObject
 
+    // declaration ok key
     extern NSString * const KEY_TYPE;
     extern NSString * const KEY_NAME;
     extern NSString * const KEY_Z;
@@ -24,6 +27,12 @@
     extern NSString * const KEY_PARAMS;
     extern NSString * const KEY_EXECUTE_STATMENT;
 
+/** 
+ * transform data in string base 64
+ *
+ * @param theData the data to transform
+ * @return string in base 64
+ */
 + (NSString*)base64forData:(NSData*)theData;
 
 @end
