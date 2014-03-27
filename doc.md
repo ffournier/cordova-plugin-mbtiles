@@ -1,41 +1,40 @@
 Environnement
 ======================
+
 Android
+----------------------
 
-======================
-
-Environnement
+* Environnement
 
 Windows, Mac, Linux
 
-IDE 
+* IDE 
 
 Eclipse, IntelliJ, NetBeans, etc ..
 
-======================
-iOS
 
-======================
-Environnement
+iOS
+----------------------
+
+* Environnement
 
 Mac
 
-IDE 
+* IDE 
 
 XCode
 
-======================
+
 Windows
+----------------------
 
-======================
-
-Environnement
+* Environnement
 
 Windows Phone SDK 8.0 requires 64-bit Windows 8 Pro or higher.
 
-Emulator :
+ Emulator :
 
-System requirements
+	System requirements
 
 In the BIOS, the following features must be supported:
 Hardware-assisted virtualization.
@@ -44,12 +43,12 @@ Hardware-based Data Execution Prevention (DEP).
 4 GB or more of RAM.
 64-bit version of Windows 8 Pro edition or higher.
 
-Network requirements
+	Network requirements
 
 DHCP.
 Automatically configured DNS and gateway settings.
 
-Hyper-V requirements
+	Hyper-V requirements
 
 In the BIOS, the following features must be enabled:
 Hardware-assisted virtualization.
@@ -58,22 +57,22 @@ Hardware-based Data Execution Prevention (DEP).
 In Windows, Hyper-V must be enabled and running.
 You have to be a member of the local Hyper-V Administrators group.
 
-System requirements
+ System requirements :
 
 Your computer must meet the following requirements:
 
-BIOS
+	BIOS
 
 In the BIOS, the following features must be supported:
 Hardware-assisted virtualization.
 Second Level Address Translation (SLAT).
 Hardware-based Data Execution Prevention (DEP).
 
-RAM
+	RAM
 
 4 GB or more.
 
-Operating system
+	Operating system
 
 Windows 8
 64-bit
@@ -99,24 +98,20 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system
 
 et mettez la valeur à 0
 
-
 Puis depuis une commande administrator
 bcdedit /set hypervisorlaunchtype Off --> pour pouvoir annuler le lancement de l'hypervisor au démarrage et ainsi le modifier depuis le panneau de configuration.
 
 
-IDE
+* IDE
 
 Visual Studio 2013.
 
-======================
+
 BlackBerry
+----------------------
 
-======================
+* Environnement
 
-Environnement
 
-Mac
+* IDE 
 
-IDE 
-
-XCode
