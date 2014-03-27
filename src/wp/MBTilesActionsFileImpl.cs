@@ -10,9 +10,12 @@ using MBTilesPlugin;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-
+/// <summary>
+/// the namespace of MBTilesPlugin </summary>
 namespace MBTilesPlugin
 {
+    /// <summary>
+    /// class MBTilesActionsFileImpl</summary>
     class MBTilesActionsFileImpl : IMBTilesActions
     {
         
@@ -27,6 +30,7 @@ namespace MBTilesPlugin
                 {
                     using (IsolatedStorageFile isoFile = IsolatedStorageFile.GetUserStoreForApplication())
                     {
+			/// test if directory exist
                         if (isoFile.DirectoryExists(path))
                         {
                             mapDirectory = path;
@@ -53,6 +57,10 @@ namespace MBTilesPlugin
 		    }
 	    }
 
+        /// <summary>
+        /// get metadata in JObject format</summary>
+  	/// <returns>
+	/// the JObject repsenting the metadata</returns>
         private JObject getMetadataObject()
         {
             string filePath = mapDirectory + "\\metadata.json";
@@ -120,7 +128,6 @@ namespace MBTilesPlugin
             try
 		    {
 			    maxzoom_output max = getMaxZoom();
-                // name, type
                 if (max != null)
                 {
                     int maxZoom = max.value;
@@ -144,10 +151,10 @@ namespace MBTilesPlugin
                     string name = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_NAME);
                     string version = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_VERSION);
                     string format = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_FORMAT);
-
+		    /// get path of tiles
                     string tileFile = this.mapDirectory + "\\" + version + "\\" + name + "\\" +
                                             currentZoomLevel.ToString() + "\\" + column.ToString() + "\\" + row.ToString() + "." + format;
-
+		    // encode raw
                     string data = ConstantMbTilePlugin.Base64Encode(readText(tileFile));
                     result = new tiles_output(data);
                 }
@@ -162,6 +169,11 @@ namespace MBTilesPlugin
 		}
 
 
+        /// <summary>
+        /// read raw of given file</summary>
+  	/// <returns>
+	/// return the raw of file in string</returns>
+	/// <param name="filePath"> the path of file</param>
         private string readText(string filePath) {
             string text = "";
             try
@@ -191,7 +203,11 @@ namespace MBTilesPlugin
             return text;
         }
 
-        private List<int> getZoomLevels()
+        /// <summary>
+        /// get all zoom level</summary>
+  	/// <returns>
+	/// return a list of zoom level present</returns>
+	private List<int> getZoomLevels()
         {
             JObject metadata = getMetadataObject();
             List<int> zoomLevels = new List<int>();

@@ -24,6 +24,8 @@ using System.Security;
 using System.Diagnostics;
 using MBTilesPlugin;
 
+/// <summary>
+/// the namespace of WPCordovaClassLib.Cordova.Commands </summary>
 namespace WPCordovaClassLib.Cordova.Commands
 {
     public class MBTilesPlugin : BaseCommand
@@ -36,12 +38,12 @@ namespace WPCordovaClassLib.Cordova.Commands
         public void open(string options)
         {
             string callbackId;
-            options = options.Replace("{}", ""); // empty objects screw up the Deserializer
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
             try
             {
-                // name, type
+                /// name, type
                 string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
-                // to test maybe is not a string but a JSONObject
+                /// to test maybe is not a string but a JSONObject
                 EntryOpen entryOpen = JSON.JsonHelper.Deserialize<EntryOpen>(args[0]);
                 string name = entryOpen.name;
                 string type = entryOpen.type;
@@ -80,12 +82,11 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         public void get_metadata(string options)
         {
-            // no options
+            /// no options
             string callbackId;
-            options = options.Replace("{}", ""); // empty objects screw up the Deserializer
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
             try
             {
-                // name, type
                 string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
                 callbackId = args[0];
 
@@ -109,12 +110,11 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         public void get_min_zoom(string options)
         {
-            // no options
+            /// no options
             string callbackId;
-            options = options.Replace("{}", ""); // empty objects screw up the Deserializer
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
             try
             {
-                // name, type
                 string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
                 callbackId = args[0];
 
@@ -137,13 +137,12 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         public void get_max_zoom(string options)
         {
-            // no options
+            /// no options
 
             string callbackId;
-            options = options.Replace("{}", ""); // empty objects screw up the Deserializer
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
             try
             {
-                // name, type
                 string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
                 callbackId = args[0];
 
@@ -166,12 +165,12 @@ namespace WPCordovaClassLib.Cordova.Commands
         public void get_tile(string options)
         {
              string callbackId;
-            options = options.Replace("{}", ""); // empty objects screw up the Deserializer
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
             try
             {
-                // z, x, y
+                /// z, x, y
                 string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
-                // to test maybe is not an integer but a JSONObject
+                /// to test maybe is not an integer but a JSONObject
                 EntryTile entryTile = JSON.JsonHelper.Deserialize<EntryTile>(args[0]);
                 int z = entryTile.z;
                 int x = entryTile.x;
@@ -198,15 +197,15 @@ namespace WPCordovaClassLib.Cordova.Commands
         public void execute_statment(string options)
         {
             string callbackId;
-            options = options.Replace("{}", ""); // empty objects screw up the Deserializer
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
             try
             {
-                // z, x, y
+                /// query params
                 string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
-                // to test maybe is not an integer but a JSONObject
+                /// to test maybe is not an integer but a JSONObject
                 EntryExecuteStatment entryExecute = JSON.JsonHelper.Deserialize<EntryExecuteStatment>(args[0]);
                 string query = entryExecute.query;
-                // to test not sure that's work
+                /// to test not sure that's work
                 List<object> param = entryExecute.param;
                 callbackId = args[1];
 

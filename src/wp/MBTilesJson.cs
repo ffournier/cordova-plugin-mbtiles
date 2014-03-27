@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
+/// <summary>
+/// the namespace of MBTilesPlugin </summary>
 namespace MBTilesPlugin
 {
 

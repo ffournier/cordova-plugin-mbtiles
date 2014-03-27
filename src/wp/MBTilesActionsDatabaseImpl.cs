@@ -9,9 +9,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WPCordovaClassLib.Cordova.JSON;
 
+/// <summary>
+/// the namespace of MBTilesPlugin </summary>
 namespace MBTilesPlugin
 {
 
+    /// <summary>
+    /// class MBTilesActionsDatabaseImpl</summary>
     class MBTilesActionsDatabaseImpl : IMBTilesActions
     {
 
@@ -43,6 +47,10 @@ namespace MBTilesPlugin
 		    }
 	    }
 
+        /// <summary>
+        /// get metadata in JObject format</summary>
+  	/// <returns>
+	/// the JObject repsenting the metadata</returns>
         public JObject getMetadataObject()
 	    {
             JObject obj = new JObject();
@@ -94,7 +102,6 @@ namespace MBTilesPlugin
             try
 		    {
                 maxzoom_output value = getMaxZoom();
-                // name, type
                 int maxZoom = value.value;
 
 			    if (zoomLevel > maxZoom)
@@ -109,7 +116,6 @@ namespace MBTilesPlugin
             
             tiles til = db.Query<tiles>("SELECT * FROM tiles WHERE zoom_level = ? AND tile_column = ? AND tile_row = ?", currentZoomLevel, column, row).FirstOrDefault();
 
-            // try to load the last zoom level if zoomLevel is too high
             if (til != null)
             {
                 string data = ConstantMbTilePlugin.Base64EncodeByte(til.tile_data);

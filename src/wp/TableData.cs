@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// the namespace of MBTilesPlugin </summary>
 namespace MBTilesPlugin
 {
     public class metadata
@@ -26,13 +28,4 @@ namespace MBTilesPlugin
 
     }
 
-    public class sqlite_stat1
-    {
-        public string tbl { get; set; }
-
-        public string idx { get; set; }
-
-    }
-
-   
 }

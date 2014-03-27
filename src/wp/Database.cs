@@ -8,10 +8,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sqlite3Statement = Sqlite.Statement;
 
+/// <summary>
+/// MBTilesPlugin namespace </summary>
 namespace MBTilesPlugin
 {
+    /// <summary>
+    /// class Database </summary>
     class Database : SQLiteConnection
     {
+	/// stmt request sqlite
         private Sqlite3Statement stmt = null;
 
         public Database(string path)
@@ -19,6 +24,13 @@ namespace MBTilesPlugin
         {
         }
 
+ 
+	/// <summary>
+	/// execute a query</summary>
+	/// <returns>
+	/// return a JArray which contains all objects </returns> 
+	/// <param name="query"> contains the query to execute</param>
+	/// <param name="param"> contains the parameters needed to execute the query</param>
         public JArray execute(String query, object[] param) {
             JArray array = new JArray();
             if (query != null && query.Length > 0)
@@ -75,6 +87,12 @@ namespace MBTilesPlugin
             return array;
         }
 
+        /// <summary>
+	/// bind a value to the statment with his index</summary>
+	/// <returns>
+	/// returnif the operation is a success </returns> 
+	/// <param name="value"> the object to bind</param>
+	/// <param name="index"> the index of parameter</param>
         private bool bindValue(object value, int index) {
             if (value == null) {
 				SQLite3.BindNull (stmt, index);
