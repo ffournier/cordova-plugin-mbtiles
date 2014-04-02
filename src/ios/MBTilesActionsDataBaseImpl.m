@@ -45,6 +45,7 @@
     if (_database != nil) {
 	// close db
         sqlite3_close(_database);
+	database = nil;
     }
 }
 
