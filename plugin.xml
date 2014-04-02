@@ -11,12 +11,11 @@ xmlns:android="http://schemas.android.com/apk/res/android"
     <!-- dependency id="org.apache.cordova.file@1" /-->
     <dependency id="org.apache.cordova.file-transfer" version="0.4.2" />
 
-    <js-module src="www/MBTilesPlugin.js" name="MBTilesPlugin">
-        <clobbers target="window.MBTilesPlugin" />
-    </js-module>
-
     <!-- android -->
     <platform name="android">
+	<js-module src="www/MBTilesPlugin.js" name="MBTilesPlugin">
+     	   <clobbers target="window.MBTilesPlugin" />
+    	</js-module>
 
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="MBTilesPlugin">
@@ -37,6 +36,11 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
     </platform>
      <platform name="wp8">
+
+	<js-module src="www/MBTilesPlugin.js" name="MBTilesPlugin">
+     	   <clobbers target="window.MBTilesPlugin" />
+    	</js-module>
+
         <config-file target="config.xml" parent="/*">
             <feature name="MBTilesPlugin">
                 <param name="wp-package" value="MBTilesPlugin"/>
@@ -61,6 +65,10 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
 
     <platform name="ios">
+
+	<js-module src="www/MBTilesPlugin.js" name="MBTilesPlugin">
+     	   <clobbers target="window.MBTilesPlugin" />
+    	</js-module>
         <config-file target="config.xml" parent="/*">
             <feature name="MBTilesPlugin">
                 <param name="ios-package" value="MBTilesPlugin" />
@@ -80,5 +88,18 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <framework src="libsqlite3.dylib" />
         <framework src="MobileCoreServices.framework" />
         <framework src="AssetsLibrary.framework" />
+    </platform>
+
+    <platform name="blackberry10">
+
+	<js-module src="www/blackberry10/MBTilesPlugin.js" name="MBTilesPlugin">
+     	   <clobbers target="window.MBTilesPlugin" />
+    	</js-module>
+	<config-file target="www/config.xml" parent="/widget">
+            <feature name="MBTilesPlugin" value="MBTilesPlugin" />
+        </config-file>
+        <source-file src="src/blackberry10/index.js"/>
+        <lib-file src="src/blackberry10/native/device/libMBTilesPlugin.so" arch="device"/>
+        <lib-file src="src/blackberry10/native/simulator/libMBTilesPlugin.so" arch="simulator"/>
     </platform>
 </plugin>
