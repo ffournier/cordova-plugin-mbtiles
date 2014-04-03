@@ -29,7 +29,6 @@ using namespace std;
  */
 MBTilesPluginJS::MBTilesPluginJS(const std::string& id) :
 		m_id(id) {
-	m_pLogger = new webworks::Logger("MBTilesPluginJS", this);
 	m_pMBTilesPluginController = NULL;
 }
 
@@ -39,12 +38,6 @@ MBTilesPluginJS::MBTilesPluginJS(const std::string& id) :
 MBTilesPluginJS::~MBTilesPluginJS() {
 	if (m_pMBTilesPluginController != NULL)
 		delete m_pMBTilesPluginController;
-	if (m_pLogger != NULL)
-			delete m_pLogger;
-}
-
-webworks::Logger* MBTilesPluginJS::getLog() {
-	return m_pLogger;
 }
 
 /**
@@ -52,7 +45,7 @@ webworks::Logger* MBTilesPluginJS::getLog() {
  * extension.
  */
 char* onGetObjList() {
-	static char name[] = "MBTilePluginJS";
+	static char name[] = "MBTilesPluginJS";
 	return name;
 }
 
@@ -61,7 +54,7 @@ char* onGetObjList() {
  * an object is created on the JavaScript server side.
  */
 JSExt* onCreateObject(const string& className, const string& id) {
-	if (className == "MBTilePluginJS") {
+	if (className == "MBTilesPluginJS") {
 		return new MBTilesPluginJS(id);
 	}
 
@@ -95,7 +88,6 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 	Json::Value result;
 
 	std::string log = "Debug::Action : " + strCommand;
-	getLog()->debug(log.c_str());
 	// based on the command given, run the appropriate method in template_ndk.cpp
 	if (strCommand.compare(ACTION_OPEN) == 0) {
 		bool parse = arg != strCommand;
@@ -103,14 +95,11 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			parse = reader.parse(arg, root);
 		}
 		if (!parse) {
-			getLog()->debug("Debug::Error Parse Open");
 			result[PLUGIN_RESULT] = PLUGIN_PARSE_ERROR;
 		} else {
 			std::string type = root[KEY_TYPE].asString();
 			std::string name = root[KEY_NAME].asString();
 
-			log = "Debug::type : " + type + " name : "+ name;
-			getLog()->debug(log.c_str());
 			if (type.compare(TYPE_DB) == 0) {
 				m_pMBTilesPluginController = new webworks::MBTilesPluginDataBaseImplNDK(this);
 				result = m_pMBTilesPluginController->open(callbackId, name);

@@ -55,11 +55,9 @@ namespace webworks {
 		QString pathFile = QString::fromStdString(name);
 		QFile* dbpath = new QFile(pathFile);
 
-		m_pParent->getLog()->debug("Debug::OpenAsync");
 
 		if (dbpath != NULL && dbpath->exists() == true)
 		{
-			m_pParent->getLog()->debug("Exist");
 			if (sqlite3_open_v2(dbpath->fileName().toStdString().c_str(), &database, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK )
 			{
 				close();
@@ -68,7 +66,6 @@ namespace webworks {
 				root[PLUGIN_RESULT] = "Database Open";
 			}
 		} else {
-			m_pParent->getLog()->debug("Debug::Database doesn't exist");
 			root[PLUGIN_ERROR] = "Database doesn't exist";
 		}
 		return root;
@@ -306,8 +303,7 @@ namespace webworks {
 		return root;
 	}
 
-
-	bool bindValue(sqlite3_stmt* stmt, QList<Json::Value> params) {
+	bool MBTilesPluginDataBaseImplNDK::bindValue(sqlite3_stmt* stmt, QList<Json::Value> params) {
 
 		for (int i = 1; i <= params.size(); i++) {
 			Json::Value object = params[i];

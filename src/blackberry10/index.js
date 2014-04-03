@@ -16,7 +16,8 @@
 
 var mbtilesplugin,
 	resultObjs = {},
-	_utils = require("../../lib/utils");
+	threadCallback = null,
+   _utils = require("../../lib/utils");
 
 module.exports = {
 
@@ -27,39 +28,42 @@ module.exports = {
 	// These methods call into JNEXT.MBTilesPlugin through the JNEXT plugin to mbtilesplugin_js.cpp
 	open: function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
-		data = JSON.parse(decodeURIComponent((args["input"]))),
+		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().open(result.callbackId, data);
 		result.ok(response, false);
 	},
 
 	get_metadata:function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
+		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().get_metadata(result.callbackId, args);
 		result.ok(response, false);
 	},
 
 	get_min_zoom: function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
+		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().get_min_zoom(result.callbackId, args);
 		result.ok(response, false);
 	},
 
 	get_max_zoom: function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
+		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().get_max_zoom(result.callbackId, args);
 		result.ok(response, false);
 	},
 
 	get_tile: function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
-		data = JSON.parse(decodeURIComponent((args["input"]))),
+		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().get_tile(result.callbackId, data);
 		result.ok(response, false);
 	},
 
 	execute_statment: function (success, fail, args, env) {
 		var result = new PluginResult(args, env), 
-		data = JSON.parse(decodeURIComponent((args["input"]))),
+		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().execute_statment(result.callbackId, data);
 		result.ok(response, false);
 	}
@@ -120,14 +124,22 @@ JNEXT.MBTilesPlugin = function () {
 		return JNEXT.invoke(self.m_id, "execute_statment " + callbackId + " " + JSON.stringify(input));
 	};
 
+	// JSON.stringify(input)
+
 	// Fired by the Event framework (used by asynchronous callbacks)
 	self.onEvent = function (strData) {
 		var arData = strData.split(" "),
 			callbackId = arData[0],
 			result = resultObjs[callbackId],
 			data = arData.slice(1, arData.length).join(" ");
+
 		if (result) {
-			result.callbackOk(data, true);
+			if (callbackId != threadCallback) {
+				result.callbackOk(data, false);
+				delete resultObjs[callbackId];
+			} else {
+				result.callbackOk(data, true);
+			}
 		}
 	};
 

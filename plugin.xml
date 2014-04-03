@@ -95,11 +95,11 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 	<js-module src="www/blackberry10/MBTilesPlugin.js" name="MBTilesPlugin">
      	   <clobbers target="window.MBTilesPlugin" />
     	</js-module>
-	<config-file target="www/config.xml" parent="/widget">
-            <feature name="MBTilesPlugin" value="MBTilesPlugin" />
-        </config-file>
-        <source-file src="src/blackberry10/index.js"/>
+	<source-file src="src/blackberry10/index.js"/>
         <lib-file src="src/blackberry10/native/device/libMBTilesPlugin.so" arch="device"/>
         <lib-file src="src/blackberry10/native/simulator/libMBTilesPlugin.so" arch="simulator"/>
+	<config-file target="www/config.xml" parent="/widget">
+            <feature name="com.makina.offline.mbtiles" value="com.makina.offline.mbtiles" />
+        </config-file>
     </platform>
 </plugin>

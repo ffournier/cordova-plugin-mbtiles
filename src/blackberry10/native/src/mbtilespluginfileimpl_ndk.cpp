@@ -35,6 +35,8 @@ namespace webworks {
 	// The extension methods are defined here
 	Json::Value MBTilesPluginFileImplNDK::open(const std::string& callbackId, const std::string name)
 	{
+		Json::Value root;
+		return root;
 	}
 
 	void MBTilesPluginFileImplNDK::close()
@@ -48,31 +50,36 @@ namespace webworks {
 
 	Json::Value MBTilesPluginFileImplNDK::getMetaData(const std::string& callbackId)
 	{
-
+		Json::Value root;
+		return root;
 	}
 
 
 	Json::Value MBTilesPluginFileImplNDK::getMinZoom(const std::string& callbackId)
 	{
-
+		Json::Value root;
+		return root;
 	}
 
 
 	Json::Value MBTilesPluginFileImplNDK::getMaxZoom(const std::string& callbackId)
 	{
-
+		Json::Value root;
+		return root;
 	}
 
 
 	Json::Value MBTilesPluginFileImplNDK::getTile(const std::string& callbackId, int zoom_level, int column, int row)
 	{
-
+		Json::Value root;
+		return root;
 	}
 
 
 	Json::Value MBTilesPluginFileImplNDK::getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params)
 	{
-
+		Json::Value root;
+		return root;
 	}
 
 }
