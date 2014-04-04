@@ -138,7 +138,7 @@
         int ret = sqlite3_prepare_v2(_database, query, -1, &stmt, NULL);
         if( ret == SQLITE_OK) {
 	    // bind value
-            sqlite3_bind_int(stmt, 1, zoom_level);
+            sqlite3_bind_int(stmt, 1, currentLevelZoom);
             sqlite3_bind_int(stmt, 2, column);
             sqlite3_bind_int(stmt, 3, row);
             // treat answer
