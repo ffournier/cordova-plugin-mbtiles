@@ -66,6 +66,11 @@ namespace webworks {
 		} else {
 			root[PLUGIN_ERROR] = "Database doesn't exist";
 		}
+
+		if (path != NULL) {
+			delete path;
+		}
+
 		return root;
 	}
 
@@ -211,11 +216,12 @@ namespace webworks {
 				// treat answer
 				if(sqlite3_step(stmt) == SQLITE_ROW) {
 					int lenght_bytes = sqlite3_column_bytes(stmt, 0);
-					QByteArray data(QByteArray((const char*)sqlite3_column_blob(stmt, 0)), lenght_bytes);
-					root[KEY_TILE_DATA] = data.toBase64().data();
+					QByteArray* data = new QByteArray(((const char*)sqlite3_column_blob(stmt, 0)), lenght_bytes);
+					root[KEY_TILE_DATA] = data->toBase64().data();
 					root["zoom_level"] = currentLevelZoom;
 					root["column"] = column;
 					root["row"] = row;
+					delete data;
 				} else {
 					root[PLUGIN_ERROR] = "Tiles not found " + query + "--";
 					root["zoom_level"] = currentLevelZoom;
@@ -274,8 +280,9 @@ namespace webworks {
 								case SQLITE_BLOB:
 									{
 										int lenght_bytes = sqlite3_column_bytes(stmt, 0);
-										QByteArray data(QByteArray((const char*)sqlite3_column_blob(stmt, 0)), lenght_bytes);
-										object = new QVariant(data.toBase64());
+										QByteArray* data = new QByteArray(((const char*)sqlite3_column_blob(stmt, 0)), lenght_bytes);
+										object = new QVariant(data->toBase64());
+										delete data;
 									}
 									break;
 								case SQLITE_NULL:
@@ -287,6 +294,7 @@ namespace webworks {
 							// add to object
 							if (object != NULL) {
 								objectJson[name] = &object;
+								delete object;
 							} else {
 								objectJson[name] = "NULL";
 							}
