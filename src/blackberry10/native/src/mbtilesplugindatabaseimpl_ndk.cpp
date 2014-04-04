@@ -51,14 +51,12 @@ namespace webworks {
 		// TODO sdcard
 		//const char* pathsdcard = removablemedia_info_get_device_path(REMOVABLEMEDIA_TYPE_SD);
 		//QFile* pathFile = new QFile(pathsdcard + "/" + name);
-		QFile* path = new QFile(QString::fromStdString("assets:///" + name));
-		QString pathFile = QString::fromStdString(name);
-		QFile* dbpath = new QFile(pathFile);
-
-
-		if (dbpath != NULL && dbpath->exists() == true)
+		QFile* path = new QFile(QString::fromStdString("app/native/assets/" + name));
+		//QString pathFile = QString::fromStdString(name);
+		//QFile* dbpath = new QFile(pathFile);
+		if (path != NULL && path->exists() == true)
 		{
-			if (sqlite3_open_v2(dbpath->fileName().toStdString().c_str(), &database, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK )
+			if (sqlite3_open_v2(path->fileName().toStdString().c_str(), &database, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK )
 			{
 				close();
 				root[PLUGIN_ERROR] = "Cannot open database";
@@ -120,6 +118,8 @@ namespace webworks {
 	{
 		Json::FastWriter writer;
 		Json::Value root;
+
+
 		 // test if the db is open
 		if(isOpen() == true) {
 			// run query max zoom
@@ -205,16 +205,22 @@ namespace webworks {
 			int ret = sqlite3_prepare_v2(database, query.c_str(), -1, &stmt, NULL);
 			if( ret == SQLITE_OK) {
 			// bind value
-				sqlite3_bind_int(stmt, 1, zoom_level);
+				sqlite3_bind_int(stmt, 1, currentLevelZoom);
 				sqlite3_bind_int(stmt, 2, column);
 				sqlite3_bind_int(stmt, 3, row);
 				// treat answer
 				if(sqlite3_step(stmt) == SQLITE_ROW) {
 					int lenght_bytes = sqlite3_column_bytes(stmt, 0);
 					QByteArray data(QByteArray((const char*)sqlite3_column_blob(stmt, 0)), lenght_bytes);
-					root[KEY_TILE_DATA] = data.toBase64().constData();
+					root[KEY_TILE_DATA] = data.toBase64().data();
+					root["zoom_level"] = currentLevelZoom;
+					root["column"] = column;
+					root["row"] = row;
 				} else {
-					root[PLUGIN_ERROR] = "Tiles not found";
+					root[PLUGIN_ERROR] = "Tiles not found " + query + "--";
+					root["zoom_level"] = currentLevelZoom;
+					root["column"] = column;
+					root["row"] = row;
 				}
 				sqlite3_finalize(stmt);
 			} else {

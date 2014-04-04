@@ -20,6 +20,7 @@
 #include <string>
 #include "../public/plugin.h"
 #include "mbtilespluginaction_ndk.hpp"
+#include "Logger.hpp"
 
 
 class MBTilesPluginJS: public JSExt {
@@ -30,11 +31,14 @@ public:
     virtual bool CanDelete();
     virtual std::string InvokeMethod(const std::string& command);
     void NotifyEvent(const std::string& event);
+    webworks::Logger* getLog();
 
 private:
     std::string m_id;
     // Definition of a pointer to the actual native extension code
     webworks::MBTilesPluginActionNDK *m_pMBTilesPluginController;
+
+    webworks::Logger *m_pLogger;
 };
 
 #endif /* MBTILESPLUGIN_HPP_ */

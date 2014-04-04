@@ -13,7 +13,7 @@ return : success or error callback
 */
 MBTilesPlugin.prototype.open = function(input, onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "open",  {input: [input]});
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "open",  {input: input});
 };
 
 /*
@@ -23,7 +23,7 @@ return : success or error callback
 */
 MBTilesPlugin.prototype.getMetadata = function(onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_metadata", {input: []});
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_metadata", null);
 };
 
 /*
@@ -33,7 +33,7 @@ return : success or error callback
 */
 MBTilesPlugin.prototype.getMinZoom = function(onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_min_zoom", {input: []});
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_min_zoom", null);
 };
 
 /*
@@ -43,7 +43,7 @@ return : success or error callback
 */
 MBTilesPlugin.prototype.getMaxZoom = function(onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_max_zoom", {input: []});
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_max_zoom", null);
 };
 
 /*
@@ -54,7 +54,7 @@ return : success or error callback
 */
 MBTilesPlugin.prototype.getTile = function(input, onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_tile", {input: [input]});
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_tile", {input: input});
 };
 
 /*
@@ -65,7 +65,7 @@ return : success or error callback
 */
 MBTilesPlugin.prototype.exectuteStatment = function(input, onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "execute_statment", {input: [input]});
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "execute_statment", {input: input});
 };
 	
 module.exports = MBTilesPlugin;

@@ -29,6 +29,7 @@ using namespace std;
  */
 MBTilesPluginJS::MBTilesPluginJS(const std::string& id) :
 		m_id(id) {
+	m_pLogger = new webworks::Logger("MBTilesPluginJS", this);
 	m_pMBTilesPluginController = NULL;
 }
 
@@ -38,6 +39,12 @@ MBTilesPluginJS::MBTilesPluginJS(const std::string& id) :
 MBTilesPluginJS::~MBTilesPluginJS() {
 	if (m_pMBTilesPluginController != NULL)
 		delete m_pMBTilesPluginController;
+	if (m_pLogger)
+			delete m_pLogger;
+}
+
+webworks::Logger* MBTilesPluginJS::getLog() {
+	return m_pLogger;
 }
 
 /**
@@ -88,8 +95,11 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 	Json::Value result;
 
 	std::string log = "Debug::Action : " + strCommand;
+	getLog()->debug(log.c_str());
 	// based on the command given, run the appropriate method in template_ndk.cpp
 	if (strCommand.compare(ACTION_OPEN) == 0) {
+		log = "Debug::Action : Open";
+		getLog()->debug(log.c_str());
 		bool parse = arg != strCommand;
 		if (parse) {
 			parse = reader.parse(arg, root);
@@ -99,7 +109,6 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 		} else {
 			std::string type = root[KEY_TYPE].asString();
 			std::string name = root[KEY_NAME].asString();
-
 			if (type.compare(TYPE_DB) == 0) {
 				m_pMBTilesPluginController = new webworks::MBTilesPluginDataBaseImplNDK(this);
 				result = m_pMBTilesPluginController->open(callbackId, name);
@@ -138,8 +147,8 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 		} else {
 			if (m_pMBTilesPluginController != NULL && m_pMBTilesPluginController->isOpen()) {
 				int z = root[KEY_Z].asInt();
-				int y = root[KEY_X].asInt();
-				int x = root[KEY_Y].asInt();
+				int x = root[KEY_X].asInt();
+				int y = root[KEY_Y].asInt();
 				result = m_pMBTilesPluginController->getTile(callbackId, z, x, y);
 			} else {
 				result[PLUGIN_RESULT] = PLUGIN_NOT_OPEN;
@@ -173,8 +182,9 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			}
 		}
 	}
-	// strCommand.append(";");
-	// strCommand.append(command);
+	//strCommand.append(";");
+	//strCommand.append(command);
+	//return resutString;
 	return writer.write(result);
 }
 

@@ -30,42 +30,39 @@ module.exports = {
 		var result = new PluginResult(args, env),
 		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().open(result.callbackId, data);
-		result.ok(response, false);
+		result.ok(JSON.parse(response), false);
 	},
 
 	get_metadata:function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
-		data = JSON.parse(decodeURIComponent(args.input)),
-		response = mbtilesplugin.getInstance().get_metadata(result.callbackId, args);
-		result.ok(response, false);
+		response = mbtilesplugin.getInstance().get_metadata(result.callbackId);
+		result.ok(JSON.parse(response), false);
 	},
 
 	get_min_zoom: function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
-		data = JSON.parse(decodeURIComponent(args.input)),
-		response = mbtilesplugin.getInstance().get_min_zoom(result.callbackId, args);
-		result.ok(response, false);
+		response = mbtilesplugin.getInstance().get_min_zoom(result.callbackId);
+		result.ok(JSON.parse(response), false);
 	},
 
 	get_max_zoom: function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
-		data = JSON.parse(decodeURIComponent(args.input)),
-		response = mbtilesplugin.getInstance().get_max_zoom(result.callbackId, args);
-		result.ok(response, false);
+		response = mbtilesplugin.getInstance().get_max_zoom(result.callbackId);
+		result.ok(JSON.parse(response), false);
 	},
 
 	get_tile: function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
 		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().get_tile(result.callbackId, data);
-		result.ok(response, false);
+		result.ok(JSON.parse(response), false);
 	},
 
 	execute_statment: function (success, fail, args, env) {
 		var result = new PluginResult(args, env), 
 		data = JSON.parse(decodeURIComponent(args.input)),
 		response = mbtilesplugin.getInstance().execute_statment(result.callbackId, data);
-		result.ok(response, false);
+		result.ok(JSON.parse(response), false);
 	}
 };
 
@@ -104,23 +101,23 @@ JNEXT.MBTilesPlugin = function () {
 		return JNEXT.invoke(self.m_id, "open " + callbackId + " " + JSON.stringify(input));
 	}; // open
 
-	self.get_metadata = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "get_metadata " + callbackId + " " + JSON.stringify(input));
+	self.get_metadata = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "get_metadata " + callbackId);
 	};
 
-	self.get_min_zoom = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "get_min_zoom " + callbackId + " " + JSON.stringify(input));
+	self.get_min_zoom = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "get_min_zoom " + callbackId);
 	};	
 
-	self.get_min_zoom = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "get_max_zoom " + callbackId + " " + JSON.stringify(input));
+	self.get_max_zoom = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "get_max_zoom " + callbackId);
 	};
 
-	self.get_min_zoom = function (callbackId, input) {
+	self.get_tile = function (callbackId, input) {
 		return JNEXT.invoke(self.m_id, "get_tile " + callbackId + " " + JSON.stringify(input));
 	};
 
-	self.get_min_zoom = function (callbackId, input) {
+	self.execute_statment = function (callbackId, input) {
 		return JNEXT.invoke(self.m_id, "execute_statment " + callbackId + " " + JSON.stringify(input));
 	};
 

@@ -19,7 +19,7 @@
 
 #include <string>
 
-#define ACTION_OPEN "name"
+#define ACTION_OPEN "open"
 #define ACTION_GETMETADATA "get_metadata"
 #define ACTION_GETMINZOOM "get_min_zoom"
 #define ACTION_GETMAXZOOM "get_max_zoom"
