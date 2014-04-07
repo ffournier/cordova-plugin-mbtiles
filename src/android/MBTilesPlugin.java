@@ -26,6 +26,7 @@ public class MBTilesPlugin extends CordovaPlugin
 	public static final String ACTION_GET_MAX_ZOOM = "get_max_zoom";
 	public static final String ACTION_GET_TILE = "get_tile";
 	public static final String ACTION_EXECUTE_STATMENT = "execute_statment";
+	public static final String ACTION_DIRECTORY_WORKING = "get_directory_working";
 	
 	// interface to treat action of plugin 
 	private IMBTilesActions mbTilesActions = null;
@@ -77,6 +78,12 @@ public class MBTilesPlugin extends CordovaPlugin
 					{
 						Log.i(getClass().getName(), "execute statment");
 						result = actionExecuteStatment(dataFinal);
+					}
+
+					if (actionFinal.equals(ACTION_DIRECTORY_WORKING))
+					{
+						Log.i(getClass().getName(), "get directory working");
+						result = actionGetDirectoryWorking(dataFinal);
 					}
 					
 					if (result == null)
@@ -261,7 +268,7 @@ public class MBTilesPlugin extends CordovaPlugin
 				
 			String query= data.getJSONObject(0).getString("query");
 			
-			JSONArray jparams = (data.getJSONObject(0).length() < 3) ? null : data.getJSONObject(0).getJSONArray("params"));
+			JSONArray jparams = (data.getJSONObject(0).length() < 3) ? null : data.getJSONObject(0).getJSONArray("params");
 
 			String[] params = null;
 
@@ -277,7 +284,7 @@ public class MBTilesPlugin extends CordovaPlugin
 				}
 			}
 			
-			result = new PluginResult(PluginResult.Status.OK,  mbTilesActions.executeStatment(query, params);
+			result = new PluginResult(PluginResult.Status.OK,  mbTilesActions.executeStatment(query, params));
 		}
 		else
 		{
@@ -285,6 +292,45 @@ public class MBTilesPlugin extends CordovaPlugin
 			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
 		}
 		
+		return result;
+	}
+
+	/**
+	 * get directory of working
+	 * @param data : the parameters (type:'type') 
+	 * @return the pluginResult
+	 */
+	private PluginResult actionGetDirectoryWorking(JSONArray data) throws JSONException
+	{
+		PluginResult result = null;
+		IMBTilesActions actions = null;
+		
+		String type = data.getJSONObject(0).getString("type");
+		
+		// database
+		if (type.equals(ACTION_OPEN_TYPE_DB))
+		{
+			actions = new MBTilesActionsDatabaseImpl();
+			
+			if (FileUtils.checkExternalStorageState())
+			{
+				result = new PluginResult(PluginResult.Status.OK, actions.getDirectoryWorking(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + this.cordova.getActivity().getPackageName() + "/databases/"));
+			}
+			
+		}
+		// file
+		else if (type.equals(ACTION_OPEN_TYPE_FILE))
+		{
+			actions = new MBTilesActionsFileImpl();
+			
+			if (FileUtils.checkExternalStorageState())
+			{
+				result = new PluginResult(PluginResult.Status.OK, actions.getDirectoryWorking(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + this.cordova.getActivity().getPackageName() + "/maps/"));
+			}
+		}
+		else {
+			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
+		}
 		return result;
 	}
 }

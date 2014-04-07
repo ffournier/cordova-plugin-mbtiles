@@ -16,6 +16,7 @@ public interface IMBTilesActions
 	static final String KEY_MAX_ZOOM = "max_zoom";
 	static final String KEY_TILE_DATA = "tile_data";
 	static final String KEY_EXECUTE_STATMENT = "result_execute";
+	static final String KEY_DIRECTORY_WORKING = "directory_working";
 	
 	/**
 	 * Tries to open MBTiles resource
@@ -96,4 +97,11 @@ public interface IMBTilesActions
 	 * @return the tile as <code>JSONObject</code>
 	 */
 	JSONObject executeStatment(String query, String... params);
+
+	/**
+	 * return the directory of working
+	 * @param path : the pah of working
+	 * @return <code>JSONObject</code>
+	 */
+	JSONObject getDirectoryWorking(String path);
 }

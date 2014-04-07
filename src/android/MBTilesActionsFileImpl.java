@@ -207,4 +207,20 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 		JSONObject result = new JSONObject();
 		return result;
 	}
+
+	/**
+	 * return the directory of working
+	 * @param path : the pah of working
+	 * @return <code>JSONObject</code>
+	 */
+	@Override
+	public JSONObject getDirectoryWorking(String path) {
+		JSONObject directoryWorking = new JSONObject();
+		try {
+			directoryWorking.put(KEY_DIRECTORY_WORKING, path);
+		} catch (JSONException e) {
+			Log.w(getClass().getName(), e.getMessage());
+		}
+		return directoryWorking;
+	}
 }

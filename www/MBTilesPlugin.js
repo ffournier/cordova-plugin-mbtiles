@@ -67,5 +67,16 @@ MBTilesPlugin.prototype.exectuteStatment = function(params, onSuccess, onError)
 {
 	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "execute_statment", [params]);
 };
+
+/*
+function getDirectoryWorking
+get the directory path of working
+params : {type:'type'} // db or file
+return : success or error callback
+*/
+MBTilesPlugin.prototype.getDirectoryWorking = function(params, onSuccess, onError)
+{
+	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "get_directory_working", [params]);
+};
 	
 module.exports = MBTilesPlugin;
