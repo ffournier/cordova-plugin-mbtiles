@@ -21,21 +21,17 @@
 }
 
 - (void)open:(NSString*) path {
-     NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
      
-     NSString* dirPath = [dirs objectAtIndex:0];
-     NSString* folderPath = [dirPath stringByAppendingPathComponent:path];
+    NSString* dirPath = [dirs objectAtIndex:0];
+    NSString* pathFile = [dirPath stringByAppendingPathComponent:path];
     
     NSFileManager *filemgr =  [NSFileManager defaultManager];
     
     BOOL isDir;
     // test if directory exist
-    if ([filemgr fileExistsAtPath: folderPath isDirectory:&isDir] == YES) {
-        if (isDir) {
-            _file = folderPath;
-        } else {
-            _file = nil;
-        }
+    if ([filemgr fileExistsAtPath: pathFile] == YES) {
+        _file = dirPath;
     } else {
         _file = nil;
     }
@@ -161,6 +157,14 @@
     if ([self isOpen]) {
         // not implemented
     }
+    return dict;
+}
+
+- (NSDictionary*) getDirectoryWorking {
+    NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
+    NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* path = [dirs objectAtIndex:0];
+    [dict setObject:path forKey:KEY_DIRECTORY_WORKING];
     return dict;
 }
 

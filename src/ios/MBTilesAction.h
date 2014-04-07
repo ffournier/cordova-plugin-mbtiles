@@ -70,6 +70,13 @@
  */
 - (NSDictionary*)executeStatment:(NSString*) query withParams:(NSArray*) params;
 
+/**
+* return the directory of working
+* @param path : the pah of working
+* @return <code>JSONObject</code>
+*/
+-(NSDictionary*) getDirectoryWorking;
+
 @end
 
 

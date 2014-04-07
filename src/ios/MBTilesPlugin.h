@@ -52,4 +52,9 @@
 */
 - (void)execute_statment:(CDVInvokedUrlCommand*)command;
 
+/**
+* action get_directory_working
+*/
+- (void)get_directory_working:(CDVInvokedUrlCommand*) command;
+
 @end

@@ -26,6 +26,7 @@
     extern NSString * const KEY_QUERY;
     extern NSString * const KEY_PARAMS;
     extern NSString * const KEY_EXECUTE_STATMENT;
+    extern NSString * const KEY_DIRECTORY_WORKING;
 
 /** 
  * transform data in string base 64

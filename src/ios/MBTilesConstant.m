@@ -22,6 +22,7 @@ NSString * const KEY_TILE_DATA = @"tile_data";
 NSString * const KEY_QUERY = @"query";
 NSString * const KEY_PARAMS = @"params";
 NSString * const KEY_EXECUTE_STATMENT = @"result_execute";
+NSString * const KEY_DIRECTORY_WORKING = @"directory_working";
 
 + (NSString*)base64forData:(NSData*)theData {
     

@@ -34,7 +34,7 @@
                 }
             // open file name     
             } else if ([type isEqualToString:@"file"]) {
- 		tilesActions = [[MBTilesActionsFileImpl alloc] init];
+                tilesActions = [[MBTilesActionsFileImpl alloc] init];
                 [tilesActions open:name];
                 if ([tilesActions isOpen]) {
                    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
@@ -139,8 +139,8 @@
         
         // get query and params
         NSString* query = dict[KEY_QUERY];
-	NSArray* params = dict[KEY_PARAMS];
-	if (query) {
+        NSArray* params = dict[KEY_PARAMS];
+        if (query) {
             
             // test is open
             if ([tilesActions isOpen]) {
@@ -158,6 +158,36 @@
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
 
+}
+
+- (void)get_directory_working:(CDVInvokedUrlCommand*)command {
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult* pluginResult = nil;
+        id<MBTilesAction> actions = nil;
+        
+        NSDictionary* dict = [command.arguments objectAtIndex:0];
+         // get the type and name
+        NSString* type = dict[KEY_TYPE];
+        if (type) {
+            // get directory working of db
+            if ([type isEqualToString:@"db"]) {
+                actions = [[MBTilesActionsDataBaseImpl alloc] init];
+                NSDictionary* data = [actions getDirectoryWorking];
+                
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
+            // get directory working of file   
+            } else if ([type isEqualToString:@"file"]) {
+                actions = [[MBTilesActionsFileImpl alloc] init];
+                NSDictionary* data = [actions getDirectoryWorking];
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
+            } else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_JSON_EXCEPTION];
+            }
+        }
+    
+        // The sendPluginResult method is thread-safe.
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
 }
 
 @end

@@ -43,7 +43,7 @@
 
 - (void)close {
     if (_database != nil) {
-	// close db
+        // close db
         sqlite3_close(_database);
 	database = nil;
     }
@@ -78,7 +78,7 @@
     
     // test id the db is open
     if([self isOpen] == YES) {
-	// run query min zoom
+        // run query min zoom
         const char* query = [[NSString stringWithFormat:@"SELECT MIN(zoom_level) AS min_zoom_level FROM tiles"] UTF8String];
         sqlite3_stmt* stmt;
         int ret = sqlite3_prepare_v2(_database, query, -1, &stmt, NULL);
@@ -123,21 +123,21 @@
     
     // test if db is open
     if ([self isOpen]) {
- 	// get max zoom
+        // get max zoom
         NSDictionary* data = [self getMaxZoom];
         if (data) {
            int maxZoom  = [data[KEY_MAX_ZOOM] intValue];
- 	   // if the currentlevelzoom is higher than the max zoom, reinit it. 
-	   if (currentLevelZoom > maxZoom) {
+            // if the currentlevelzoom is higher than the max zoom, reinit it.
+            if (currentLevelZoom > maxZoom) {
                 currentLevelZoom = maxZoom;
-	   }
+            }
         }
-	// run query of tiles.
+        // run query of tiles.
         const char* query = [[NSString stringWithFormat:@"SELECT tile_data FROM tiles WHERE zoom_level = ?1 AND tile_column = ?2 AND tile_row = ?3"] UTF8String];
         sqlite3_stmt* stmt;
         int ret = sqlite3_prepare_v2(_database, query, -1, &stmt, NULL);
         if( ret == SQLITE_OK) {
-	    // bind value
+            // bind value
             sqlite3_bind_int(stmt, 1, currentLevelZoom);
             sqlite3_bind_int(stmt, 2, column);
             sqlite3_bind_int(stmt, 3, row);
@@ -171,14 +171,14 @@
             if (result == YES) {
                 NSMutableDictionary* row;
                 
-		// treat answer
+                // treat answer
                 while (sqlite3_step(stmt) == SQLITE_ROW) {
                     int count = sqlite3_column_count(stmt);
                     row = [NSMutableDictionary dictionaryWithCapacity:0];
                     for (int i = 0; i < count ; i++) {
-			// get type of column
+                        // get type of column
                         int type = sqlite3_column_type(stmt, i);
-			// get name of column
+                        // get name of column
                         NSString* name = [NSString stringWithFormat:@"%s",sqlite3_column_name(stmt, i)];
                         NSObject* object;
                         switch(type) {
@@ -205,7 +205,7 @@
                         }
                         
                         if (object) {
-			    // add object in row
+                            // add object in row
                             [row setObject:object forKey:name];
                         }
                     }
@@ -250,6 +250,14 @@
 	}
     }
     return YES;
+}
+
+- (NSDictionary*) getDirectoryWorking {
+    NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSString* path = [bundle bundlePath];
+    [dict setObject:path forKey:KEY_DIRECTORY_WORKING];
+    return dict;
 }
 
 - (void)dealloc {
