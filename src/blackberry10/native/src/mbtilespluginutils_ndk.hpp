@@ -25,6 +25,7 @@
 #define ACTION_GETMAXZOOM "get_max_zoom"
 #define ACTION_GETTILE "get_tile"
 #define ACTION_EXECUTESTATMENT "execute_statment"
+#define ACTION_GETDIRECTORYWORKING "get_directory_working"
 
 #define KEY_TYPE "type"
 #define KEY_NAME "name"
@@ -39,6 +40,7 @@
 #define KEY_QUERY "query"
 #define KEY_PARAMS "params"
 #define KEY_EXECUTE_STATMENT "result_execute"
+#define KEY_DIRECTORY_WORKING "directory_working"
 
 #define TYPE_DB "db"
 #define TYPE_FILE "file"
@@ -49,6 +51,7 @@
 #define PLUGIN_ERROR "error"
 #define PLUGIN_NOT_OPEN "not open"
 #define PLUGIN_PARSE_ERROR "Cannot parse JSON object"
+#define PLUGIN_NOT_ACTION "Action not found"
 
 namespace webworks {
 

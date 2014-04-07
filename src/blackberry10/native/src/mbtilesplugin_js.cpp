@@ -181,6 +181,31 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 				result[PLUGIN_RESULT] = PLUGIN_NOT_OPEN;
 			}
 		}
+	} else if (strCommand.compare(ACTION_GETDIRECTORYWORKING) == 0) {
+		bool parse = arg != strCommand;
+		if (parse) {
+			parse = reader.parse(arg, root);
+		}
+		if (!parse) {
+			result[PLUGIN_RESULT] = PLUGIN_PARSE_ERROR;
+		} else {
+			webworks::MBTilesPluginActionNDK * action = NULL;
+			std::string type = root[KEY_TYPE].asString();
+			if (type.compare(TYPE_DB) == 0) {
+				action = new webworks::MBTilesPluginDataBaseImplNDK(this);
+				result = action->getDirectoryWorking(callbackId);
+			} else if (type.compare(TYPE_FILE) == 0) {
+				action = new webworks::MBTilesPluginFileImplNDK(this);
+				result = action->getDirectoryWorking(callbackId);
+			} else {
+				result[PLUGIN_RESULT] = TYPE_UNDEFINED;
+			}
+			if (action != NULL) {
+				delete action;
+			}
+		}
+	} else {
+		result[PLUGIN_ERROR] = PLUGIN_NOT_ACTION;
 	}
 	//strCommand.append(";");
 	//strCommand.append(command);

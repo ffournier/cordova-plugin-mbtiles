@@ -49,6 +49,8 @@ class MBTilesPluginActionNDK {
 
 		virtual Json::Value getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params) = 0;
 
+		virtual Json::Value getDirectoryWorking(const std::string& callbackId) = 0;
+
 	protected:
 		MBTilesPluginJS *m_pParent;
 };

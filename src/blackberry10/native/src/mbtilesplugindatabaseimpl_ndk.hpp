@@ -50,6 +50,8 @@ public:
 
 	Json::Value getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params);
 
+	Json::Value getDirectoryWorking(const std::string& callbackId);
+
 	bool bindValue(sqlite3_stmt* stmt, QList<Json::Value> params);
 };
 

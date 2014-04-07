@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <string>
 #include <json/reader.h>
 #include <json/writer.h>
 #include <QFile>
@@ -314,6 +313,15 @@ namespace webworks {
 		} else {
 			root[PLUGIN_ERROR] = "Database not Open";
 		}
+		return root;
+	}
+
+
+	Json::Value MBTilesPluginDataBaseImplNDK::getDirectoryWorking(const std::string& callbackId)
+	{
+		Json::Value root;
+		// TODO SDCard
+		root[KEY_DIRECTORY_WORKING] = "app/native/assets/";
 		return root;
 	}
 

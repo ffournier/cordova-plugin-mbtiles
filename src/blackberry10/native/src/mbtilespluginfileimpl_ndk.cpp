@@ -82,4 +82,10 @@ namespace webworks {
 		return root;
 	}
 
+	Json::Value MBTilesPluginFileImplNDK::getDirectoryWorking(const std::string& callbackId)
+	{
+		Json::Value root;
+		return root;
+	}
+
 }
