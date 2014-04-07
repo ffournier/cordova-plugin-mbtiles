@@ -31,7 +31,8 @@ namespace MBTilesPlugin
 	/// return a JArray which contains all objects </returns> 
 	/// <param name="query"> contains the query to execute</param>
 	/// <param name="param"> contains the parameters needed to execute the query</param>
-        public JArray execute(String query, object[] param) {
+        public JArray execute(String query, object[] param) 
+        {
             JArray array = new JArray();
             if (query != null && query.Length > 0)
             {

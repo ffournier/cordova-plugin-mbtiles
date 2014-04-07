@@ -174,7 +174,8 @@ namespace MBTilesPlugin
   	/// <returns>
 	/// return the raw of file in string</returns>
 	/// <param name="filePath"> the path of file</param>
-        private string readText(string filePath) {
+        private string readText(string filePath) 
+        {
             string text = "";
             try
             {
@@ -205,9 +206,9 @@ namespace MBTilesPlugin
 
         /// <summary>
         /// get all zoom level</summary>
-  	/// <returns>
-	/// return a list of zoom level present</returns>
-	private List<int> getZoomLevels()
+  	    /// <returns>
+	    /// return a list of zoom level present</returns>
+	    private List<int> getZoomLevels()
         {
             JObject metadata = getMetadataObject();
             List<int> zoomLevels = new List<int>();
@@ -249,6 +250,11 @@ namespace MBTilesPlugin
             // not implemented
             return result;
         }
+
+	    public directory_working_output getDirectoryWorking(String path)
+	    {
+		    return new directory_working_output(path);
+	    }
 
     }
 }

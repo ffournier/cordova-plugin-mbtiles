@@ -13,7 +13,7 @@ namespace MBTilesPlugin
     /// class ConstantMbTilePlugin</summary>
     public static class ConstantMbTilePlugin {
 
-	/// static key
+	    /// static key
         public static string KEY_NAME = "name";
         public static string KEY_VERSION = "version";
         public static string KEY_FORMAT = "format";
@@ -24,23 +24,23 @@ namespace MBTilesPlugin
         public static string KEY_PARAMS = "params";
         public static string KEY_EXECUTE_STATMENT = "result_execute";
         
-	/// <summary>
-	/// encode a string to a string encoding in base64 </summary>
-	/// <returns>
-	/// return a string encoding in base64 </returns> 
-	/// <param name="plainText"> the text to encode</param>
-	public static string Base64Encode(string plainText)
+	    /// <summary>
+	    /// encode a string to a string encoding in base64 </summary>
+	    /// <returns>
+	    /// return a string encoding in base64 </returns> 
+	    /// <param name="plainText"> the text to encode</param>
+	    public static string Base64Encode(string plainText)
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
 
-        /// <summary>
-	/// encode a byte[] to a string encoding in base64 </summary>
-	/// <returns>
-	/// return a string encoding in base64 </returns> 
-	/// <param name="plainTextBytes"> the bytes to encode</param>
-	public static string Base64EncodeByte(byte[] plainTextBytes)
+            /// <summary>
+	    /// encode a byte[] to a string encoding in base64 </summary>
+	    /// <returns>
+	    /// return a string encoding in base64 </returns> 
+	    /// <param name="plainTextBytes"> the bytes to encode</param>
+	    public static string Base64EncodeByte(byte[] plainTextBytes)
         {
             return System.Convert.ToBase64String(plainTextBytes);
         }
@@ -112,5 +112,12 @@ namespace MBTilesPlugin
   	    /// <param name="query"> the query to execute</param>
 	    /// <param name="param"> the parameters needed to execute query</param>
 	    string executeStatment(String query, List<object> param);
+
+	    /// <summary>
+	    /// Return the directory of working</summary>
+            /// <returns>
+	    /// Return the directory of working</returns>
+  	    /// <param name="path"> the path of working</param>
+	    directory_working_output getDirectoryWorking(String path);
     }
 }

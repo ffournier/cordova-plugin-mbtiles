@@ -49,8 +49,8 @@ namespace MBTilesPlugin
 
         /// <summary>
         /// get metadata in JObject format</summary>
-  	/// <returns>
-	/// the JObject repsenting the metadata</returns>
+  	    /// <returns>
+	    /// the JObject repsenting the metadata</returns>
         public JObject getMetadataObject()
 	    {
             JObject obj = new JObject();
@@ -64,7 +64,7 @@ namespace MBTilesPlugin
                 }
             }
             return obj;
-		}
+	    }
 
         public string getMetadata()
         {
@@ -144,5 +144,10 @@ namespace MBTilesPlugin
             }
             return result;
         }
+
+	    public directory_working_output getDirectoryWorking(String path)
+	    {
+		    return new directory_working_output(path);
+	    }
     }
 }

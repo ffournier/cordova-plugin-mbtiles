@@ -164,7 +164,7 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         public void get_tile(string options)
         {
-             string callbackId;
+            string callbackId;
             options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
             try
             {
@@ -227,6 +227,49 @@ namespace WPCordovaClassLib.Cordova.Commands
                 DispatchCommandResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
             }
         }
+
+ 	    public void get_directory_working(string options)
+        {
+            string callbackId;
+            
+	        IMBTilesActions actions;
+
+	        options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
+            try
+            {
+		
+                /// name, type
+                string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
+                /// to test maybe is not a string but a JSONObject
+                EntryDirectoryWorking entryDir = JSON.JsonHelper.Deserialize<EntryDirectoryWorking>(args[0]);
+                string type = entryDir.type;
+                callbackId = args[1];
+
+                if (type != null && type.Equals(ACTION_OPEN_TYPE_DB))
+                {
+                    actions = new MBTilesActionsDatabaseImpl();
+                    directory_working_output dir = actions.getDirectoryWorking(Windows.Storage.ApplicationData.Current.LocalFolder.Path);
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.OK, dir), callbackId);
+                   
+                } else if (type != null && type.Equals(ACTION_OPEN_TYPE_FILE))
+                {
+                    string dirPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "maps//");
+                    actions = new MBTilesActionsFileImpl();
+                    directory_working_output dir = actions.getDirectoryWorking(dirPath);
+		            DispatchCommandResult(new PluginResult(PluginResult.Status.OK, dir), callbackId);
+
+                } else {
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.IO_EXCEPTION), callbackId);
+                }
+
+            }
+            catch (Exception)
+            {
+                DispatchCommandResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
+            }
+
+        }
+
     }
 	
 }

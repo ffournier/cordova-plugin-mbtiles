@@ -50,6 +50,19 @@ namespace MBTilesPlugin
     }
 
     [DataContract]
+    public class directory_working_output
+    {
+        [DataMember(Name = "directory_working")]
+        public string directory_working { get; set; }
+
+        public directory_working_output(string data)
+        {
+            directory_working = data;
+        }
+
+    }
+
+    [DataContract]
     public class EntryOpen
     {
         [DataMember(Name = "name")]
@@ -81,5 +94,12 @@ namespace MBTilesPlugin
         [DataMember(Name = "params")]
         public List<object> param { get; set; }
 
+    }
+
+    [DataContract]
+    public class EntryDirectoryWorking
+    {
+        [DataMember(Name = "type")]
+        public string type { get; set; }
     }
 }
