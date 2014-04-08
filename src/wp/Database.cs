@@ -43,7 +43,7 @@ namespace MBTilesPlugin
                     {
                         for (int i = 1; i <= param.Length; i++)
                         {
-                            bindValue(param.GetValue(), i);
+                            bindValue(param.GetValue(i -1), i);
                         }
                     }
 
