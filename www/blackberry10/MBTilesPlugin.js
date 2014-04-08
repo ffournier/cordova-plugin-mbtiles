@@ -63,7 +63,7 @@ execute query in the database opened
 params : {query:'query', params:{'param', 'param', 'param'}} 
 return : success or error callback
 */
-MBTilesPlugin.prototype.exectuteStatment = function(input, onSuccess, onError)
+MBTilesPlugin.prototype.executeStatment = function(input, onSuccess, onError)
 {
 	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "execute_statment", {input: input});
 };

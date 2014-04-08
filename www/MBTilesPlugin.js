@@ -63,7 +63,7 @@ execute query in the database opened
 params : {query:'query', params:{'param', 'param', 'param'}} 
 return : success or error callback
 */
-MBTilesPlugin.prototype.exectuteStatment = function(params, onSuccess, onError)
+MBTilesPlugin.prototype.executeStatment = function(params, onSuccess, onError)
 {
 	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "execute_statment", [params]);
 };
