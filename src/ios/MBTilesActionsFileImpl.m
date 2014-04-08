@@ -28,8 +28,7 @@
     
     NSFileManager *filemgr =  [NSFileManager defaultManager];
     
-    BOOL isDir;
-    // test if directory exist
+    // test if file exist
     if ([filemgr fileExistsAtPath: pathFile] == YES) {
         _file = dirPath;
     } else {
