@@ -58,7 +58,7 @@ MBTilesPlugin.prototype.getTile = function(params, onSuccess, onError)
 };
 
 /*
-function exectuteStatment
+function executeStatment
 execute query in the database opened
 params : {query:'query', params:{'param', 'param', 'param'}} 
 return : success or error callback
