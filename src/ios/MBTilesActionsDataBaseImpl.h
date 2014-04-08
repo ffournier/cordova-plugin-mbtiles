@@ -16,6 +16,8 @@
 {
     // the database
     sqlite3* database;
+    // synchronized
+    NSLock* lock;
 }
 
 /** 
@@ -28,5 +30,6 @@
 - (BOOL) bindValue:(sqlite3_stmt*)stmt withParams:(NSArray*)params;
 
 @property(readwrite, assign)sqlite3* database;
+@property(readwrite, retain)NSLock* lock;
 
 @end

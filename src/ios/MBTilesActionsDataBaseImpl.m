@@ -10,6 +10,7 @@
 
 @implementation MBTilesActionsDataBaseImpl
 @synthesize database = _database;
+@synthesize lock = _lock;
 
 /**
 * init the class
@@ -17,6 +18,7 @@
 - (id) init {
     self = [super init];
     _database = nil;
+    _lock = [[NSLock alloc] init];
     return self;
 }
 
@@ -45,7 +47,7 @@
     if (_database != nil) {
         // close db
         sqlite3_close(_database);
-	database = nil;
+        database = nil;
     }
 }
 
@@ -57,6 +59,7 @@
 	// run query metadata
         const char* query = [[NSString stringWithFormat:@"SELECT * FROM metadata"] UTF8String];
         sqlite3_stmt* stmt;
+        [_lock lock];
         int ret = sqlite3_prepare_v2(_database, query, -1, &stmt, NULL);
         if(ret == SQLITE_OK) {
             // loop answer
@@ -69,6 +72,7 @@
             }
             sqlite3_finalize(stmt);
         }
+        [_lock unlock];
     }
     return dict;
 }
@@ -81,6 +85,7 @@
         // run query min zoom
         const char* query = [[NSString stringWithFormat:@"SELECT MIN(zoom_level) AS min_zoom_level FROM tiles"] UTF8String];
         sqlite3_stmt* stmt;
+        [_lock lock];
         int ret = sqlite3_prepare_v2(_database, query, -1, &stmt, NULL);
         if( ret == SQLITE_OK) {
             // treat the answer
@@ -90,6 +95,7 @@
             }
             sqlite3_finalize(stmt);
         }
+        [_lock unlock];
     }
     return dict;
 }
@@ -103,6 +109,7 @@
 	// run query max zoom
         const char* query = [[NSString stringWithFormat:@"SELECT MAX(zoom_level) AS max_zoom_level FROM tiles"] UTF8String];
         sqlite3_stmt* stmt;
+        [_lock lock];
         int ret = sqlite3_prepare_v2(_database, query, -1, &stmt, NULL);
         if( ret == SQLITE_OK) {
             // treat the answer
@@ -112,6 +119,7 @@
             }
             sqlite3_finalize(stmt);
         }
+        [_lock unlock];
     }
     return dict;
 }
@@ -135,6 +143,7 @@
         // run query of tiles.
         const char* query = [[NSString stringWithFormat:@"SELECT tile_data FROM tiles WHERE zoom_level = ?1 AND tile_column = ?2 AND tile_row = ?3"] UTF8String];
         sqlite3_stmt* stmt;
+        [_lock lock];
         int ret = sqlite3_prepare_v2(_database, query, -1, &stmt, NULL);
         if( ret == SQLITE_OK) {
             // bind value
@@ -150,6 +159,7 @@
             }
             sqlite3_finalize(stmt);
         }
+        [_lock unlock];
     }
     return dict;
 }
@@ -163,6 +173,7 @@
         // run given query
         const char* sql_stmt = [query UTF8String];
         sqlite3_stmt* stmt;
+        [_lock lock];
         int ret = sqlite3_prepare_v2(_database, sql_stmt, -1, &stmt, NULL);
         if( ret == SQLITE_OK) {
            
@@ -215,6 +226,7 @@
             }
         }
         sqlite3_finalize(stmt);
+        [_lock unlock];
         // add rows in result dictionnary
         [dict setObject:rows forKey:KEY_EXECUTE_STATMENT];
     }
