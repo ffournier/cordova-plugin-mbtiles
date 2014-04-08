@@ -162,12 +162,13 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			parse = reader.parse(arg, root);
 			if (parse) {
 				query = root[KEY_QUERY].asString();
-				std::string temp= root[KEY_PARAMS].asString();
-				Json::Value params_value;
-				parse = reader.parse(temp, params_value);
-				if (parse && params_value.isArray()) {
-					for (int i = 0; i < params_value.size(); i++) {
-						params.push_back(params_value);
+				Json::Value temp= root[KEY_PARAMS];
+				parse = temp.isArray();
+				if (parse) {
+					for (unsigned int i = 0; i < temp.size(); i++) {
+						if (!temp[i].isArray()) {
+							params.append(temp[i]);
+						}
 					}
 				}
 			}

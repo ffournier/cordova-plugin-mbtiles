@@ -243,7 +243,7 @@ namespace webworks {
 		Json::FastWriter writer;
 		Json::Value root;
 		// test if the database is open
-		if (isOpen() ==true) {
+		if (isOpen() == true) {
 			// run given query
 			std::string sql_stmt = query;
 			sqlite3_stmt* stmt;
@@ -265,7 +265,7 @@ namespace webworks {
 							// get type of column
 							int type = sqlite3_column_type(stmt, i);
 							// get name of column
-							std::string name =sqlite3_column_name(stmt, i);
+							QString name = QString::fromStdString(sqlite3_column_name(stmt, i));
 							switch(type) {
 								case SQLITE_INTEGER:
 									object = new QVariant(sqlite3_column_int(stmt, i));
@@ -292,10 +292,11 @@ namespace webworks {
 							}
 							// add to object
 							if (object != NULL) {
-								objectJson[name] = &object;
+								QString value = object->toString();
+								objectJson[name.toStdString()] = value.toStdString();
 								delete object;
 							} else {
-								objectJson[name] = "NULL";
+								objectJson[name.toStdString()] = "NULL";
 							}
 						}
 						// add to array
@@ -328,7 +329,7 @@ namespace webworks {
 	bool MBTilesPluginDataBaseImplNDK::bindValue(sqlite3_stmt* stmt, QList<Json::Value> params) {
 
 		for (int i = 1; i <= params.size(); i++) {
-			Json::Value object = params[i];
+			Json::Value object = params[i-1];
 			// test type of object
 			if (object.isNull()) {
 				sqlite3_bind_null(stmt, i);
