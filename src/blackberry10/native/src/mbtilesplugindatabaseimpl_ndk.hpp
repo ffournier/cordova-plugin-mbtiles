@@ -24,35 +24,37 @@ namespace webworks {
 
 class MBTilesPluginDataBaseImplNDK : public MBTilesPluginActionNDK {
 
-private:
-	sqlite3* database;
+	private:
+		sqlite3* database;
 
-public:
-	explicit MBTilesPluginDataBaseImplNDK(MBTilesPluginJS *parent = NULL);
-	virtual ~MBTilesPluginDataBaseImplNDK();
+	public:
+		explicit MBTilesPluginDataBaseImplNDK(MBTilesPluginJS *parent = NULL);
+		virtual ~MBTilesPluginDataBaseImplNDK();
 
 
-	Json::Value open(const std::string& callbackId, const std::string name);
+		Json::Value open(const std::string& callbackId, const std::string name);
 
-	void close();
+		bool isOpen();
 
-	bool isOpen();
+		Json::Value getMetaData(const std::string& callbackId);
 
-	Json::Value getMetaData(const std::string& callbackId);
+		Json::Value getMinZoom(const std::string& callbackId);
 
-	Json::Value getMinZoom(const std::string& callbackId);
+		Json::Value getMaxZoom(const std::string& callbackId);
 
-	Json::Value getMaxZoom(const std::string& callbackId);
+		int getMaxZoomValue();
 
-	int getMaxZoomValue();
+		Json::Value getTile(const std::string& callbackId, int zoom_level, int column, int row);
 
-	Json::Value getTile(const std::string& callbackId, int zoom_level, int column, int row);
+		Json::Value getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params);
 
-	Json::Value getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params);
+		Json::Value getDirectoryWorking(const std::string& callbackId);
 
-	Json::Value getDirectoryWorking(const std::string& callbackId);
+		bool bindValue(sqlite3_stmt* stmt, QList<Json::Value> params);
 
-	bool bindValue(sqlite3_stmt* stmt, QList<Json::Value> params);
+	protected:
+		void close();
+
 };
 
 } // namespace webworks

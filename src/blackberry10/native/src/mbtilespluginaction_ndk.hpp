@@ -18,6 +18,7 @@
 #define MBTILESPLUGINACTIONNDK_HPP_
 
 #include <string>
+#include <QString>
 #include <pthread.h>
 #include <json/reader.h>
 #include <json/writer.h>
@@ -28,14 +29,15 @@ class MBTilesPluginJS;
 namespace webworks {
 
 class MBTilesPluginActionNDK {
+	protected:
+		MBTilesPluginJS *m_pParent;
+
 	public:
 		explicit MBTilesPluginActionNDK(MBTilesPluginJS *parent = NULL);
 		virtual ~MBTilesPluginActionNDK();
 
 		// The extension methods are defined here
 		virtual Json::Value open(const std::string& callbackId, const std::string name) = 0;
-
-		virtual void close() = 0;
 
 		virtual bool isOpen() = 0;
 
@@ -51,8 +53,14 @@ class MBTilesPluginActionNDK {
 
 		virtual Json::Value getDirectoryWorking(const std::string& callbackId) = 0;
 
-	protected:
-		MBTilesPluginJS *m_pParent;
+	protected :
+		bool detectSDCard();
+
+		QString getInstallName();
+
+		virtual void close() = 0;
+
+
 };
 
 } // namespace webworks

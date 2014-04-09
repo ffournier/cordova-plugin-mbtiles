@@ -24,35 +24,36 @@
 namespace webworks {
 
 class MBTilesPluginFileImplNDK : public MBTilesPluginActionNDK {
-private:
-	QDir* dirPath;
+	private:
+		QDir* dirPath;
 
-	QList<int> getZoomLevels();
-	Json::Value getMetaData();
-	Json::Value getMaxZoom();
+		QList<int> getZoomLevels();
+		Json::Value getMetaData();
+		Json::Value getMaxZoom();
 
-public:
-	explicit MBTilesPluginFileImplNDK(MBTilesPluginJS *parent = NULL);
-	virtual ~MBTilesPluginFileImplNDK();
+	public:
+		explicit MBTilesPluginFileImplNDK(MBTilesPluginJS *parent = NULL);
+		virtual ~MBTilesPluginFileImplNDK();
 
 
-	Json::Value open(const std::string& callbackId, const std::string name);
+		Json::Value open(const std::string& callbackId, const std::string name);
 
-	void close();
+		bool isOpen();
 
-	bool isOpen();
+		Json::Value getMetaData(const std::string& callbackId);
 
-	Json::Value getMetaData(const std::string& callbackId);
+		Json::Value getMinZoom(const std::string& callbackId);
 
-	Json::Value getMinZoom(const std::string& callbackId);
+		Json::Value getMaxZoom(const std::string& callbackId);
 
-	Json::Value getMaxZoom(const std::string& callbackId);
+		Json::Value getTile(const std::string& callbackId, int zoom_level, int column, int row);
 
-	Json::Value getTile(const std::string& callbackId, int zoom_level, int column, int row);
+		Json::Value getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params);
 
-	Json::Value getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params);
+		Json::Value getDirectoryWorking(const std::string& callbackId);
 
-	Json::Value getDirectoryWorking(const std::string& callbackId);
+	protected:
+		void close();
 };
 
 } // namespace webworks

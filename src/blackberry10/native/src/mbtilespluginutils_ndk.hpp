@@ -57,8 +57,8 @@ namespace webworks {
 
 class MBTilesPluginUtilsNDK {
 
-public:
-	static bool fileExists(const std::string file);
+	public:
+		static bool fileExists(const std::string file);
 };
 
 } // namespace webworks

@@ -100,6 +100,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <lib-file src="src/blackberry10/native/simulator/libMBTilesPlugin.so" arch="simulator"/>
 	<config-file target="www/config.xml" parent="/widget">
             <feature name="com.makina.offline.mbtiles" value="com.makina.offline.mbtiles" />
-        </config-file>
+	    <rim:permissions>
+	        <rim:permit>access_shared</rim:permit>
+	    </rim:permissions>
+	</config-file>
     </platform>
 </plugin>

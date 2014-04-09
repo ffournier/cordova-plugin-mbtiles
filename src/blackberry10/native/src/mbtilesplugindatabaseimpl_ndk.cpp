@@ -46,30 +46,33 @@ namespace webworks {
 		Json::FastWriter writer;
 		Json::Value root;
 
-		// get absolute path
-		// TODO sdcard
-		//const char* pathsdcard = removablemedia_info_get_device_path(REMOVABLEMEDIA_TYPE_SD);
-		//QFile* pathFile = new QFile(pathsdcard + "/" + name);
-		QFile* path = new QFile(QString::fromStdString("app/native/assets/" + name));
-		//QString pathFile = QString::fromStdString(name);
-		//QFile* dbpath = new QFile(pathFile);
-		if (path != NULL && path->exists() == true)
-		{
-			if (sqlite3_open_v2(path->fileName().toStdString().c_str(), &database, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK )
+		// test if the sdcard is present
+		if (detectSDCard()) {
+			QString installName = getInstallName();
+			QString result = QString::fromStdString("/accounts/1000/removable/sdcard/");
+			result += installName;
+			result += "/";
+			result += QString::fromStdString(name);
+			QFile* path = new QFile(result);
+			if (path != NULL && path->exists() == true)
 			{
-				close();
-				root[PLUGIN_ERROR] = "Cannot open database";
+				if (sqlite3_open_v2(path->fileName().toStdString().c_str(), &database, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK )
+				{
+					close();
+					root[PLUGIN_ERROR] = "Cannot open database";
+				} else {
+					root[PLUGIN_RESULT] = "Database Open";
+				}
 			} else {
-				root[PLUGIN_RESULT] = "Database Open";
+				root[PLUGIN_ERROR] = "Database doesn't exist";
+			}
+
+			if (path != NULL) {
+				delete path;
 			}
 		} else {
-			root[PLUGIN_ERROR] = "Database doesn't exist";
+			root[PLUGIN_ERROR] = "No SdCard";
 		}
-
-		if (path != NULL) {
-			delete path;
-		}
-
 		return root;
 	}
 
@@ -321,8 +324,14 @@ namespace webworks {
 	Json::Value MBTilesPluginDataBaseImplNDK::getDirectoryWorking(const std::string& callbackId)
 	{
 		Json::Value root;
-		// TODO SDCard
-		root[KEY_DIRECTORY_WORKING] = "app/native/assets/";
+		if (detectSDCard()) {
+			QString name = getInstallName();
+			QString result = QString::fromStdString("/accounts/1000/removable/sdcard/");
+			result += name;
+			root[KEY_DIRECTORY_WORKING] = result.toStdString();
+		} else{
+			root[PLUGIN_ERROR] = "No SdCard";
+		}
 		return root;
 	}
 

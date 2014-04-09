@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-#include <string>
-#include <sstream>
+
 #include <pthread.h>
 #include <json/reader.h>
 #include <json/writer.h>
 #include "mbtilespluginaction_ndk.hpp"
 #include "mbtilesplugin_js.hpp"
+#include <bb/PackageInfo>
+#include <bb/device/SdCardInfo>
+#include <bb/device/SdCardState>
 
 namespace webworks {
 
@@ -31,4 +33,13 @@ namespace webworks {
 	MBTilesPluginActionNDK::~MBTilesPluginActionNDK() {
 	}
 
+	bool MBTilesPluginActionNDK::detectSDCard() {
+		bb::device::SdCardInfo sdInfo;
+		return sdInfo.state() == bb::device::SdCardState::Mounted;
+	}
+
+	QString MBTilesPluginActionNDK::getInstallName() {
+		bb::PackageInfo packageInfo;
+	    return packageInfo.installId();
+	}
 } /* namespace webworks */

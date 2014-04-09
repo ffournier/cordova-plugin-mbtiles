@@ -44,18 +44,22 @@ namespace webworks {
 
 		close();
 
-		// get absolute path
-		// TODO sdcard
-		//const char* pathsdcard = removablemedia_info_get_device_path(REMOVABLEMEDIA_TYPE_SD);
-		//QFile* pathFile = new QFile(pathsdcard + "/" + name);
-		QDir* path = new QDir(QString::fromStdString("app/native/assets/"));
-		if (path != NULL && path->exists() == true)
-		{
-			dirPath = path;
-			root[PLUGIN_RESULT] = "File Open";
+		// test if the sdcard is present
+		if (detectSDCard()) {
+			QString installName = getInstallName();
+			QString result = QString::fromStdString("/accounts/1000/removable/sdcard/");
+			result += installName;
+			QDir* path = new QDir(result);
+			if (path != NULL && path->exists() == true)
+			{
+				dirPath = path;
+				root[PLUGIN_RESULT] = "File Open";
+			} else {
+				close();
+				root[PLUGIN_ERROR] = "Cannot open file";
+			}
 		} else {
-			close();
-			root[PLUGIN_ERROR] = "Cannot open file";
+			root[PLUGIN_ERROR] = "No SdCard";
 		}
 		return root;
 	}
@@ -129,10 +133,10 @@ namespace webworks {
 			currentZoomLevel = maxZoom;
 		}
 		QString fileName = dirPath->absolutePath();
-		fileName += QString::fromStdString("\\" + version + "\\" + name + "\\");
-		fileName += "\\" ;
+		fileName += QString::fromStdString("/" + version + "/" + name + "/");
+		fileName += "/" ;
 		fileName += QString::number(column);
-		fileName += "\\" ;
+		fileName += "/" ;
 		fileName += QString::number(row);
 		fileName += QString::fromStdString("." + format);
 		QFile* tileFile = new QFile(fileName);
@@ -171,22 +175,20 @@ namespace webworks {
 	Json::Value MBTilesPluginFileImplNDK::getDirectoryWorking(const std::string& callbackId)
 	{
 		Json::Value root;
-		QDir* path = new QDir(QString::fromStdString("app/native/assets/"));
-		if (path != NULL && path->exists() == true)
-		{
-			root[KEY_DIRECTORY_WORKING] = path->absolutePath().toStdString();
-		} else {
-			root[PLUGIN_ERROR] = "Directory not exist";
-		}
-		if (path != NULL) {
-			delete path;
+		if (detectSDCard()) {
+			QString name = getInstallName();
+			QString result = QString::fromStdString("/accounts/1000/removable/sdcard/");
+			result += name;
+			root[KEY_DIRECTORY_WORKING] = result.toStdString();
+		}else{
+			root[PLUGIN_ERROR] = "No SdCard";
 		}
 		return root;
 	}
 
 	Json::Value MBTilesPluginFileImplNDK::getMetaData() {
 		Json::Value root;
-		QFile* fileMetadata = new QFile(dirPath->absolutePath() + "\\" + "metadata.json");
+		QFile* fileMetadata = new QFile(dirPath->absolutePath() + "/" + "metadata.json");
 		if (fileMetadata != NULL && fileMetadata->exists()) {
 			if (fileMetadata->open(QIODevice::ReadOnly)) {
 				QByteArray data = fileMetadata->readAll();
@@ -221,7 +223,7 @@ namespace webworks {
 		std::string name = metadata[KEY_NAME].asString();
 		std::string version = metadata[KEY_VERSION].asString();
 
-		QString dirZoom = QString::fromStdString(dirPath->absolutePath().toStdString() + "\\" + version + "\\" + name);
+		QString dirZoom = QString::fromStdString(dirPath->absolutePath().toStdString() + "/" + version + "/" + name);
 		QDir* contents = new QDir(dirZoom);
 		if (contents != NULL && contents->exists()) {
 			QFileInfoList info = contents->entryInfoList(QDir::Files, QDir::NoSort);
