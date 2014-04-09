@@ -253,7 +253,7 @@ public class MBTilesPlugin extends CordovaPlugin
 	
 	/**
 	 * execute given query in on the database opened
-	 * @param data : the parameters (query:'query', params:{'param', 'param'}) 
+	 * @param data : the parameters (query:'query', params:['param', 'param']) 
 	 * @return the pluginResult
 	 */
 	private PluginResult actionExecuteStatment(JSONArray data) throws JSONException
