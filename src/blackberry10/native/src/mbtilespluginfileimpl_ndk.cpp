@@ -20,72 +20,223 @@
 #include "mbtilespluginfileimpl_ndk.hpp"
 #include "mbtilespluginaction_ndk.hpp"
 #include "mbtilesplugin_js.hpp"
+#include "mbtilespluginutils_ndk.hpp"
 
 namespace webworks {
 
 	MBTilesPluginFileImplNDK::MBTilesPluginFileImplNDK(MBTilesPluginJS *parent)
 	: MBTilesPluginActionNDK(parent)
 	{
+		dirPath = NULL;
 	}
 
 	MBTilesPluginFileImplNDK::~MBTilesPluginFileImplNDK()
 	{
+		if (dirPath != NULL) {
+			delete dirPath;
+		}
 	}
 
 	// The extension methods are defined here
 	Json::Value MBTilesPluginFileImplNDK::open(const std::string& callbackId, const std::string name)
 	{
 		Json::Value root;
+
+		close();
+
+		// get absolute path
+		// TODO sdcard
+		//const char* pathsdcard = removablemedia_info_get_device_path(REMOVABLEMEDIA_TYPE_SD);
+		//QFile* pathFile = new QFile(pathsdcard + "/" + name);
+		QDir* path = new QDir(QString::fromStdString("app/native/assets/"));
+		if (path != NULL && path->exists() == true)
+		{
+			dirPath = path;
+			root[PLUGIN_RESULT] = "File Open";
+		} else {
+			close();
+			root[PLUGIN_ERROR] = "Cannot open file";
+		}
 		return root;
 	}
 
 	void MBTilesPluginFileImplNDK::close()
 	{
+		if (dirPath != NULL) {
+			delete dirPath;
+		}
+		dirPath = NULL;
 	}
 
 	bool MBTilesPluginFileImplNDK::isOpen()
 	{
-		return false;
+		return dirPath != NULL;
 	}
 
 	Json::Value MBTilesPluginFileImplNDK::getMetaData(const std::string& callbackId)
 	{
-		Json::Value root;
-		return root;
+		return getMetaData();
 	}
 
 
 	Json::Value MBTilesPluginFileImplNDK::getMinZoom(const std::string& callbackId)
 	{
 		Json::Value root;
+
+		QList<int> zoomLevels = getZoomLevels();
+
+		if (!zoomLevels.isEmpty())
+		{
+			root[KEY_MIN_ZOOM] = zoomLevels[0];
+		}
+
 		return root;
 	}
 
 
 	Json::Value MBTilesPluginFileImplNDK::getMaxZoom(const std::string& callbackId)
 	{
-		Json::Value root;
-		return root;
+		return getMaxZoom();
 	}
 
+	Json::Value MBTilesPluginFileImplNDK::getMaxZoom()
+	{
+		Json::Value root;
+
+		QList<int> zoomLevels = getZoomLevels();
+
+		if (!zoomLevels.isEmpty())
+		{
+			root[KEY_MAX_ZOOM] = zoomLevels[zoomLevels.size() - 1];
+		}
+
+		return root;
+	}
 
 	Json::Value MBTilesPluginFileImplNDK::getTile(const std::string& callbackId, int zoom_level, int column, int row)
 	{
 		Json::Value root;
+		Json::Value metadata = getMetaData();
+
+		std::string name = metadata[KEY_NAME].asString();
+		std::string version = metadata[KEY_VERSION].asString();
+		std::string format = metadata[KEY_FORMAT].asString();
+		Json::Value maxZoomValue = getMaxZoom();
+		int maxZoom = maxZoomValue[KEY_MAX_ZOOM].asInt();
+		int currentZoomLevel = zoom_level;
+		if (zoom_level > maxZoom)
+		{
+			currentZoomLevel = maxZoom;
+		}
+		QString fileName = dirPath->absolutePath();
+		fileName += QString::fromStdString("\\" + version + "\\" + name + "\\");
+		fileName += "\\" ;
+		fileName += QString::number(column);
+		fileName += "\\" ;
+		fileName += QString::number(row);
+		fileName += QString::fromStdString("." + format);
+		QFile* tileFile = new QFile(fileName);
+
+		// test if file exist
+		if (tileFile != NULL && tileFile->exists())
+		{
+			if (tileFile->open(QIODevice::ReadOnly)) {
+				// TODO maybe crash cause of memory
+				QByteArray data = tileFile->readAll();
+				root[KEY_TILE_DATA] = data.toBase64().data();
+				tileFile->close();
+			} else{
+				root[PLUGIN_ERROR] = "Can't open the files";
+			}
+		} else {
+			root[PLUGIN_ERROR] = "Tiles not exist";
+		}
+
+		if (tileFile != NULL) {
+			delete tileFile;
+		}
+
 		return root;
+
 	}
 
 
 	Json::Value MBTilesPluginFileImplNDK::getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params)
 	{
 		Json::Value root;
+		root[PLUGIN_ERROR] = "Not Implemented";
 		return root;
 	}
 
 	Json::Value MBTilesPluginFileImplNDK::getDirectoryWorking(const std::string& callbackId)
 	{
 		Json::Value root;
+		QDir* path = new QDir(QString::fromStdString("app/native/assets/"));
+		if (path != NULL && path->exists() == true)
+		{
+			root[KEY_DIRECTORY_WORKING] = path->absolutePath().toStdString();
+		} else {
+			root[PLUGIN_ERROR] = "Directory not exist";
+		}
+		if (path != NULL) {
+			delete path;
+		}
 		return root;
+	}
+
+	Json::Value MBTilesPluginFileImplNDK::getMetaData() {
+		Json::Value root;
+		QFile* fileMetadata = new QFile(dirPath->absolutePath() + "\\" + "metadata.json");
+		if (fileMetadata != NULL && fileMetadata->exists()) {
+			if (fileMetadata->open(QIODevice::ReadOnly)) {
+				QByteArray data = fileMetadata->readAll();
+				if (!data.isEmpty() && !data.isNull()) {
+					root = Json::Value(data.constData());
+				}else{
+					root[PLUGIN_ERROR] = "Error when reading file";
+				}
+				fileMetadata->close();
+			} else {
+				root[PLUGIN_ERROR] = "Can't open the files";
+			}
+		} else {
+			root[PLUGIN_ERROR] = "File not present";
+		}
+
+		if (fileMetadata != NULL) {
+			delete fileMetadata;
+		}
+		return root;
+	}
+
+	/**
+	 * Tries to retrieve all available zoom levels for this MBTiles resource.
+	 * @return a {@link List} of zoom levels as {@link Integer}
+	 */
+	QList<int> MBTilesPluginFileImplNDK::getZoomLevels()
+	{
+		Json::Value metadata = getMetaData();
+		QList<int> zoomLevels;
+
+		std::string name = metadata[KEY_NAME].asString();
+		std::string version = metadata[KEY_VERSION].asString();
+
+		QString dirZoom = QString::fromStdString(dirPath->absolutePath().toStdString() + "\\" + version + "\\" + name);
+		QDir* contents = new QDir(dirZoom);
+		if (contents != NULL && contents->exists()) {
+			QFileInfoList info = contents->entryInfoList(QDir::Files, QDir::NoSort);
+			if (!info.isEmpty()) {
+				for (int i = 0 ; i < info.size() ; i++) {
+					QString fileName = info[i].fileName();
+					zoomLevels.append(fileName.toInt());
+				}
+				qSort(zoomLevels);
+			}
+		}
+		if (contents != NULL) {
+			delete contents;
+		}
+		return zoomLevels;
 	}
 
 }

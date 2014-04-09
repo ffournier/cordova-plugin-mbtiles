@@ -18,10 +18,18 @@
 #define MBTILESPLUGINFILEIMPLNDK_HPP_
 
 #include "mbtilespluginaction_ndk.hpp"
+#include <QDir>
+#include <QFile>
 
 namespace webworks {
 
 class MBTilesPluginFileImplNDK : public MBTilesPluginActionNDK {
+private:
+	QDir* dirPath;
+
+	QList<int> getZoomLevels();
+	Json::Value getMetaData();
+	Json::Value getMaxZoom();
 
 public:
 	explicit MBTilesPluginFileImplNDK(MBTilesPluginJS *parent = NULL);
