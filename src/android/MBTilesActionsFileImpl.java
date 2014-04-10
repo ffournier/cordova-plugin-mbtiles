@@ -124,6 +124,9 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 	{
 		JSONObject tileData = new JSONObject();
 		JSONObject metadata = getMetadata();
+		ByteArrayOutputStream baos = null;
+		FileInputStream in = null;
+		BufferedOutputStream out = null;
 		
 		try
 		{
@@ -145,12 +148,13 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 			// test if file exist
 			if (tileFile.exists())
 			{
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				FileUtils.copyInputStream(new FileInputStream(tileFile), new BufferedOutputStream(baos));
+				baos = new ByteArrayOutputStream();
+				in = new FileInputStream(tileFile);
+				out = new BufferedOutputStream(baos);
+				FileUtils.copyInputStream(in,out);
 				
 				tileData.put(KEY_TILE_DATA, Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT));
 
-				baos.close();
 			}
 		}
 		catch (JSONException je)
@@ -164,6 +168,30 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 		catch (IOException ioe)
 		{
 			Log.e(getClass().getName(), ioe.getMessage(), ioe);
+		} finally {
+			
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+			    		// nothing to do here except log the exception
+				}
+			}
+			
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+			    		// nothing to do here except log the exception
+				}
+			}
+			if (baos != null) {
+				try {
+					baos.close();
+				} catch (IOException e) {
+			    		// nothing to do here except log the exception
+				}
+			}
 		}
 		
 		

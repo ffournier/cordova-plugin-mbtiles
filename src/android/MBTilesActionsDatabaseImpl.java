@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.CursorWindow;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Base64;
 import android.util.Log;
 
@@ -32,9 +33,14 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 	public void open(String path)
 	{
 		close();
+		try {
+			this.db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READONLY);
+			Log.d(getClass().getName(), "openDatabase : " + this.db.getPath());
+		} catch (SQLiteException e) {
+			Log.e(getClass().getName(), "SQLiteException : " + e.getMessage());
+			this.db = null;
 
-		this.db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READONLY);
-		Log.d(getClass().getName(), "openDatabase : " + this.db.getPath());
+		}
 	}
 
 	@Override
