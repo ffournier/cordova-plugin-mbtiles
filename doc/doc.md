@@ -416,6 +416,15 @@ No Parameters
 
 the metadata of the database or file
 
+	{
+		<name>: <value>,
+		<name>: <value>,
+		<name>: <value>,
+		<name>: <value>,
+		...,
+		<name>: <value>
+	}
+
 
 getMinZoom
 ----------------------
@@ -434,6 +443,10 @@ No Parameters
 
 the min zoom in database or file
 
+	{
+		min_zoom: <value>
+	}
+
 getMaxZoom
 ----------------------
 
@@ -450,6 +463,10 @@ No Parameters
 ### Return
 
 return the max zoom in the database or file
+
+	{
+		max_zoom: <value>
+	}
 
 getTile
 ----------------------
@@ -472,6 +489,10 @@ Give the data of tiles (z, x , y)
 
 The data of tiles in Base64.
 
+	{
+		tile_data: <value>
+	}
+
 executeStatment
 ----------------------
 
@@ -491,6 +512,24 @@ Can execute a query on database, and only database, this action is not implement
 
 return the result of the query
 
+	{
+		result_execute: [
+				{
+					<name>: <value>,
+					...,
+					<name>: <value>
+				},
+				...,
+				{
+					<name>: <value>,
+					...,
+					<name>: <value>
+				}
+			]
+			
+		}
+	}
+
 
 getDirectoryWorking
 ----------------------
@@ -508,3 +547,8 @@ Give the path of workspace of the database or file
 ### Return
 
 the path of workspace of database/file
+
+	{
+		directory_working: <value>
+	}
+

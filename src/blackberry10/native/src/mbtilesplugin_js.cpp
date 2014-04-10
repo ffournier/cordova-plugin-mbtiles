@@ -105,7 +105,7 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			parse = reader.parse(arg, root);
 		}
 		if (!parse) {
-			result[PLUGIN_RESULT] = PLUGIN_PARSE_ERROR;
+			result[PLUGIN_ERROR] = PLUGIN_PARSE_ERROR;
 		} else {
 			std::string type = root[KEY_TYPE].asString();
 			std::string name = root[KEY_NAME].asString();
@@ -116,26 +116,26 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 				m_pMBTilesPluginController = new webworks::MBTilesPluginFileImplNDK(this);
 				result = m_pMBTilesPluginController->open(callbackId, name);
 			} else {
-				result[PLUGIN_RESULT] = TYPE_UNDEFINED;
+				result[PLUGIN_ERROR] = TYPE_UNDEFINED;
 			}
 		}
 	} else if (strCommand.compare(ACTION_GETMETADATA) == 0) {
 		if (m_pMBTilesPluginController != NULL && m_pMBTilesPluginController->isOpen()) {
 			result = m_pMBTilesPluginController->getMetaData(callbackId);
 		} else {
-			result[PLUGIN_RESULT] = PLUGIN_NOT_OPEN;
+			result[PLUGIN_ERROR] = PLUGIN_NOT_OPEN;
 		}
 	} else if (strCommand.compare(ACTION_GETMINZOOM) == 0) {
 		if (m_pMBTilesPluginController != NULL && m_pMBTilesPluginController->isOpen()) {
 			result = m_pMBTilesPluginController->getMinZoom(callbackId);
 		} else {
-			result[PLUGIN_RESULT] = PLUGIN_NOT_OPEN;
+			result[PLUGIN_ERROR] = PLUGIN_NOT_OPEN;
 		}
 	} else if (strCommand.compare(ACTION_GETMAXZOOM) == 0) {
 		if (m_pMBTilesPluginController != NULL && m_pMBTilesPluginController->isOpen()) {
 			result = m_pMBTilesPluginController->getMaxZoom(callbackId);
 		} else {
-			result[PLUGIN_RESULT] = PLUGIN_NOT_OPEN;
+			result[PLUGIN_ERROR] = PLUGIN_NOT_OPEN;
 		}
 	} else if (strCommand.compare(ACTION_GETTILE) == 0) {
 		bool parse = arg != strCommand;
@@ -143,7 +143,7 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			parse = reader.parse(arg, root);
 		}
 		if (!parse) {
-			result[PLUGIN_RESULT] = PLUGIN_PARSE_ERROR;
+			result[PLUGIN_ERROR] = PLUGIN_PARSE_ERROR;
 		} else {
 			if (m_pMBTilesPluginController != NULL && m_pMBTilesPluginController->isOpen()) {
 				int z = root[KEY_Z].asInt();
@@ -151,7 +151,7 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 				int y = root[KEY_Y].asInt();
 				result = m_pMBTilesPluginController->getTile(callbackId, z, x, y);
 			} else {
-				result[PLUGIN_RESULT] = PLUGIN_NOT_OPEN;
+				result[PLUGIN_ERROR] = PLUGIN_NOT_OPEN;
 			}
 		}
 	} else if (strCommand.compare(ACTION_EXECUTESTATMENT) == 0) {
@@ -174,12 +174,12 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			}
 		}
 		if (!parse) {
-			result[PLUGIN_RESULT] = PLUGIN_PARSE_ERROR;
+			result[PLUGIN_ERROR] = PLUGIN_PARSE_ERROR;
 		} else {
 			if (m_pMBTilesPluginController != NULL && m_pMBTilesPluginController->isOpen()) {
 				result = m_pMBTilesPluginController->getExecuteStatment(callbackId, query, params);
 			} else {
-				result[PLUGIN_RESULT] = PLUGIN_NOT_OPEN;
+				result[PLUGIN_ERROR] = PLUGIN_NOT_OPEN;
 			}
 		}
 	} else if (strCommand.compare(ACTION_GETDIRECTORYWORKING) == 0) {
@@ -188,7 +188,7 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			parse = reader.parse(arg, root);
 		}
 		if (!parse) {
-			result[PLUGIN_RESULT] = PLUGIN_PARSE_ERROR;
+			result[PLUGIN_ERROR] = PLUGIN_PARSE_ERROR;
 		} else {
 			webworks::MBTilesPluginActionNDK * action = NULL;
 			std::string type = root[KEY_TYPE].asString();
@@ -199,7 +199,7 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 				action = new webworks::MBTilesPluginFileImplNDK(this);
 				result = action->getDirectoryWorking(callbackId);
 			} else {
-				result[PLUGIN_RESULT] = TYPE_UNDEFINED;
+				result[PLUGIN_ERROR] = TYPE_UNDEFINED;
 			}
 			if (action != NULL) {
 				delete action;

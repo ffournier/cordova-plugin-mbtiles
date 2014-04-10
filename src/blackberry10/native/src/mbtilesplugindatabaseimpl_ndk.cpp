@@ -61,7 +61,7 @@ namespace webworks {
 					close();
 					root[PLUGIN_ERROR] = "Cannot open database";
 				} else {
-					root[PLUGIN_RESULT] = "Database Open";
+					root[PLUGIN_RESULT] = "OK";
 				}
 			} else {
 				root[PLUGIN_ERROR] = "Database doesn't exist";
@@ -305,7 +305,7 @@ namespace webworks {
 						// add to array
 						array.append(objectJson);
 					}
-					root[PLUGIN_RESULT] = array;
+					root[KEY_EXECUTE_STATMENT] = array;
 
 				} else {
 					root[PLUGIN_ERROR] = "Bind Value error";
