@@ -25,7 +25,7 @@ Mac
 XCode
 
 
-Windows
+Windows Phone 8
 ----------------------
 
 ### __Environnement__
@@ -97,9 +97,9 @@ Pro edition or higher
 
 Add in your vmx to enable Hyper-V
 
-hypervisor.cpuid.v0 = "FALSE"
+	hypervisor.cpuid.v0 = "FALSE"
 
-mce.enable = "TRUE"
+	mce.enable = "TRUE"
 
 since your system now access 
 
@@ -113,13 +113,13 @@ Aller dans le centre de maintenance que vous trouverez dans le panneau de config
 
 Puis activer le LUAEnable de la regedit pour se faire aller dans la regedit :
 
-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system
+	HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system
 
 et mettez la valeur à 0
 
 Puis depuis une commande administrator
 
-bcdedit /set hypervisorlaunchtype Off --> pour pouvoir annuler le lancement de l'hypervisor au démarrage et ainsi le modifier depuis le panneau de configuration.
+	bcdedit /set hypervisorlaunchtype Off --> pour pouvoir annuler le lancement de l'hypervisor au démarrage et ainsi le modifier depuis le panneau de configuration.
 
 
 ### __IDE__
@@ -150,5 +150,202 @@ You have like tools the controller inside the install of the emulator.
 
 You can access to the emulator by the command telnet <ip_simulator> or ftp. (user: devuser, password:devuser).
 
+
+How it works ? 
+======================
+
+This plugin can access to a database in sqlite or a file, to read mbtiles data. It create the link between webview and natif. This link depends of the OS where you will execute your program. just the interface in JavaScript must be the same to simplify the call of function. We will see by supported OS how it works and how call it.
+
+
+Android
+----------------------
+
+You must create a class which extends CordovaPlugin, in this class override the function execute :
+
+	public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException;
+
+This function receive the call of javascript :
+
+* __action__
+
+ In this string we will find the name of function / action to execute
+
+* __data__
+
+ In this JSON we will find the parameters given by javascript
+ 
+* __callbackContext__
+
+ This class will can return the result to the Caller by a callback, the object returned is a PluginResult provides by the Cordova Library. 
+
+	callbackContextFinal.sendPluginResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
+
+iOS
+----------------------
+You must create a class which extends CDVPlugin, in this class you can create all your function / action like this :
+
+	- (void)open:(CDVInvokedUrlCommand*)command;
+
+* __open__
+
+ The name of the function / action
+
+* __CDVInvokedUrlCommand__
+
+ the command
+
+command.arguments --> the parameters given by JavaScript
+
+command.callbackId --> the callbackId to call.
+
+To return the result to JavaScript :
+
+	CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+
+Windows Phone 8
+----------------------
+
+You must create a class which extends BaseCommand and be inside the namespace WPCordovaClassLib.Cordova.Commands, in this class declare all your function / action like this:
+
+	public void open(string options);
+
+This function receive the call of javascript :
+
+* __open__
+
+ The name of the function / action
+
+* __options__
+
+ The parameters given by JavaScript
+ 
+
+BlackBerry
+----------------------
+
+You must create a class which extends JSExt, in this class override the function execute :
+
+	virtual std::string InvokeMethod(const std::string& command);
+
+This function receive the call of javascript :
+
+	size_t commandIndex = command.find_first_of(" ");
+	std::string strCommand = command.substr(0, commandIndex);
+	size_t callbackIndex = command.find_first_of(" ", commandIndex + 1);
+	std::string callbackId = command.substr(commandIndex + 1, callbackIndex - commandIndex - 1);
+	std::string arg = command.substr(callbackIndex + 1, command.length());
+
+* __strCommand__
+
+ the function / action to execute.
+ 
+* __callbackId__
+
+ this string can be used to return an async result.
+
+* __arg__
+
+	the paremeters given by JavaScript
+
+Return the sync result to JavaScript by a return string of this funcion.
+
+
+JavaScript
+----------------------
+
+### Android, iOS, Windows Phone 8
+
+To call an function contained in your plugin, you must provide to the user an struct to call it easily.
+
+_A Sample :_
+	
+cordova.exec(onSuccess, onError, "MBTilesPlugin", "open", [params]);
+
+* __onSucess__
+
+the function which receive a result of callback plugin --> function(result)
+
+* __onError__
+
+the function which receive an error of callback plugin --> function(error)
+
+* __"MBTilesPlugin"__
+
+the name of the plugin in file <plugin.xml>
+
+* __"open"__
+
+the action/function you call
+
+* __[params]__
+
+the parameters
+
+### Blackberry
+
+To call an function contained in your plugin, you must provide to the user an struct to call it easily.
+
+_A Sample :_
+	
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "open",  {input: input});
+
+* __onSucess__
+
+the function which receive a result of callback plugin --> function(result)
+
+* __onError__
+
+the function which receive an error of callback plugin --> function(error)
+
+* __"com.makina.offline.mbtiles"__
+
+the package name of the plugin 
+
+* __"open"__
+
+the action/function you call
+
+* __{input: input}__
+
+the parameters
+
+Futhermore we need to create an another JavaScript file to plug the natif to the JavaScript, this file will be in src (index.js).
+
+Initially declare all your function provides by your plugin like this :
+
+	open: function (success, fail, args, env) {
+		var result = new PluginResult(args, env),
+		data = JSON.parse(decodeURIComponent(args.input)),
+		response = <yourinstance>.getInstance().open(result.callbackId, data);
+		result.ok(JSON.parse(response), false);
+	},
+
+
+Then declares a new struct JNEXT.yourplugin, in this struct load your library, this struc is your instance that you used before.
+
+	JNEXT.MBTilesPlugin = function ()
+
+	self.init = function () {
+		if (!JNEXT.require("libMBTilesPlugin")) {
+			return false;
+		}
+
+		self.m_id = JNEXT.createObject("libMBTilesPlugin.MBTilesPluginJS");
+
+		if (self.m_id === "") {
+			return false;
+		}
+
+		JNEXT.registerEvents(self);
+	};
+
+To finish in this struct declare all your function must be used by your instance 
+
+	// calls into InvokeMethod(string command) 
+	self.open = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "open " + callbackId + " " + JSON.stringify(input));
+	};
 
 

@@ -8,26 +8,27 @@ To install plugin
 
 create project by cordova 
 
-cordova create <project_name> <package_name> <name_class>
+	cordova create <project_name> <package_name> <name_class>
 
 Then
 
-cordova platform add android
+	cordova platform add android
 
-cordova add plugin <path_to_src>
+	cordova add plugin <path_to_src>
 
 
 * Windows
 
+
 create project by cordova 
 
-cordova create <project_name> <package_name> <name_class>
+	cordova create <project_name> <package_name> <name_class>
 
 Then
 
-cordova platform add wp8
+	cordova platform add wp8
 
-cordova add plugin <path_to_src>
+	cordova add plugin <path_to_src>
 
 After need to istall and add reference SQlite For Windows.
 
@@ -35,25 +36,25 @@ After need to istall and add reference SQlite For Windows.
 
 create project by cordova 
 
-cordova create <project_name> <package_name> <name_class>
+	cordova create <project_name> <package_name> <name_class>
 
 Then
 
-cordova platform add ios
+	cordova platform add ios
 
-cordova add plugin <path_to_src>
+	cordova add plugin <path_to_src>
 
 
 * BlackBerry
 
 create project by cordova 
 
-cordova create <project_name> <package_name> <name_class>
+	cordova create <project_name> <package_name> <name_class>
 
 Then
 
-cordova platform add blackberry10
+	cordova platform add blackberry10
 
-cordova add plugin <path_to_src>
+	cordova add plugin <path_to_src>
 
 
