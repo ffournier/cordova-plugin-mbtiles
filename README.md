@@ -53,6 +53,7 @@ cordova create <project_name> <package_name> <name_class>
 Then
 
 cordova platform add blackberry10
+
 cordova add plugin <path_to_src>
 
 
