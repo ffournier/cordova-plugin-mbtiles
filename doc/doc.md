@@ -349,3 +349,162 @@ To finish in this struct declare all your function must be used by your instance
 	};
 
 
+Feature 
+======================
+
+To use it :
+
+	var type = "db";
+	var mbTilesPlugin = new MBTilesPlugin();
+	mbTilesPlugin.getDirectoryWorking({type: type} , function(result) {
+		console.log("getDirectoryWorking : " + result.directory_working);
+	});
+
+
+
+
+
+We will find in this plugin several features :
+
+_Be Careful in BalckBerry we have not return on onError, but return in onSuccess a JSON with a attribut error._
+
+
+Glossary
+----------------------
+
+onSuccess --> function(result) {}
+
+onError --> function(error) {}
+
+open
+----------------------
+
+	_function(params, onSuccess, onError)_
+
+### Description 
+
+Open the database or save the workspace of file
+
+### Parameters
+
+__name__: name of database
+
+__type__: 'file' or 'db'
+
+
+### Return
+
+Nothing
+
+Return "OK" in BlackBerry10
+
+
+getMetadata
+----------------------
+
+	_function(onSuccess, onError)_
+
+### Description 
+
+Give the all metadata of the database or file
+
+### Parameters
+
+No Parameters
+
+### Return
+
+the metadata of the database or file
+
+
+getMinZoom
+----------------------
+
+	_function(onSuccess, onError)_
+
+### Description 
+
+Give the min zoom of the database or file
+
+### Parameters
+
+No Parameters
+
+### Return
+
+the min zoom in database or file
+
+getMaxZoom
+----------------------
+
+	_function(onSuccess, onError)_
+
+### Description 
+
+Give the max zoom of the database or file 
+
+### Parameters
+
+No Parameters
+
+### Return
+
+return the max zoom in the database or file
+
+getTile
+----------------------
+
+	_function(params, onSuccess, onError)_
+
+### Description 
+
+Give the data of tiles (z, x , y)
+
+### Parameters
+
+* __z__: zoom level
+
+* __x__: colum
+
+* __y__: row
+
+### Return
+
+The data of tiles in Base64.
+
+executeStatment
+----------------------
+
+	_function(params, onSuccess, onError)_
+
+### Description 
+
+Can execute a query on database, and only database, this action is not implements for the type file
+
+### Parameters
+
+* __query__: the query to execute
+
+* __params__: list of paremeters to bind ['param', 'param', 'param'] 
+
+### Return
+
+return the result of the query
+
+
+getDirectoryWorking
+----------------------
+
+	_function(params, onSuccess, onError)_
+
+### Description
+
+Give the path of workspace of the database or file 
+
+### Parameters
+
+* __type__: 'file' or 'db'
+
+### Return
+
+the path of workspace of database/file
