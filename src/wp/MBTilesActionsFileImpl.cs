@@ -60,16 +60,18 @@ namespace MBTilesPlugin
 	/// the JObject repsenting the metadata</returns>
         private JObject getMetadataObject()
         {
+            JObject obj = new JObject(); 
             string filePath = mapDirectory + "\\metadata.json";
             string text = readText(filePath);
-            metadata[] list = JsonHelper.Deserialize<metadata[]>(text);
-
-            JObject obj = new JObject();
-            foreach (metadata data in list)
-            {
-                obj.Add(data.name, data.value);
-            }
-           
+	        if (text != null) {
+		       
+		        metadata[] list = JsonHelper.Deserialize<metadata[]>(text);
+			    
+			    foreach (metadata data in list)
+			    {
+				    obj.Add(data.name, data.value);
+			    }
+		    }
             return obj;
         }
 
@@ -148,12 +150,18 @@ namespace MBTilesPlugin
                     string name = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_NAME);
                     string version = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_VERSION);
                     string format = (string)metadata.GetValue(ConstantMbTilePlugin.KEY_FORMAT);
-		    /// get path of tiles
-                    string tileFile = this.mapDirectory + "\\" + version + "\\" + name + "\\" +
-                                            currentZoomLevel.ToString() + "\\" + column.ToString() + "\\" + row.ToString() + "." + format;
-		    // encode raw
-                    string data = ConstantMbTilePlugin.Base64Encode(readText(tileFile));
-                    result = new tiles_output(data);
+		            if (name != null && version != null && format != null)
+                    {
+			            /// get path of tiles
+			            string tileFile = this.mapDirectory + "\\" + version + "\\" + name + "\\" +
+			                                    currentZoomLevel.ToString() + "\\" + column.ToString() + "\\" + row.ToString() + "." + format;
+			            /// encode raw
+			            string raw = readText(tileFile);
+			            if (raw != null) {
+                            string data = ConstantMbTilePlugin.Base64Encode(raw);
+				            result = new tiles_output(data);
+			            }
+		            }
                 }
             }
             catch(Exception)
@@ -173,7 +181,7 @@ namespace MBTilesPlugin
 	/// <param name="filePath"> the path of file</param>
         private string readText(string filePath) 
         {
-            string text = "";
+            string text = null;
             try
             {
                 using (IsolatedStorageFile isoFile = IsolatedStorageFile.GetUserStoreForApplication())

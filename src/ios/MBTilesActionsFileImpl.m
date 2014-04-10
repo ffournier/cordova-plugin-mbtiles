@@ -71,17 +71,21 @@
         if (name && version) {
             NSString* pathDir = [_file stringByAppendingPathComponent:version];
             pathDir = [pathDir stringByAppendingPathComponent:name];
-            NSDirectoryEnumerator * enumDir = [[NSFileManager defaultManager] enumeratorAtPath:pathDir];
-            NSString * fileTemp;
+	    
             NSMutableArray* list = [[NSMutableArray alloc] init];
-            while (fileTemp = [enumDir nextObject]) {
-                NSInteger val = [fileTemp integerValue];
-                if (val) {
-                    [list addObject:[NSNumber numberWithInt:val]];
+            NSDirectoryEnumerator * enumDir = [[NSFileManager defaultManager] enumeratorAtPath:pathDir];
+            if (enumDir != nil) {
+                NSString * fileTemp;
+		    
+                while (fileTemp = [enumDir nextObject]) {
+                    NSInteger val = [fileTemp integerValue];
+                    if (val) {
+                        [list addObject:[NSNumber numberWithInt:val]];
+                    }
                 }
+                // sort List
+                [list sortedArrayUsingSelector:@selector(compare:)];
             }
-            // sort List
-            [list sortedArrayUsingSelector:@selector(compare:)];
             return list;
         }
     }

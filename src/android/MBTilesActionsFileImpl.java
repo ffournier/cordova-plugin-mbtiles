@@ -58,20 +58,22 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 		File fileContentMedata = new File(this.mapDirectory.getAbsolutePath() + File.separator + "metadata.json");
 		
 		JSONObject metadata = new JSONObject();
+
+		if (fileContentMedata.exists()) {
 		
-		try
-		{
-			metadata = new JSONObject(FileUtils.readFileAsString(fileContentMedata));
+			try
+			{
+				metadata = new JSONObject(FileUtils.readFileAsString(fileContentMedata));
+			}
+			catch (JSONException je)
+			{
+				Log.e(getClass().getName(), je.getMessage(), je);
+			}
+			catch (IOException ioe)
+			{
+				Log.e(getClass().getName(), ioe.getMessage(), ioe);
+			}
 		}
-		catch (JSONException je)
-		{
-			Log.e(getClass().getName(), je.getMessage(), je);
-		}
-		catch (IOException ioe)
-		{
-			Log.e(getClass().getName(), ioe.getMessage(), ioe);
-		}
-		
 		return metadata;
 	}
 
@@ -214,13 +216,13 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 			
 			File contents = new File(this.mapDirectory.getAbsolutePath() + File.separator + version + File.separator + name);
 			
-			
-			for (File zoomLevel : contents.listFiles())
-			{
-				zoomLevels.add(Integer.valueOf(zoomLevel.getName()));
+			if (contents.exists()) {
+				for (File zoomLevel : contents.listFiles())
+				{
+					zoomLevels.add(Integer.valueOf(zoomLevel.getName()));
+				}
+				Arrays.sort(zoomLevels.toArray(new Integer[]{}));
 			}
-			
-			Arrays.sort(zoomLevels.toArray(new Integer[]{}));
 		}
 		catch (JSONException je)
 		{
