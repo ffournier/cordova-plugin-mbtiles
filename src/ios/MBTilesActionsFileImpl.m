@@ -21,6 +21,8 @@
 }
 
 - (void)open:(NSString*) path {
+    [self close];
+
     NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
      
     NSString* dirPath = [dirs objectAtIndex:0];

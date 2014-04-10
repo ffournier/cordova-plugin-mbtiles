@@ -23,6 +23,9 @@
 }
 
 - (void)open:(NSString*) path {
+
+    [self close];
+
     NSFileManager *filemgr =  [NSFileManager defaultManager];
    
     NSArray* list = [path componentsSeparatedByString:@"."];
@@ -47,8 +50,8 @@
     if (_database != nil) {
         // close db
         sqlite3_close(_database);
-        database = nil;
     }
+    database = nil;
 }
 
 - (NSDictionary*)getMetadata {

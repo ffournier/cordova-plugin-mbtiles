@@ -23,6 +23,7 @@ namespace MBTilesPlugin
 	
 	    public void open(string path)
 	    {
+		close();
 		    try
             {
                 db = new Database(path);
@@ -43,8 +44,9 @@ namespace MBTilesPlugin
 		    if (isOpen())
 		    {
                 this.db.Close();
-			    this.db = null;
+			    
 		    }
+		    this.db = null;
 	    }
 
         /// <summary>

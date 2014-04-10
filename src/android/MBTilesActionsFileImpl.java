@@ -29,6 +29,8 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 	@Override
 	public void open(String path)
 	{
+		close();
+
 		Log.d(getClass().getName(), "try to open map directory '" + path + "'");
 		
 		this.mapDirectory = new File(path);
@@ -46,9 +48,8 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 		if (isOpen())
 		{
 			Log.d(getClass().getName(), "close '" + mapDirectory.getAbsolutePath() + "'");
-			
-			this.mapDirectory = null;
 		}
+		this.mapDirectory = null;
 	}
 
 	@Override

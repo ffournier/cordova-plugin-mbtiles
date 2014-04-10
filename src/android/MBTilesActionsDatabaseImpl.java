@@ -31,8 +31,9 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 	@Override
 	public void open(String path)
 	{
+		close();
+
 		this.db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READONLY);
-		
 		Log.d(getClass().getName(), "openDatabase : " + this.db.getPath());
 	}
 
@@ -48,10 +49,9 @@ public class MBTilesActionsDatabaseImpl implements IMBTilesActions
 		if (isOpen())
 		{
 			Log.d(getClass().getName(), "close '" + db.getPath() + "'");
-			
 			this.db.close();
-			this.db = null;
 		}
+		this.db = null;
 	}
 
 	@Override

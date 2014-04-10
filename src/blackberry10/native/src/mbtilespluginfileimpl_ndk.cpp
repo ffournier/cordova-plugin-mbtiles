@@ -32,9 +32,7 @@ namespace webworks {
 
 	MBTilesPluginFileImplNDK::~MBTilesPluginFileImplNDK()
 	{
-		if (dirPath != NULL) {
-			delete dirPath;
-		}
+		close();
 	}
 
 	// The extension methods are defined here

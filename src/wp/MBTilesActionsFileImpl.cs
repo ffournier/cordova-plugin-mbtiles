@@ -23,7 +23,7 @@ namespace MBTilesPlugin
             
 	    public void open(string path)
 	    {
-            mapDirectory = null;
+            close();
             if (path != null)
             {
                 try
@@ -51,10 +51,7 @@ namespace MBTilesPlugin
 
 	    public void close()
 	    {
-		    if (isOpen())
-		    {
-			    this.mapDirectory = null;
-		    }
+		  this.mapDirectory = null;
 	    }
 
         /// <summary>
