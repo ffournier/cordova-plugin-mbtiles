@@ -20,7 +20,7 @@ namespace MBTilesPlugin
         private Sqlite3Statement stmt = null;
 
         public Database(string path)
-            : base(path)
+            : base(path, SQLiteOpenFlags.ReadOnly)
         {
         }
 

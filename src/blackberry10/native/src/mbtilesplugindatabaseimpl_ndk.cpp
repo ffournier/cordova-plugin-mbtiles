@@ -56,7 +56,7 @@ namespace webworks {
 			QFile* path = new QFile(result);
 			if (path != NULL && path->exists() == true)
 			{
-				if (sqlite3_open_v2(path->fileName().toStdString().c_str(), &database, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK )
+				if (sqlite3_open_v2(path->fileName().toStdString().c_str(), &database, SQLITE_OPEN_READONLY, NULL) != SQLITE_OK )
 				{
 					close();
 					root[PLUGIN_ERROR] = "Cannot open database";

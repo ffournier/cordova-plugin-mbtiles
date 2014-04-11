@@ -34,7 +34,7 @@
     if ([filemgr fileExistsAtPath: absolutePath ] == YES) {
         const char *dbpath = [absolutePath UTF8String];
         // open the database
-        if (sqlite3_open_v2(dbpath, &_database, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK) {
+        if (sqlite3_open_v2(dbpath, &_database, SQLITE_OPEN_READONLY, NULL) != SQLITE_OK) {
             _database = nil;
         }
     } else {
