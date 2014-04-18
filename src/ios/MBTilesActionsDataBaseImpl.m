@@ -7,6 +7,8 @@
 
 #import "MBTilesActionsDataBaseImpl.h"
 #import "MBTilesConstant.h"
+#import "CDVFile.h"
+
 
 @implementation MBTilesActionsDataBaseImpl
 @synthesize database = _database;
@@ -28,8 +30,8 @@
 
     NSFileManager *filemgr =  [NSFileManager defaultManager];
    
-    NSArray* list = [path componentsSeparatedByString:@"."];
-    NSString* absolutePath = [[NSBundle mainBundle] pathForResource:[list objectAtIndex:0] ofType:[list objectAtIndex:1]];	
+    NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    NSString *absolutePath = [docs stringByAppendingPathComponent:path];
     // test if the file exist
     if ([filemgr fileExistsAtPath: absolutePath ] == YES) {
         const char *dbpath = [absolutePath UTF8String];
@@ -59,7 +61,7 @@
     
     // test if the db is open
     if([self isOpen] == YES) {
-	// run query metadata
+    // run query metadata
         const char* query = [[NSString stringWithFormat:@"SELECT * FROM metadata"] UTF8String];
         sqlite3_stmt* stmt;
         [_lock lock];
@@ -70,7 +72,7 @@
                 NSString* name = [NSString stringWithUTF8String:(const char*)sqlite3_column_text(stmt, 0)];
                 NSString* type = [NSString stringWithUTF8String:(const char*)sqlite3_column_text(stmt, 1)];
                 if (name && type) {
-                    [dict setObject:name forKey:type];
+                    [dict setObject:type forKey:name];
                 }
             }
             sqlite3_finalize(stmt);
@@ -109,7 +111,7 @@
     
     // test if the db is open
     if([self isOpen] == YES) {
-	// run query max zoom
+    // run query max zoom
         const char* query = [[NSString stringWithFormat:@"SELECT MAX(zoom_level) AS max_zoom_level FROM tiles"] UTF8String];
         sqlite3_stmt* stmt;
         [_lock lock];
@@ -269,9 +271,9 @@
 
 - (NSDictionary*) getDirectoryWorking {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-    NSBundle* bundle = [NSBundle mainBundle];
-    NSString* path = [bundle bundlePath];
-    [dict setObject:path forKey:KEY_DIRECTORY_WORKING];
+    
+    NSString *docs = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    [dict setObject:docs forKey:KEY_DIRECTORY_WORKING];
     return dict;
 }
 
