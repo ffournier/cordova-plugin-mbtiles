@@ -69,16 +69,20 @@ function buildMap() {
 								});
 
 					mbTilesPlugin.getMinZoom(function(result) {
-						console.log("getMinZoom --" + result + "--");
-						var metadatacenter = result.center;
+					console.log("getMinZoom --" + result + "--");
 
-						var res = metadatacenter.split(",");
+						mbTilesPlugin.getMetadata(function(result) {
+							console.log("getMetadata");
 
-						var map = new L.Map("map", {
-							center : [res[0],res[1]],//tozeur
+							var metadatacenter = result.center;
 
-							zoom : res[2],
-							attributionControl: false
+							var res = metadatacenter.split(",");
+
+							var map = new L.Map("map", {
+								center : [res[0],res[1]],//tozeur
+
+								zoom : res[2],
+								attributionControl: false
 
 						});
 						console.log("MBTilesPlugin");
@@ -94,9 +98,10 @@ function buildMap() {
 							console.log("TileLayer initalized2");
 						});
 						console.log("MAP CENTER POINT " + JSON.stringify(map.latLngToLayerPoint(new L.LatLng(38.89611,-77.035446))));
-					}, function(e) {
-						console.log("err : " + JSON.stringify(e));
 					});
+				}, function(e) {
+					console.log("err : " + JSON.stringify(e));
+				});
 				}, function(e) {
 					console.log("open failed : " + JSON.stringify(e));
 
