@@ -85,9 +85,15 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <source-file src="src/ios/MBTilesPlugin.m" />
         <header-file src="src/ios/MBTilesConstant.h" />
         <source-file src="src/ios/MBTilesConstant.m" />
-	<header-file src="src/ios/MBTilesActionsFileImpl.h" />
+		<header-file src="src/ios/MBTilesActionsFileImpl.h" />
         <source-file src="src/ios/MBTilesActionsFileImpl.m" />
-
+        <header-file src="src/ios/MBTilesActionsCDVFileImpl.h" />
+        <source-file src="src/ios/MBTilesActionsCDVFileImpl.m" />
+        <header-file src="src/ios/MBTilesActionsGenDataBaseImpl.h" />
+        <source-file src="src/ios/MBTilesActionsGenDataBaseImpl.m" />
+        <header-file src="src/ios/MBTilesActionsGenImpl.h" />
+        <source-file src="src/ios/MBTilesActionsGenImpl.m" />
+        
         <framework src="libsqlite3.dylib" />
         <framework src="MobileCoreServices.framework" />
         <framework src="AssetsLibrary.framework" />

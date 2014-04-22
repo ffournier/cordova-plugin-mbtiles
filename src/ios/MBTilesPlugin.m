@@ -13,37 +13,77 @@
 
 @synthesize tilesActions;
 
-- (void)open:(CDVInvokedUrlCommand*)command {
+- (void)init:(CDVInvokedUrlCommand*)command {
     [self.commandDelegate runInBackground:^{
         CDVPluginResult* pluginResult = nil;
         
         NSDictionary* dict = [command.arguments objectAtIndex:0];
-         // get the type and name
+        // get the type and name
         NSString* type = dict[KEY_TYPE];
-        NSString* name = dict[KEY_NAME];
-        if (type && name) {
-            // open db with name
+        NSString* url = nil;
+        if ([dict objectForKey:KEY_URL] != nil) {
+            url = dict[KEY_URL];
+        }
+        
+        if (tilesActions != nil) {
+            [tilesActions close];
+        }
+        
+        tilesActions = nil;
+        
+        if (type) {
+            // init db with name
             if ([type isEqualToString:@"db"]) {
                 tilesActions = [[MBTilesActionsDataBaseImpl alloc] init];
-                [tilesActions open:name];
-                
-                if ([tilesActions isOpen]) {
-                   pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-                } else {
-                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-                }
-            // open file name     
-            } else if ([type isEqualToString:@"file"]) {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            }
+            // init file name
+            else if ([type isEqualToString:@"file"]) {
                 tilesActions = [[MBTilesActionsFileImpl alloc] init];
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            }
+            // init cdv filename
+            else if ([type isEqualToString:@"cdvfile"]) {
+                CDVFile* filePlugin = [self.commandDelegate getCommandInstance:@"File"];
+                if (url != nil) {
+                    tilesActions = [[MBTilesActionsCDVFileImpl alloc] initWithCDVFile:filePlugin withUrl:url];
+                } else {
+                    tilesActions = [[MBTilesActionsCDVFileImpl alloc] initWithCDVFile:filePlugin];
+                }
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+            }
+            else {
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION];
+            }
+        }
+        
+        // The sendPluginResult method is thread-safe.
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }];
+}
+
+
+- (void)open:(CDVInvokedUrlCommand*)command {
+    [self.commandDelegate runInBackground:^{
+        CDVPluginResult* pluginResult = nil;
+        
+        
+        if (tilesActions != nil) {
+            NSDictionary* dict = [command.arguments objectAtIndex:0];
+            NSString* name = dict[KEY_NAME];
+            // get name
+            if (name) {
                 [tilesActions open:name];
                 if ([tilesActions isOpen]) {
-                   pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+                    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
                 } else {
-                     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+                    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
                 }
             } else {
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_INVALID_ACTION];
+                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION];
             }
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
         }
     
         // The sendPluginResult method is thread-safe.
@@ -145,7 +185,7 @@
             // test is open
             if ([tilesActions isOpen]) {
                 // execute request
-                NSDictionary* data = [tilesActions executeStatment:query withParams:params];
+                NSDictionary* data = [tilesActions executeStatement:query withParams:params];
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
             } else {
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
@@ -163,26 +203,12 @@
 - (void)get_directory_working:(CDVInvokedUrlCommand*)command {
     [self.commandDelegate runInBackground:^{
         CDVPluginResult* pluginResult = nil;
-        id<MBTilesAction> actions = nil;
         
-        NSDictionary* dict = [command.arguments objectAtIndex:0];
-         // get the type and name
-        NSString* type = dict[KEY_TYPE];
-        if (type) {
-            // get directory working of db
-            if ([type isEqualToString:@"db"]) {
-                actions = [[MBTilesActionsDataBaseImpl alloc] init];
-                NSDictionary* data = [actions getDirectoryWorking];
-                
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
-            // get directory working of file   
-            } else if ([type isEqualToString:@"file"]) {
-                actions = [[MBTilesActionsFileImpl alloc] init];
-                NSDictionary* data = [actions getDirectoryWorking];
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
-            } else {
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_JSON_EXCEPTION];
-            }
+        if (tilesActions != nil) {
+            NSDictionary* data = [tilesActions getDirectoryWorking];
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:data];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
         }
     
         // The sendPluginResult method is thread-safe.

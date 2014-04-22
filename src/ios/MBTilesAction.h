@@ -14,9 +14,9 @@
 /** 
  * open database with given parameters
  *
- * @param path the path of the file to open
+ * @param name the name of the file to open
  */
-- (void)open:(NSString*) path;
+- (void)open:(NSString*) name;
 
 /** 
  * test if the file was opened 
@@ -68,14 +68,14 @@
  * @param params parameters needed
  * @return a dictionnary which contains all object returned by the query
  */
-- (NSDictionary*)executeStatment:(NSString*) query withParams:(NSArray*) params;
+- (NSDictionary*)executeStatement:(NSString*) query withParams:(NSArray*) params;
 
 /**
 * return the directory of working
-* @param path : the pah of working
 * @return <code>JSONObject</code>
 */
 -(NSDictionary*) getDirectoryWorking;
+
 
 @end
 

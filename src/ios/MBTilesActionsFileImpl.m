@@ -9,6 +9,7 @@
 #import "MBTilesConstant.h"
 
 @implementation MBTilesActionsFileImpl
+@synthesize directory = _directory;
 @synthesize file = _file;
 
 /**
@@ -17,24 +18,25 @@
 - (id) init {
     self = [super init];
     _file = nil;
+    self.directory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    
     return self;
 }
 
-- (void)open:(NSString*) path {
+- (void)open:(NSString*) name {
     [self close];
 
-    NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-     
-    NSString* dirPath = [dirs objectAtIndex:0];
-    NSString* pathFile = [dirPath stringByAppendingPathComponent:path];
     
     NSFileManager *filemgr =  [NSFileManager defaultManager];
+    BOOL value;
+    NSString* dir = [self getDirectory];
     
+    _file = nil;
     // test if file exist
-    if ([filemgr fileExistsAtPath: pathFile] == YES) {
-        _file = dirPath;
-    } else {
-        _file = nil;
+    if ([filemgr fileExistsAtPath:dir isDirectory:&value] == YES) {
+        if (value) {
+            _file = dir;
+        }
     }
 }
 
@@ -157,7 +159,7 @@
     return dict;
 }
 
-- (NSDictionary*)executeStatment:(NSString*) query withParams:(NSArray*) params {
+- (NSDictionary*)executeStatement:(NSString*) query withParams:(NSArray*) params {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
     if ([self isOpen]) {
         // not implemented
@@ -167,9 +169,7 @@
 
 - (NSDictionary*) getDirectoryWorking {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-    NSArray* dirs = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString* path = [dirs objectAtIndex:0];
-    [dict setObject:path forKey:KEY_DIRECTORY_WORKING];
+    [dict setObject:[self getDirectory] forKey:KEY_DIRECTORY_WORKING];
     return dict;
 }
 

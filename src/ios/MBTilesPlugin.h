@@ -9,6 +9,7 @@
 #import <Cordova/CDVPlugin.h>
 #import "MBTilesActionsDataBaseImpl.h"
 #import "MBTilesActionsFileImpl.h"
+#import "MBTilesActionsCDVFileImpl.h"
 
 
 /**
@@ -21,6 +22,11 @@
 }
 
 @property(retain) id tilesActions;
+
+/**
+ * action open
+ */
+- (void)init:(CDVInvokedUrlCommand*)command;
 
 /**
 * action open 

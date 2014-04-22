@@ -10,6 +10,7 @@
 @implementation MBTilesConstant
 
 NSString * const KEY_TYPE = @"type";
+NSString * const KEY_URL = @"url";
 NSString * const KEY_NAME = @"name";
 NSString * const KEY_Z = @"z";
 NSString * const KEY_Y = @"y";
@@ -21,7 +22,7 @@ NSString * const KEY_MAX_ZOOM = @"max_zoom";
 NSString * const KEY_TILE_DATA = @"tile_data";
 NSString * const KEY_QUERY = @"query";
 NSString * const KEY_PARAMS = @"params";
-NSString * const KEY_EXECUTE_STATMENT = @"result_execute";
+NSString * const KEY_EXECUTE_STATEMENT = @"result_execute";
 NSString * const KEY_DIRECTORY_WORKING = @"directory_working";
 
 + (NSString*)base64forData:(NSData*)theData {

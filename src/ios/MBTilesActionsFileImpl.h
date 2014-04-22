@@ -5,13 +5,12 @@
 //
 //
 
-#import <Foundation/Foundation.h>
-#import "MBTilesAction.h"
+#import "MBTilesActionsGenImpl.h"
 
 /**
 * Treat file
 */
-@interface MBTilesActionsFileImpl : NSObject<MBTilesAction>
+@interface MBTilesActionsFileImpl : MBTilesActionsGenImpl
 {
     // the path of file
     NSString* file;

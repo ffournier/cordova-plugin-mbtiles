@@ -14,7 +14,9 @@
 
     // declaration ok key
     extern NSString * const KEY_TYPE;
+    extern NSString * const KEY_URL;
     extern NSString * const KEY_NAME;
+    extern NSString * const KEY_PATH;
     extern NSString * const KEY_Z;
     extern NSString * const KEY_Y;
     extern NSString * const KEY_X;
@@ -25,10 +27,10 @@
     extern NSString * const KEY_TILE_DATA;
     extern NSString * const KEY_QUERY;
     extern NSString * const KEY_PARAMS;
-    extern NSString * const KEY_EXECUTE_STATMENT;
+    extern NSString * const KEY_EXECUTE_STATEMENT;
     extern NSString * const KEY_DIRECTORY_WORKING;
 
-/** 
+/**
  * transform data in string base 64
  *
  * @param theData the data to transform
