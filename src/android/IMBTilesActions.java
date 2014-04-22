@@ -18,11 +18,11 @@ public interface IMBTilesActions
 	static final String KEY_EXECUTE_STATMENT = "result_execute";
 	static final String KEY_DIRECTORY_WORKING = "directory_working";
 	
+	
 	/**
 	 * Tries to open MBTiles resource
-	 * @param path absolute path to the given resource
 	 */
-	void open(String path);
+	void open(String name);
 	
 	/**
 	 * Returns <code>true</code> if the given MBTiles resource is still opened and used.
@@ -100,8 +100,9 @@ public interface IMBTilesActions
 
 	/**
 	 * return the directory of working
-	 * @param path : the pah of working
 	 * @return <code>JSONObject</code>
 	 */
-	JSONObject getDirectoryWorking(String path);
-}
+	JSONObject getDirectoryWorking();
+	
+}	
+

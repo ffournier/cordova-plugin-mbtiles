@@ -58,9 +58,7 @@ public class FileUtils
 		}
 		finally
 		{
-			if (input != null) {
-				input.close();
-			}
+			input.close();
 		}
 		
 		return contents.toString();
@@ -102,5 +100,7 @@ public class FileUtils
 			out.write(buffer, 0, len);
 		}
 		
+		in.close();
+		out.close();
 	}
 }

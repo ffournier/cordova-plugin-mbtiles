@@ -6,8 +6,8 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.os.Environment;
 import android.util.Log;
+
 /**
  * <code>MBTilesPlugin</code> Cordova plugin.
  * <p>
@@ -18,9 +18,11 @@ import android.util.Log;
 public class MBTilesPlugin extends CordovaPlugin
 {
 	// declaration of static variable 
+	public static final String ACTION_INIT = "init";
 	public static final String ACTION_OPEN = "open";
 	public static final String ACTION_OPEN_TYPE_DB = "db";
 	public static final String ACTION_OPEN_TYPE_FILE = "file";
+	public static final String ACTION_OPEN_TYPE_CDV = "cdvfile";
 	public static final String ACTION_GET_METADATA = "get_metadata";
 	public static final String ACTION_GET_MIN_ZOOM = "get_min_zoom";
 	public static final String ACTION_GET_MAX_ZOOM = "get_max_zoom";
@@ -48,41 +50,43 @@ public class MBTilesPlugin extends CordovaPlugin
 	            PluginResult result = null;
 				try
 				{
-					if (actionFinal.equals(ACTION_OPEN))
+					if (actionFinal.equals(ACTION_INIT))
+					{
+						result = actionInit(dataFinal);
+					}
+					
+					else if (actionFinal.equals(ACTION_OPEN))
 					{
 						result = actionOpen(dataFinal);
 					}
 					
-					if (actionFinal.equals(ACTION_GET_METADATA))
+					else if (actionFinal.equals(ACTION_GET_METADATA))
 					{
 						result = actionGetMetadata(dataFinal);
 					}
 					
-					if (actionFinal.equals(ACTION_GET_MIN_ZOOM))
+					else if (actionFinal.equals(ACTION_GET_MIN_ZOOM))
 					{
 						result = actionGetMinZoom(dataFinal);
 					}
 					
-					if (actionFinal.equals(ACTION_GET_MAX_ZOOM))
+					else if (actionFinal.equals(ACTION_GET_MAX_ZOOM))
 					{
 						result = actionGetMaxZoom(dataFinal);
 					}
 					
-					if (actionFinal.equals(ACTION_GET_TILE))
+					else if (actionFinal.equals(ACTION_GET_TILE))
 					{
-						Log.i(getClass().getName(), "get Tiles");
 						result = actionGetTile(dataFinal);
 					}
 					
-					if (actionFinal.equals(ACTION_EXECUTE_STATMENT))
+					else if (actionFinal.equals(ACTION_EXECUTE_STATMENT))
 					{
-						Log.i(getClass().getName(), "execute statment");
 						result = actionExecuteStatment(dataFinal);
 					}
 
-					if (actionFinal.equals(ACTION_DIRECTORY_WORKING))
+					else if (actionFinal.equals(ACTION_DIRECTORY_WORKING))
 					{
-						Log.i(getClass().getName(), "get directory working");
 						result = actionGetDirectoryWorking(dataFinal);
 					}
 					
@@ -117,50 +121,48 @@ public class MBTilesPlugin extends CordovaPlugin
 		super.onDestroy();
 	}
 	
+	
 	/**
 	 * open database or file with given name
-	 * @param data : the parameters (name:'name' type:'type') 
+	 * @param data : the parameters (type:'type' optional url:'cdvfile://url...')
+	 * @return the pluginResult
+	 */
+	private PluginResult actionInit(JSONArray data) throws JSONException
+	{
+		String type = data.getJSONObject(0).getString("type");
+		String url = null;
+		if (data.getJSONObject(0).has("url")) {
+			url = data.getJSONObject(0).getString("url");
+		}
+		return new PluginResult(initAction(type, url) ? PluginResult.Status.OK : PluginResult.Status.IO_EXCEPTION);
+	}
+	
+	/**
+	 * open database or file with given name
+	 *  * @param data : the parameters (name:'name')
 	 * @return the pluginResult
 	 */
 	private PluginResult actionOpen(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
 		
-		String type = data.getJSONObject(0).getString("type");
-		
 		// database
-		if (type.equals(ACTION_OPEN_TYPE_DB))
+		if (mbTilesActions != null)
 		{
-			mbTilesActions = new MBTilesActionsDatabaseImpl();
-			
-			if (FileUtils.checkExternalStorageState())
+			String name = data.getJSONObject(0).getString("name");
+			mbTilesActions.open(name);
+			// test if file or database is opened
+			if (mbTilesActions.isOpen())
 			{
-				mbTilesActions.open(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + this.cordova.getActivity().getPackageName() + "/databases/" + data.getJSONObject(0).getString("name"));
+				result = new PluginResult(PluginResult.Status.OK);
 			}
-			
-		}
-		
-		// file
-		if (type.equals(ACTION_OPEN_TYPE_FILE))
-		{
-			mbTilesActions = new MBTilesActionsFileImpl();
-			
-			if (FileUtils.checkExternalStorageState())
+			else
 			{
-				mbTilesActions.open(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + this.cordova.getActivity().getPackageName() + "/maps/" + data.getJSONObject(0).getString("name"));
+				result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
 			}
+		} else {
+			result = new PluginResult(PluginResult.Status.ERROR);
 		}
-		
-		// test if file or database is opened
-		if ((mbTilesActions != null) && mbTilesActions.isOpen())
-		{
-			result = new PluginResult(PluginResult.Status.OK);
-		}
-		else
-		{
-			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
-		}
-		
 		return result;
 	}
 	
@@ -253,7 +255,7 @@ public class MBTilesPlugin extends CordovaPlugin
 	
 	/**
 	 * execute given query in on the database opened
-	 * @param data : the parameters (query:'query', params:['param', 'param']) 
+	 * @param data : the parameters (query:'query', params:{'param', 'param'}) 
 	 * @return the pluginResult
 	 */
 	private PluginResult actionExecuteStatment(JSONArray data) throws JSONException
@@ -268,7 +270,7 @@ public class MBTilesPlugin extends CordovaPlugin
 				
 			String query= data.getJSONObject(0).getString("query");
 			
-			JSONArray jparams = (data.getJSONObject(0).length() < 3) ? null : data.getJSONObject(0).getJSONArray("params");
+			JSONArray jparams =  data.getJSONObject(0).getJSONArray("params");
 
 			String[] params = null;
 
@@ -297,41 +299,55 @@ public class MBTilesPlugin extends CordovaPlugin
 
 	/**
 	 * get directory of working
-	 * @param data : the parameters (type:'type') 
+	 * @param data : the parameters (type:'type') optional url:'cdvfile://url...'
 	 * @return the pluginResult
 	 */
 	private PluginResult actionGetDirectoryWorking(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
-		IMBTilesActions actions = null;
 		
+			
 		String type = data.getJSONObject(0).getString("type");
+		String url = data.getJSONObject(0).getString("url");
+		initAction(type, url);
+			
+		if (mbTilesActions != null) {
+			result = new PluginResult(PluginResult.Status.OK, mbTilesActions.getDirectoryWorking());
+		} else {
+			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
+		}
+		return result;
+	}
+	
+	/**
+	 * Init Action
+	 * @param type
+	 * @param url
+	 * return if type is correct
+	 */
+	boolean initAction(String type, String url) {
+		if (mbTilesActions != null) {
+			mbTilesActions.close();
+			mbTilesActions = null;
+		}
 		
 		// database
 		if (type.equals(ACTION_OPEN_TYPE_DB))
 		{
-			actions = new MBTilesActionsDatabaseImpl();
-			
-			if (FileUtils.checkExternalStorageState())
-			{
-				result = new PluginResult(PluginResult.Status.OK, actions.getDirectoryWorking(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + this.cordova.getActivity().getPackageName() + "/databases/"));
-			}
-			
+			mbTilesActions = new MBTilesActionsDatabaseImpl(this.cordova.getActivity());
 		}
 		// file
 		else if (type.equals(ACTION_OPEN_TYPE_FILE))
 		{
-			actions = new MBTilesActionsFileImpl();
+			mbTilesActions = new MBTilesActionsFileImpl(this.cordova.getActivity());
+		}
+		// cdvfile
+ 		else if(type.equals(ACTION_OPEN_TYPE_CDV))
+ 		{
+ 			mbTilesActions = new MBTilesActionsCDVFileImpl(this.cordova.getActivity(), url);
+		}
 			
-			if (FileUtils.checkExternalStorageState())
-			{
-				result = new PluginResult(PluginResult.Status.OK, actions.getDirectoryWorking(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" + this.cordova.getActivity().getPackageName() + "/maps/"));
-			}
-		}
-		else {
-			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
-		}
-		return result;
+		return mbTilesActions != null;
 	}
 }
 

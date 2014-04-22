@@ -13,6 +13,8 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 
@@ -21,18 +23,26 @@ import android.util.Log;
  * 
  * @author <a href="mailto:sebastien.grimault@makina-corpus.com">S. Grimault</a>
  */
-public class MBTilesActionsFileImpl implements IMBTilesActions
+public class MBTilesActionsFileImpl extends MBTilesActionsGenImpl
 {
+	
+	public MBTilesActionsFileImpl(Context context) {
+		super(context);
+		
+		if (FileUtils.checkExternalStorageState()) {
+			mDirectory = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" +
+							mContext.getPackageName() + "/maps/";
+		}
+	}
+
 	// declaration of path of file
 	private File mapDirectory = null;
 	
 	@Override
-	public void open(String path)
+	public void open(String name)
 	{
-		close();
-
+		String path = getDirectory();
 		Log.d(getClass().getName(), "try to open map directory '" + path + "'");
-		
 		this.mapDirectory = new File(path);
 	}
 
@@ -48,8 +58,9 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 		if (isOpen())
 		{
 			Log.d(getClass().getName(), "close '" + mapDirectory.getAbsolutePath() + "'");
+			
+			this.mapDirectory = null;
 		}
-		this.mapDirectory = null;
 	}
 
 	@Override
@@ -58,22 +69,20 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 		File fileContentMedata = new File(this.mapDirectory.getAbsolutePath() + File.separator + "metadata.json");
 		
 		JSONObject metadata = new JSONObject();
-
-		if (fileContentMedata.exists()) {
 		
-			try
-			{
-				metadata = new JSONObject(FileUtils.readFileAsString(fileContentMedata));
-			}
-			catch (JSONException je)
-			{
-				Log.e(getClass().getName(), je.getMessage(), je);
-			}
-			catch (IOException ioe)
-			{
-				Log.e(getClass().getName(), ioe.getMessage(), ioe);
-			}
+		try
+		{
+			metadata = new JSONObject(FileUtils.readFileAsString(fileContentMedata));
 		}
+		catch (JSONException je)
+		{
+			Log.e(getClass().getName(), je.getMessage(), je);
+		}
+		catch (IOException ioe)
+		{
+			Log.e(getClass().getName(), ioe.getMessage(), ioe);
+		}
+		
 		return metadata;
 	}
 
@@ -126,9 +135,6 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 	{
 		JSONObject tileData = new JSONObject();
 		JSONObject metadata = getMetadata();
-		ByteArrayOutputStream baos = null;
-		FileInputStream in = null;
-		BufferedOutputStream out = null;
 		
 		try
 		{
@@ -150,13 +156,12 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 			// test if file exist
 			if (tileFile.exists())
 			{
-				baos = new ByteArrayOutputStream();
-				in = new FileInputStream(tileFile);
-				out = new BufferedOutputStream(baos);
-				FileUtils.copyInputStream(in,out);
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				FileUtils.copyInputStream(new FileInputStream(tileFile), new BufferedOutputStream(baos));
 				
 				tileData.put(KEY_TILE_DATA, Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT));
 
+				baos.close();
 			}
 		}
 		catch (JSONException je)
@@ -170,30 +175,6 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 		catch (IOException ioe)
 		{
 			Log.e(getClass().getName(), ioe.getMessage(), ioe);
-		} finally {
-			
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-			    		// nothing to do here except log the exception
-				}
-			}
-			
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-			    		// nothing to do here except log the exception
-				}
-			}
-			if (baos != null) {
-				try {
-					baos.close();
-				} catch (IOException e) {
-			    		// nothing to do here except log the exception
-				}
-			}
 		}
 		
 		
@@ -216,13 +197,13 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 			
 			File contents = new File(this.mapDirectory.getAbsolutePath() + File.separator + version + File.separator + name);
 			
-			if (contents.exists()) {
-				for (File zoomLevel : contents.listFiles())
-				{
-					zoomLevels.add(Integer.valueOf(zoomLevel.getName()));
-				}
-				Arrays.sort(zoomLevels.toArray(new Integer[]{}));
+			
+			for (File zoomLevel : contents.listFiles())
+			{
+				zoomLevels.add(Integer.valueOf(zoomLevel.getName()));
 			}
+			
+			Arrays.sort(zoomLevels.toArray(new Integer[]{}));
 		}
 		catch (JSONException je)
 		{
@@ -240,18 +221,26 @@ public class MBTilesActionsFileImpl implements IMBTilesActions
 	}
 
 	/**
-	 * return the directory of working
+	 * return the directory of working action
 	 * @param path : the pah of working
 	 * @return <code>JSONObject</code>
 	 */
 	@Override
-	public JSONObject getDirectoryWorking(String path) {
+	public JSONObject getDirectoryWorking() {
 		JSONObject directoryWorking = new JSONObject();
 		try {
-			directoryWorking.put(KEY_DIRECTORY_WORKING, path);
+			directoryWorking.put(KEY_DIRECTORY_WORKING, getDirectory());
 		} catch (JSONException e) {
 			Log.w(getClass().getName(), e.getMessage());
 		}
 		return directoryWorking;
+	}
+	
+	/**
+	 * Set Directory Working
+	 */
+	@Override
+	protected void setDirectory(String dir) {
+		// Nothing
 	}
 }

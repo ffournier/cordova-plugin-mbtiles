@@ -1,4 +1,4 @@
-/*
+cordova.define("com.makina.offline.mbtiles.MBTilesPlugin", function(require, exports, module) { /*
 Declaration of the variable MBTilesPlugin to have acces to the plugin
 */
 var MBTilesPlugin = function()
@@ -6,9 +6,20 @@ var MBTilesPlugin = function()
 };
 
 /*
+function init
+init the given database sqlite
+params : {type : 'file' or 'db'or 'cdvfile', optionnal url:path}
+return : success or error callback
+*/
+MBTilesPlugin.prototype.init = function(params, onSuccess, onError)
+{
+	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "init", [params]);
+};
+
+/*
 function open
 open the given database sqlite
-params : {name : 'name of database', type : 'file' or 'db'}
+params : {name : 'name of database'}
 return : success or error callback
 */
 MBTilesPlugin.prototype.open = function(params, onSuccess, onError)
@@ -58,12 +69,12 @@ MBTilesPlugin.prototype.getTile = function(params, onSuccess, onError)
 };
 
 /*
-function executeStatment
+function exectuteStatment
 execute query in the database opened
-params : {query:'query', params:['param', 'param', 'param']} 
+params : {query:'query', params:{'param', 'param', 'param'}} 
 return : success or error callback
 */
-MBTilesPlugin.prototype.executeStatment = function(params, onSuccess, onError)
+MBTilesPlugin.prototype.exectuteStatment = function(params, onSuccess, onError)
 {
 	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "execute_statment", [params]);
 };
@@ -71,12 +82,13 @@ MBTilesPlugin.prototype.executeStatment = function(params, onSuccess, onError)
 /*
 function getDirectoryWorking
 get the directory path of working
-params : {type:'type'} // db or file
 return : success or error callback
 */
-MBTilesPlugin.prototype.getDirectoryWorking = function(params, onSuccess, onError)
+MBTilesPlugin.prototype.getDirectoryWorking = function(onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "get_directory_working", [params]);
+	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "get_directory_working", []);
 };
 	
 module.exports = MBTilesPlugin;
+
+});
