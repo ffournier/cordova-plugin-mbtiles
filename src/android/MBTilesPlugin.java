@@ -306,15 +306,10 @@ public class MBTilesPlugin extends CordovaPlugin
 	{
 		PluginResult result = null;
 		
-			
-		String type = data.getJSONObject(0).getString("type");
-		String url = data.getJSONObject(0).getString("url");
-		initAction(type, url);
-			
 		if (mbTilesActions != null) {
 			result = new PluginResult(PluginResult.Status.OK, mbTilesActions.getDirectoryWorking());
 		} else {
-			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
+			result = new PluginResult(PluginResult.Status.ERROR);
 		}
 		return result;
 	}
