@@ -1,6 +1,9 @@
 package com.makina.offline.mbtiles;
 
+import org.apache.cordova.CordovaResourceApi;
+
 import android.content.Context;
+import android.net.Uri;
 
 /**
  * {@link IMBTilesActions} SQLite implementation.
@@ -10,14 +13,17 @@ import android.content.Context;
 public class MBTilesActionsCDVFileImpl extends MBTilesActionsGenDatabaseImpl
 {
 	
-	public MBTilesActionsCDVFileImpl(Context context, String url) {
+	public MBTilesActionsCDVFileImpl(Context context, String url, CordovaResourceApi resourceApi) {
 		super(context);
 		if (url != null && url.length() > 0) {
 	 		if (FileUtils.checkExternalStorageState()) {
-				mDirectory = "cdvfile://localhost/persistent/tiles/";
+	 			url = "cdvfile://localhost/persistent/tiles/";
 			}
-		} else {
-			mDirectory = url;
+		}
+		
+		if (url != null) {
+			 Uri fileURL = resourceApi.remapUri(Uri.parse(url));
+			 mDirectory = fileURL.getPath();
 		}
 	}
 }

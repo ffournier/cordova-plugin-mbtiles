@@ -19,11 +19,4 @@ public class MBTilesActionsDatabaseImpl extends MBTilesActionsGenDatabaseImpl
 		}
 	}
 	
-	/**
-	 * Set Directory Working
-	 */
-	@Override
-	protected void setDirectory(String dir) {
-		// Nothing
-	}
 }

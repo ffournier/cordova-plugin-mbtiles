@@ -339,7 +339,7 @@ public class MBTilesPlugin extends CordovaPlugin
 		// cdvfile
  		else if(type.equals(ACTION_OPEN_TYPE_CDV))
  		{
- 			mbTilesActions = new MBTilesActionsCDVFileImpl(this.cordova.getActivity(), url);
+ 			mbTilesActions = new MBTilesActionsCDVFileImpl(this.cordova.getActivity(), url, webView.getResourceApi());
 		}
 			
 		return mbTilesActions != null;

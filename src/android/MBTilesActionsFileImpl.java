@@ -236,11 +236,4 @@ public class MBTilesActionsFileImpl extends MBTilesActionsGenImpl
 		return directoryWorking;
 	}
 	
-	/**
-	 * Set Directory Working
-	 */
-	@Override
-	protected void setDirectory(String dir) {
-		// Nothing
-	}
 }

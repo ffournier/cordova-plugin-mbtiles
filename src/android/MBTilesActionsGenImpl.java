@@ -28,11 +28,4 @@ public abstract class MBTilesActionsGenImpl implements IMBTilesActions
 		return mDirectory;
 	}
 	
-	/**
-	 * Set Directory Working
-	 */
-	protected void setDirectory(String dir) {
-		mDirectory = dir;
-	}
-	
 }
