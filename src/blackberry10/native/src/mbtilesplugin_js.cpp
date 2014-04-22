@@ -154,7 +154,7 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 				result[PLUGIN_ERROR] = PLUGIN_NOT_OPEN;
 			}
 		}
-	} else if (strCommand.compare(ACTION_EXECUTESTATMENT) == 0) {
+	} else if (strCommand.compare(ACTION_EXECUTESTATEMENT) == 0) {
 		std::string query = "";
 		QList<Json::Value> params;
 		bool parse = arg != strCommand;
@@ -177,7 +177,7 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			result[PLUGIN_ERROR] = PLUGIN_PARSE_ERROR;
 		} else {
 			if (m_pMBTilesPluginController != NULL && m_pMBTilesPluginController->isOpen()) {
-				result = m_pMBTilesPluginController->getExecuteStatment(callbackId, query, params);
+				result = m_pMBTilesPluginController->getExecuteStatement(callbackId, query, params);
 			} else {
 				result[PLUGIN_ERROR] = PLUGIN_NOT_OPEN;
 			}

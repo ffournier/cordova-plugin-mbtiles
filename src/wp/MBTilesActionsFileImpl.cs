@@ -249,7 +249,7 @@ namespace MBTilesPlugin
 		    return zoomLevels;
         }
 
-        public string executeStatment(String query, List<object> param)
+        public string executeStatement(String query, List<object> param)
         {
             string result = "";
             // not implemented

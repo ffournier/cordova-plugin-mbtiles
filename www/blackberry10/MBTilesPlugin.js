@@ -6,6 +6,17 @@ var MBTilesPlugin = function()
 };
 
 /*
+function init
+init the given database sqlite
+params : {type : 'file' or 'db'or 'cdvfile', optionnal url:path}
+return : success or error callback
+*/
+MBTilesPlugin.prototype.init = function(params, onSuccess, onError)
+{
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "init", [params]);
+};
+
+/*
 function open
 open the given database sqlite
 params : {name : 'name of database', type : 'file' or 'db'}
@@ -58,14 +69,14 @@ MBTilesPlugin.prototype.getTile = function(input, onSuccess, onError)
 };
 
 /*
-function executeStatment
+function executeStatement
 execute query in the database opened
 params : {query:'query', params:['param', 'param', 'param']} 
 return : success or error callback
 */
-MBTilesPlugin.prototype.executeStatment = function(input, onSuccess, onError)
+MBTilesPlugin.prototype.executeStatement = function(input, onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "execute_statment", {input: input});
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "execute_statement", {input: input});
 };
 
 /*
@@ -76,7 +87,7 @@ return : success or error callback
 */
 MBTilesPlugin.prototype.getDirectoryWorking = function(input, onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_directory_working", {input: input});
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_directory_working", null);
 };
 	
 module.exports = MBTilesPlugin;

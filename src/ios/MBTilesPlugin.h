@@ -48,9 +48,9 @@
 - (void)get_tile:(CDVInvokedUrlCommand*)command;
 
 /**
-* action execute_statment
+* action execute_statement
 */
-- (void)execute_statment:(CDVInvokedUrlCommand*)command;
+- (void)execute_statement:(CDVInvokedUrlCommand*)command;
 
 /**
 * action get_directory_working

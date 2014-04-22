@@ -126,7 +126,7 @@ namespace MBTilesPlugin
             return result;
 		}
 
-        public string executeStatment(String query, List<object> param)
+        public string executeStatement(String query, List<object> param)
         {
             string result = "";
             if (query != null && query.Length > 0)

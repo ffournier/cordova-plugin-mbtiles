@@ -131,7 +131,7 @@
     }];
 }
 
-- (void)execute_statment:(CDVInvokedUrlCommand*)command {
+- (void)execute_statement:(CDVInvokedUrlCommand*)command {
     [self.commandDelegate runInBackground:^{
         CDVPluginResult* pluginResult = nil;
         

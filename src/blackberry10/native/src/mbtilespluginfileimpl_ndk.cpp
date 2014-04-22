@@ -163,7 +163,7 @@ namespace webworks {
 	}
 
 
-	Json::Value MBTilesPluginFileImplNDK::getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params)
+	Json::Value MBTilesPluginFileImplNDK::getExecuteStatement(const std::string& callbackId, const std::string query, const QList<Json::Value> params)
 	{
 		Json::Value root;
 		root[PLUGIN_ERROR] = "Not Implemented";

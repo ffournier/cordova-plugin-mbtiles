@@ -194,7 +194,7 @@ namespace WPCordovaClassLib.Cordova.Commands
             }
         }
 
-        public void execute_statment(string options)
+        public void execute_statement(string options)
         {
             string callbackId;
             options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
@@ -203,7 +203,7 @@ namespace WPCordovaClassLib.Cordova.Commands
                 /// query params
                 string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
                 /// to test maybe is not an integer but a JSONObject
-                EntryExecuteStatment entryExecute = JSON.JsonHelper.Deserialize<EntryExecuteStatment>(args[0]);
+                EntryExecuteStatement entryExecute = JSON.JsonHelper.Deserialize<EntryExecuteStatement>(args[0]);
                 string query = entryExecute.query;
                 /// to test not sure that's work
                 List<object> param = entryExecute.param;
@@ -211,7 +211,7 @@ namespace WPCordovaClassLib.Cordova.Commands
 
                 if (mbTilesActions != null && mbTilesActions.isOpen())
                 {
-                    string result = mbTilesActions.executeStatment(query, param);
+                    string result = mbTilesActions.executeStatement(query, param);
                     PluginResult pluginResult = new PluginResult(PluginResult.Status.OK);
                     pluginResult.Message = result;
                     DispatchCommandResult(pluginResult, callbackId);

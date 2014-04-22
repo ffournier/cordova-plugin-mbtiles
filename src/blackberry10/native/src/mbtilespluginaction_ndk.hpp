@@ -49,7 +49,7 @@ class MBTilesPluginActionNDK {
 
 		virtual Json::Value getTile(const std::string& callbackId, int zoom_level, int column, int row) = 0;
 
-		virtual Json::Value getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params) = 0;
+		virtual Json::Value getExecuteStatement(const std::string& callbackId, const std::string query, const QList<Json::Value> params) = 0;
 
 		virtual Json::Value getDirectoryWorking(const std::string& callbackId) = 0;
 

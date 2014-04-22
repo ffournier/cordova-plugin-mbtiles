@@ -24,7 +24,7 @@
 #define ACTION_GETMINZOOM "get_min_zoom"
 #define ACTION_GETMAXZOOM "get_max_zoom"
 #define ACTION_GETTILE "get_tile"
-#define ACTION_EXECUTESTATMENT "execute_statment"
+#define ACTION_EXECUTESTATEMENT "execute_statement"
 #define ACTION_GETDIRECTORYWORKING "get_directory_working"
 
 #define KEY_TYPE "type"
@@ -39,7 +39,7 @@
 #define KEY_TILE_DATA "tile_data"
 #define KEY_QUERY "query"
 #define KEY_PARAMS "params"
-#define KEY_EXECUTE_STATMENT "result_execute"
+#define KEY_EXECUTE_STATEMENT "result_execute"
 #define KEY_DIRECTORY_WORKING "directory_working"
 
 #define TYPE_DB "db"

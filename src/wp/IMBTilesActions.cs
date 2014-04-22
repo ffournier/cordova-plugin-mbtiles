@@ -111,7 +111,7 @@ namespace MBTilesPlugin
 	    /// the tile as string in format JSon</returns>
   	    /// <param name="query"> the query to execute</param>
 	    /// <param name="param"> the parameters needed to execute query</param>
-	    string executeStatment(String query, List<object> param);
+	    string executeStatement(String query, List<object> param);
 
 	    /// <summary>
 	    /// Return the directory of working</summary>

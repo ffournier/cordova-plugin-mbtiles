@@ -48,7 +48,7 @@ class MBTilesPluginFileImplNDK : public MBTilesPluginActionNDK {
 
 		Json::Value getTile(const std::string& callbackId, int zoom_level, int column, int row);
 
-		Json::Value getExecuteStatment(const std::string& callbackId, const std::string query, const QList<Json::Value> params);
+		Json::Value getExecuteStatement(const std::string& callbackId, const std::string query, const QList<Json::Value> params);
 
 		Json::Value getDirectoryWorking(const std::string& callbackId);
 

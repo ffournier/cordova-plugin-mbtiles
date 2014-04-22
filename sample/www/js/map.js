@@ -11,6 +11,8 @@ var onDeviceReady = function() {
 
 		resizeMap();
 	});
+
+	console.log("verifyingMap");
 	verifyingMap(localFileName, remoteFile);
 	//buildMap();
 
@@ -39,13 +41,11 @@ function buildMap() {
 	console.log("before MBTilesPlugin ");
 	var mbTilesPlugin = new MBTilesPlugin();
 	console.log("after MBTilesPlugin ");
-	mbTilesPlugin.getDirectoryWorking({type: type} , function(r) {
-		console.log("getDirectoryWorking : " + r.directory_working);
-	});
-
+	
 	var query ="SELECT * FROM metadata WHERE rowid = ?1";
 	var params = new Array();
 	params[0] = "1";
+
 	mbTilesPlugin.init({type: type}, function(rinit) {
 
 		mbTilesPlugin.getDirectoryWorking(function(r) {
@@ -55,36 +55,27 @@ function buildMap() {
 			});
 
 		mbTilesPlugin.open({name: name},
-			function(r) {
-				console.log("open : " + r);
+				function(r) {
+					console.log("open : " + r);
 
-				mbTilesPlugin.executeStatement({query: query, params: params},
-							function(result)
-							{
-								console.log("exectuteStatement : " + JSON.stringify(result));
-							},
-							function(error)
-							{
-								console.log("exectuteStatment Error " + JSON.stringify(error));
-							});
+					mbTilesPlugin.executeStatement({query: query, params: params},
+								function(result)
+								{
+									console.log("executeStatement : " + JSON.stringify(result));
+								},
+								function(error)
+								{
+									console.log("executeStatement Error " + JSON.stringify(error));
+								});
 
-				mbTilesPlugin.getMinZoom(function(result) {
-					console.log("getMinZoom --" + result + "--");
-
-					mbTilesPlugin.getMetadata(function(result)
-				    {
-						console.log("getMetadata");
-
-						var metadatacenter = result.center;
-
-						var res = metadatacenter.split(",");
-
+					mbTilesPlugin.getMinZoom(function(result) {
+						console.log("getMinZoom --" + result + "--");
 						var map = new L.Map("map", {
-							center : [res[0],res[1]],//tozeur
-							
-							zoom : res[2],
+							center : [43.2803905,5.405139],//tozeur
+						
+							zoom : 13,
 							attributionControl: false
-							
+						
 						});
 						console.log("MBTilesPlugin");
 						var layer = new L.TileLayer.MBTilesPlugin(mbTilesPlugin,{
@@ -99,21 +90,19 @@ function buildMap() {
 							console.log("TileLayer initalized2");
 						});
 						console.log("MAP CENTER POINT " + JSON.stringify(map.latLngToLayerPoint(new L.LatLng(38.89611,-77.035446))));
+					}, function(e) {
+						console.log("err : " + JSON.stringify(e));
 					});
 				}, function(e) {
-					console.log("err : " + JSON.stringify(e));
+					console.log("open failed : " + JSON.stringify(e));
+
+
 				});
-			}, function(e) {
-				console.log("open failed : " + JSON.stringify(e));
-
-
-			});
 	}, function(e) {
-		console.log("open failed : " + JSON.stringify(e));
+		console.log("init failed : " + JSON.stringify(e));
 
 
 	});
-	
 }
 
 function verifyingMap(localFileName, remoteFile){
@@ -121,9 +110,7 @@ function verifyingMap(localFileName, remoteFile){
 	var fs;				// file system object
 	var ft;				// TileTransfer object
 	var type = "db";
-
-	console.log("verifyMap");
-
+	
 	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
 		console.log('file system retrieved.');
 		fs = fileSystem;
@@ -178,7 +165,6 @@ function verifyingMap(localFileName, remoteFile){
 			});
 		}, function() {
 		});
-
 	});
 	
 	function onConfirm(button){
@@ -193,5 +179,7 @@ function verifyingMap(localFileName, remoteFile){
 		console.log('You selected button');
 
 	}
+	
+	
 	
 }

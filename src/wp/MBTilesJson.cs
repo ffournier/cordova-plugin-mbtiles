@@ -86,7 +86,7 @@ namespace MBTilesPlugin
     }
 
     [DataContract]
-    public class EntryExecuteStatment
+    public class EntryExecuteStatement
     {
         [DataMember(Name = "query")]
         public string query { get; set; }
