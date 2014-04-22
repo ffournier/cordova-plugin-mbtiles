@@ -376,6 +376,27 @@ onSuccess --> function(result) {}
 
 onError --> function(error) {}
 
+init
+----------------------
+
+	_function(params, onSuccess, onError)_
+
+### Description 
+
+Open the database or save the workspace of file
+
+### Parameters
+
+__type__: 'file' or 'db' or 'cdvfile'
+__url__ : (optionnal) for cdvfile, pass the choose path in cdvfile
+
+
+### Return
+
+Nothing
+
+Return "OK" in BlackBerry10
+
 open
 ----------------------
 
@@ -388,9 +409,6 @@ Open the database or save the workspace of file
 ### Parameters
 
 __name__: name of database
-
-__type__: 'file' or 'db'
-
 
 ### Return
 
@@ -493,7 +511,7 @@ The data of tiles in Base64.
 		tile_data: <value>
 	}
 
-executeStatment
+executeStatement
 ----------------------
 
 	_function(params, onSuccess, onError)_
@@ -534,7 +552,7 @@ return the result of the query
 getDirectoryWorking
 ----------------------
 
-	_function(params, onSuccess, onError)_
+	_function(onSuccess, onError)_
 
 ### Description
 
@@ -542,7 +560,7 @@ Give the path of workspace of the database or file
 
 ### Parameters
 
-* __type__: 'file' or 'db'
+Nothing
 
 ### Return
 
