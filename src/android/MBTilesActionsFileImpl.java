@@ -214,7 +214,7 @@ public class MBTilesActionsFileImpl extends MBTilesActionsGenImpl
 	}
 	
 	@Override
-	public JSONObject executeStatment(String query, String... params) {
+	public JSONObject executeStatement(String query, String... params) {
 		// not implemented
 		JSONObject result = new JSONObject();
 		return result;

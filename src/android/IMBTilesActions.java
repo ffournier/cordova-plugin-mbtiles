@@ -15,7 +15,7 @@ public interface IMBTilesActions
 	static final String KEY_MIN_ZOOM = "min_zoom";
 	static final String KEY_MAX_ZOOM = "max_zoom";
 	static final String KEY_TILE_DATA = "tile_data";
-	static final String KEY_EXECUTE_STATMENT = "result_execute";
+	static final String KEY_EXECUTE_STATEMENT = "result_execute";
 	static final String KEY_DIRECTORY_WORKING = "directory_working";
 	
 	
@@ -96,7 +96,7 @@ public interface IMBTilesActions
 	 * @param params
 	 * @return the tile as <code>JSONObject</code>
 	 */
-	JSONObject executeStatment(String query, String... params);
+	JSONObject executeStatement(String query, String... params);
 
 	/**
 	 * return the directory of working

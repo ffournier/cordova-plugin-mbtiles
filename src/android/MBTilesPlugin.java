@@ -27,7 +27,7 @@ public class MBTilesPlugin extends CordovaPlugin
 	public static final String ACTION_GET_MIN_ZOOM = "get_min_zoom";
 	public static final String ACTION_GET_MAX_ZOOM = "get_max_zoom";
 	public static final String ACTION_GET_TILE = "get_tile";
-	public static final String ACTION_EXECUTE_STATMENT = "execute_statment";
+	public static final String ACTION_EXECUTE_STATEMENT = "execute_statement";
 	public static final String ACTION_DIRECTORY_WORKING = "get_directory_working";
 	
 	// interface to treat action of plugin 
@@ -80,9 +80,9 @@ public class MBTilesPlugin extends CordovaPlugin
 						result = actionGetTile(dataFinal);
 					}
 					
-					else if (actionFinal.equals(ACTION_EXECUTE_STATMENT))
+					else if (actionFinal.equals(ACTION_EXECUTE_STATEMENT))
 					{
-						result = actionExecuteStatment(dataFinal);
+						result = actionExecuteStatement(dataFinal);
 					}
 
 					else if (actionFinal.equals(ACTION_DIRECTORY_WORKING))
@@ -258,15 +258,15 @@ public class MBTilesPlugin extends CordovaPlugin
 	 * @param data : the parameters (query:'query', params:{'param', 'param'}) 
 	 * @return the pluginResult
 	 */
-	private PluginResult actionExecuteStatment(JSONArray data) throws JSONException
+	private PluginResult actionExecuteStatement(JSONArray data) throws JSONException
 	{
 		PluginResult result = null;
 		
-		Log.i(getClass().getName(), "actionExecuteStatment");
+		Log.i(getClass().getName(), "actionExecuteStatement");
 		
 		if ((mbTilesActions != null) && mbTilesActions.isOpen())
 		{
-			Log.i(getClass().getName(), "isOpen Execute Statment");
+			Log.i(getClass().getName(), "isOpen Execute Statement");
 				
 			String query= data.getJSONObject(0).getString("query");
 			
@@ -286,11 +286,11 @@ public class MBTilesPlugin extends CordovaPlugin
 				}
 			}
 			
-			result = new PluginResult(PluginResult.Status.OK,  mbTilesActions.executeStatment(query, params));
+			result = new PluginResult(PluginResult.Status.OK,  mbTilesActions.executeStatement(query, params));
 		}
 		else
 		{
-			Log.i(getClass().getName(), "isOpen Error Execute Statment");
+			Log.i(getClass().getName(), "isOpen Error Execute Statement");
 			result = new PluginResult(PluginResult.Status.IO_EXCEPTION);
 		}
 		

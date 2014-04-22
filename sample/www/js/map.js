@@ -50,10 +50,10 @@ function buildMap() {
 			function(r) {
 				console.log("open : " + r);
 
-				mbTilesPlugin.executeStatment({query: query, params: params},
+				mbTilesPlugin.executeStatement({query: query, params: params},
 							function(result)
 							{
-								console.log("exectuteStatment : " + JSON.stringify(result));
+								console.log("exectuteStatement : " + JSON.stringify(result));
 							},
 							function(error)
 							{

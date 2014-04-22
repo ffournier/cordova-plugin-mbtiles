@@ -221,7 +221,7 @@ public abstract class MBTilesActionsGenDatabaseImpl extends MBTilesActionsGenImp
 	}
 	
 	@Override
-	public JSONObject executeStatment(String query, String... params) {
+	public JSONObject executeStatement(String query, String... params) {
 		JSONObject result = new JSONObject();
 		JSONArray rows = new JSONArray();
 		if (query != null && query.length() > 0) {
@@ -275,7 +275,7 @@ public abstract class MBTilesActionsGenDatabaseImpl extends MBTilesActionsGenImp
 		}
 		// put all rows in JSONObject
 		try {
-			result.put(KEY_EXECUTE_STATMENT, rows);
+			result.put(KEY_EXECUTE_STATEMENT, rows);
 		} catch (JSONException e) {
 			Log.w(getClass().getName(), e.getMessage());
 		}
