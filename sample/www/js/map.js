@@ -1,7 +1,7 @@
 var onDeviceReady = function() {
 	
 	var localFileName = 'tiles-ign.mbtiles';
-    var remoteFile = 'http://cg44.makina-corpus.net/tmp/POSOW-19.04.2012.mbtiles';
+    	var remoteFile = 'http://cg44.makina-corpus.net/tmp/POSOW-19.04.2012.mbtiles';
 	
     
 	resizeMap();
@@ -46,7 +46,15 @@ function buildMap() {
 	var query ="SELECT * FROM metadata WHERE rowid = ?1";
 	var params = new Array();
 	params[0] = "1";
-	mbTilesPlugin.open({name: name, type: type},
+	mbTilesPlugin.init({type: type}, function(rinit) {
+
+		mbTilesPlugin.getDirectoryWorking(function(r) {
+				console.log("getDirectoryWorking : " + r.directory_working);
+			}, function(e) {
+				console.log("getDirectoryWorking error: " + JSON.stringify(e));
+			});
+
+		mbTilesPlugin.open({name: name},
 			function(r) {
 				console.log("open : " + r);
 
@@ -100,7 +108,11 @@ function buildMap() {
 
 
 			});
-	
+	}, function(e) {
+		console.log("open failed : " + JSON.stringify(e));
+
+
+	});
 	
 }
 
@@ -118,49 +130,53 @@ function verifyingMap(localFileName, remoteFile){
 
 		var mbTilesPlugin = new MBTilesPlugin();
 		console.log("after MBTilesPlugin ");
-		mbTilesPlugin.getDirectoryWorking({type: type} , function(r) {
-			console.log("getDirectoryWorking Verify : " + r.directory_working);
-			var absoluteLocalFileName = r.directory_working + localFileName;
+		mbTilesPlugin.init({type: type}, function(rinit) {
+			mbTilesPlugin.getDirectoryWorking(function(r) {
+				console.log("getDirectoryWorking Verify : " + r.directory_working);
+				var absoluteLocalFileName = r.directory_working + localFileName;
 
-			console.log(absoluteLocalFileName);
-			// check to see if files already exists
-			var file = fs.root.getFile(absoluteLocalFileName, null, function (fileEntry) {
-				// file exists
-				console.log('exists, or not...');
-				console.log(fileEntry);
+				console.log(absoluteLocalFileName);
+				// check to see if files already exists
+				var file = fs.root.getFile(absoluteLocalFileName, null, function (fileEntry) {
+					// file exists
+					console.log('exists, or not...');
+					console.log(fileEntry);
 
-				buildMap();
-			}, function () {
-				// file does not exist
-				console.log('does not exist');
-
-
-				console.log('downloading sqlite file...');
-				ft = new FileTransfer();
-				ft.onprogress = function(progressEvent) {
-				    if (progressEvent.lengthComputable) {
-				      //loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
-				      console.log(progressEvent.loaded / progressEvent.total);
-				    } else {
-				      //loadingStatus.increment();
-				      console.log("+1");
-				    }
-				};
-				ft.download(remoteFile, absoluteLocalFileName, function (entry) {
-					console.log('download complete: ' + entry.fullPath);
 					buildMap();
+				}, function () {
+					// file does not exist
+					console.log('does not exist');
 
-				}, function (error) {
-					console.log('error with download', error);
-					navigator.notification.confirm(
-					        'You are the winner!',  // message
-					        onConfirm(button),              // callback to invoke with index of button pressed
-					        'Game Over',            // title
-					        'Retry,Cancel'          // buttonLabels
-					    );
+
+					console.log('downloading sqlite file...');
+					ft = new FileTransfer();
+					ft.onprogress = function(progressEvent) {
+					    if (progressEvent.lengthComputable) {
+					      //loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
+					      console.log(progressEvent.loaded / progressEvent.total);
+					    } else {
+					      //loadingStatus.increment();
+					      console.log("+1");
+					    }
+					};
+					ft.download(remoteFile, absoluteLocalFileName, function (entry) {
+						console.log('download complete: ' + entry.fullPath);
+						buildMap();
+
+					}, function (error) {
+						console.log('error with download', error);
+						navigator.notification.confirm(
+							'You are the winner!',  // message
+							onConfirm(button),              // callback to invoke with index of button pressed
+							'Game Over',            // title
+							'Retry,Cancel'          // buttonLabels
+						    );
+					});
 				});
-			});
 
+			}, function() {
+			});
+		}, function() {
 		});
 
 	});
