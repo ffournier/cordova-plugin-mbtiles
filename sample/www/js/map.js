@@ -70,12 +70,16 @@ function buildMap() {
 
 					mbTilesPlugin.getMinZoom(function(result) {
 						console.log("getMinZoom --" + result + "--");
+						var metadatacenter = result.center;
+
+						var res = metadatacenter.split(",");
+
 						var map = new L.Map("map", {
-							center : [43.2803905,5.405139],//tozeur
-						
-							zoom : 13,
+							center : [res[0],res[1]],//tozeur
+
+							zoom : res[2],
 							attributionControl: false
-						
+
 						});
 						console.log("MBTilesPlugin");
 						var layer = new L.TileLayer.MBTilesPlugin(mbTilesPlugin,{
