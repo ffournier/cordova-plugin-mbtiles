@@ -79,7 +79,7 @@ function buildMap() {
 							var res = metadatacenter.split(",");
 
 							var map = new L.Map("map", {
-								center : [res[0],res[1]],//tozeur
+								center : [res[1],res[0]],//tozeur
 
 								zoom : res[2],
 								attributionControl: false
@@ -170,9 +170,11 @@ function verifyingMap(localFileName, remoteFile){
 					});
 				});
 
-			}, function() {
+			}, function(edir) {
+				console.log('error with dir', edir);
 			});
-		}, function() {
+		}, function(einit) {
+			console.log('error with init', einit);
 		});
 	});
 	
