@@ -17,12 +17,11 @@
 #ifndef MBTILESPLUGINACTIONNDK_HPP_
 #define MBTILESPLUGINACTIONNDK_HPP_
 
-#include <string>
 #include <QString>
-#include <pthread.h>
+#include <QList>
 #include <json/reader.h>
 #include <json/writer.h>
-#include <QList>
+
 
 class MBTilesPluginJS;
 
@@ -54,9 +53,6 @@ class MBTilesPluginActionNDK {
 		virtual Json::Value getDirectoryWorking(const std::string& callbackId) = 0;
 
 	protected :
-		bool detectSDCard();
-
-		QString getInstallName();
 
 		virtual void close() = 0;
 

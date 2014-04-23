@@ -19,6 +19,7 @@
 
 #include <string>
 
+#define ACTION_INIT "init"
 #define ACTION_OPEN "open"
 #define ACTION_GETMETADATA "get_metadata"
 #define ACTION_GETMINZOOM "get_min_zoom"
@@ -29,6 +30,7 @@
 
 #define KEY_TYPE "type"
 #define KEY_NAME "name"
+#define KEY_URL "url"
 #define KEY_Z "z"
 #define KEY_Y "y"
 #define KEY_X "x"
@@ -44,10 +46,12 @@
 
 #define TYPE_DB "db"
 #define TYPE_FILE "file"
+#define TYPE_CDVFILE "cdvfile"
 #define TYPE_UNDEFINED "type undefined"
 
 #define PLUGIN_NAME "MBTilePluginJS"
 #define PLUGIN_RESULT "result"
+#define PLUGIN_OK "ok"
 #define PLUGIN_ERROR "error"
 #define PLUGIN_NOT_OPEN "not open"
 #define PLUGIN_PARSE_ERROR "Cannot parse JSON object"

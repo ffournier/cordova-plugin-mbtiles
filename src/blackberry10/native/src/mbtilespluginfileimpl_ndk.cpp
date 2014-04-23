@@ -14,20 +14,23 @@
  * limitations under the License.
  */
 
-#include <string>
-#include <json/reader.h>
-#include <json/writer.h>
 #include "mbtilespluginfileimpl_ndk.hpp"
-#include "mbtilespluginaction_ndk.hpp"
-#include "mbtilesplugin_js.hpp"
 #include "mbtilespluginutils_ndk.hpp"
 
 namespace webworks {
 
 	MBTilesPluginFileImplNDK::MBTilesPluginFileImplNDK(MBTilesPluginJS *parent)
-	: MBTilesPluginActionNDK(parent)
+	: MBTilesPluginGenImplNDK(parent)
 	{
 		dirPath = NULL;
+		if (detectSDCard()) {
+			QString installName = getInstallName();
+			directory = QString::fromStdString("/accounts/1000/removable/sdcard/");
+			directory += installName;
+			directory += QString::fromStdString("/maps/");
+		} else {
+			directory = QString();
+		}
 	}
 
 	MBTilesPluginFileImplNDK::~MBTilesPluginFileImplNDK()
@@ -43,11 +46,9 @@ namespace webworks {
 		close();
 
 		// test if the sdcard is present
-		if (detectSDCard()) {
-			QString installName = getInstallName();
-			QString result = QString::fromStdString("/accounts/1000/removable/sdcard/");
-			result += installName;
-			QDir* path = new QDir(result);
+		QString dir = getDirectory();
+		if (dir != "") {
+			QDir* path = new QDir(dir);
 			if (path != NULL && path->exists() == true)
 			{
 				dirPath = path;
@@ -173,11 +174,10 @@ namespace webworks {
 	Json::Value MBTilesPluginFileImplNDK::getDirectoryWorking(const std::string& callbackId)
 	{
 		Json::Value root;
-		if (detectSDCard()) {
-			QString name = getInstallName();
-			QString result = QString::fromStdString("/accounts/1000/removable/sdcard/");
-			result += name;
-			root[KEY_DIRECTORY_WORKING] = result.toStdString();
+
+		QString dir = getDirectory();
+		if (!dir.isNull()) {
+			root[KEY_DIRECTORY_WORKING] = dir.toStdString();
 		}else{
 			root[PLUGIN_ERROR] = "No SdCard";
 		}

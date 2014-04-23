@@ -14,21 +14,36 @@
 * limitations under the License.
 */
 
-#ifndef MBTILESPLUGINDATABASEIMPLNDK_HPP_
-#define MBTILESPLUGINDATABASEIMPLNDK_HPP_
+#ifndef MBTILESPLUGINGENIMPLNDK_HPP_
+#define MBTILESPLUGINGENIMPLNDK_HPP_
 
-#include "mbtilesplugingendatabaseimpl_ndk.hpp"
+#include "mbtilespluginaction_ndk.hpp"
+#include "mbtilesplugin_js.hpp"
+#include <bb/PackageInfo>
+#include <bb/device/SdCardInfo>
+#include <bb/device/SdCardState>
 
 namespace webworks {
 
-	class MBTilesPluginDataBaseImplNDK : public MBTilesPluginGenDataBaseImplNDK {
+class MBTilesPluginGenImplNDK : public MBTilesPluginActionNDK {
 
-		public:
-			explicit MBTilesPluginDataBaseImplNDK(MBTilesPluginJS *parent = NULL);
-			virtual ~MBTilesPluginDataBaseImplNDK();
+	protected:
+	QString directory;
 
-	};
+	public:
+		explicit MBTilesPluginGenImplNDK(MBTilesPluginJS *parent = NULL);
+		virtual ~MBTilesPluginGenImplNDK();
+
+	protected:
+
+		bool detectSDCard();
+
+		QString getInstallName();
+
+		QString getDirectory();
+
+};
 
 } // namespace webworks
 
-#endif /* MBTILESPLUGINDATABASEIMPLNDK_HPP_*/
+#endif /* MBTILESPLUGINGENIMPLNDK_HPP_ */

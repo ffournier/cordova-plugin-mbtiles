@@ -15,16 +15,32 @@
  */
 
 
-#include "mbtilespluginaction_ndk.hpp"
-#include "mbtilesplugin_js.hpp"
+#include <pthread.h>
+#include <json/reader.h>
+#include <json/writer.h>
+#include "mbtilesplugingenimpl_ndk.hpp"
+
 
 namespace webworks {
 
-	MBTilesPluginActionNDK::MBTilesPluginActionNDK(MBTilesPluginJS *parent) {
+	MBTilesPluginGenImplNDK::MBTilesPluginGenImplNDK(MBTilesPluginJS *parent) {
 		m_pParent = parent;
 	}
 
-	MBTilesPluginActionNDK::~MBTilesPluginActionNDK() {
+	MBTilesPluginGenImplNDK::~MBTilesPluginGenImplNDK() {
 	}
 
+	bool MBTilesPluginGenImplNDK::detectSDCard() {
+		bb::device::SdCardInfo sdInfo;
+		return sdInfo.state() == bb::device::SdCardState::Mounted;
+	}
+
+	QString MBTilesPluginGenImplNDK::getInstallName() {
+		bb::PackageInfo packageInfo;
+	    return packageInfo.installId();
+	}
+
+	QString MBTilesPluginGenImplNDK::getDirectory() {
+		return directory;
+	}
 } /* namespace webworks */

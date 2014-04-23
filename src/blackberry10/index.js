@@ -26,6 +26,14 @@ module.exports = {
 	// here in this object.
 
 	// These methods call into JNEXT.MBTilesPlugin through the JNEXT plugin to mbtilesplugin_js.cpp
+
+	init: function (success, fail, args, env) {
+		var result = new PluginResult(args, env),
+		data = JSON.parse(decodeURIComponent(args.input)),
+		response = mbtilesplugin.getInstance().init_mbtiles(result.callbackId, data);
+		result.ok(JSON.parse(response), false);
+	},
+
 	open: function (success, fail, args, env) {
 		var result = new PluginResult(args, env),
 		data = JSON.parse(decodeURIComponent(args.input)),
@@ -58,17 +66,16 @@ module.exports = {
 		result.ok(JSON.parse(response), false);
 	},
 
-	execute_statment: function (success, fail, args, env) {
+	execute_statement: function (success, fail, args, env) {
 		var result = new PluginResult(args, env), 
 		data = JSON.parse(decodeURIComponent(args.input)),
-		response = mbtilesplugin.getInstance().execute_statment(result.callbackId, data);
+		response = mbtilesplugin.getInstance().execute_statement(result.callbackId, data);
 		result.ok(JSON.parse(response), false);
 	},
 
 	get_directory_working: function (success, fail, args, env) {
 		var result = new PluginResult(args, env), 
-		data = JSON.parse(decodeURIComponent(args.input)),
-		response = mbtilesplugin.getInstance().get_directory_working(result.callbackId, data);
+		response = mbtilesplugin.getInstance().get_directory_working(result.callbackId);
 		result.ok(JSON.parse(response), false);
 	}
 };
@@ -104,6 +111,11 @@ JNEXT.MBTilesPlugin = function () {
 	// ************************
 
 	// calls into InvokeMethod(string command) in mbtilesplugin_js.cpp
+	self.init_mbtiles = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "init " + callbackId + " " + JSON.stringify(input));
+	}; // open
+
+	// calls into InvokeMethod(string command) in mbtilesplugin_js.cpp
 	self.open = function (callbackId, input) {
 		return JNEXT.invoke(self.m_id, "open " + callbackId + " " + JSON.stringify(input));
 	}; // open
@@ -124,12 +136,12 @@ JNEXT.MBTilesPlugin = function () {
 		return JNEXT.invoke(self.m_id, "get_tile " + callbackId + " " + JSON.stringify(input));
 	};
 
-	self.execute_statment = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "execute_statment " + callbackId + " " + JSON.stringify(input));
+	self.execute_statement = function (callbackId, input) {
+		return JNEXT.invoke(self.m_id, "execute_statement " + callbackId + " " + JSON.stringify(input));
 	};
 
-	self.get_directory_working = function (callbackId, input) {
-		return JNEXT.invoke(self.m_id, "get_directory_working " + callbackId + " " + JSON.stringify(input));
+	self.get_directory_working = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "get_directory_working " + callbackId);
 	};
 
 	// JSON.stringify(input)

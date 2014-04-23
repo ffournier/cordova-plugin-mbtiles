@@ -11,9 +11,9 @@ init the given database sqlite
 params : {type : 'file' or 'db'or 'cdvfile', optionnal url:path}
 return : success or error callback
 */
-MBTilesPlugin.prototype.init = function(params, onSuccess, onError)
+MBTilesPlugin.prototype.init = function(input, onSuccess, onError)
 {
-	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "init", [params]);
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "init", {input: input});
 };
 
 /*
@@ -85,7 +85,7 @@ get the directory path of working
 params : {type:'type'} // db or file
 return : success or error callback
 */
-MBTilesPlugin.prototype.getDirectoryWorking = function(input, onSuccess, onError)
+MBTilesPlugin.prototype.getDirectoryWorking = function(onSuccess, onError)
 {
 	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_directory_working", null);
 };

@@ -17,7 +17,6 @@
 #ifndef MBTILESPLUGINJS_HPP_
 #define MBTILESPLUGINJS_HPP_
 
-#include <string>
 #include "../public/plugin.h"
 #include "mbtilespluginaction_ndk.hpp"
 #include "Logger.hpp"

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include "mbtilesplugindatabaseimpl_ndk.hpp"
+#include "mbtilesplugincdvfileimpl_ndk.hpp"
 #include "mbtilesplugin_js.hpp"
 
 namespace webworks {
 
-	MBTilesPluginDataBaseImplNDK::MBTilesPluginDataBaseImplNDK(MBTilesPluginJS *parent)
+	MBTilesPluginCDVFileImplNDK::MBTilesPluginCDVFileImplNDK(MBTilesPluginJS *parent)
 	: MBTilesPluginGenDataBaseImplNDK(parent)
 	{
 		if (detectSDCard()) {
@@ -32,7 +32,13 @@ namespace webworks {
 		}
 	}
 
-	MBTilesPluginDataBaseImplNDK::~MBTilesPluginDataBaseImplNDK()
+	MBTilesPluginCDVFileImplNDK::MBTilesPluginCDVFileImplNDK(MBTilesPluginJS *parent, std::string url)
+	: MBTilesPluginGenDataBaseImplNDK(parent)
+	{
+		directory = QString::fromStdString(url);
+	}
+
+	MBTilesPluginCDVFileImplNDK::~MBTilesPluginCDVFileImplNDK()
 	{
 	}
 }

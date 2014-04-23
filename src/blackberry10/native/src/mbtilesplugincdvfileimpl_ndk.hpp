@@ -14,21 +14,22 @@
 * limitations under the License.
 */
 
-#ifndef MBTILESPLUGINDATABASEIMPLNDK_HPP_
-#define MBTILESPLUGINDATABASEIMPLNDK_HPP_
+#ifndef MBTILESPLUGINCDVFILEIMPLNDK_HPP_
+#define MBTILESPLUGINCDVFILEIMPLNDK_HPP_
 
 #include "mbtilesplugingendatabaseimpl_ndk.hpp"
 
 namespace webworks {
 
-	class MBTilesPluginDataBaseImplNDK : public MBTilesPluginGenDataBaseImplNDK {
+	class MBTilesPluginCDVFileImplNDK : public MBTilesPluginGenDataBaseImplNDK {
 
 		public:
-			explicit MBTilesPluginDataBaseImplNDK(MBTilesPluginJS *parent = NULL);
-			virtual ~MBTilesPluginDataBaseImplNDK();
+			explicit MBTilesPluginCDVFileImplNDK(MBTilesPluginJS *parent = NULL);
+			MBTilesPluginCDVFileImplNDK(MBTilesPluginJS *parent, std::string url);
+			virtual ~MBTilesPluginCDVFileImplNDK();
 
 	};
 
 } // namespace webworks
 
-#endif /* MBTILESPLUGINDATABASEIMPLNDK_HPP_*/
+#endif /* MBTILESPLUGINCDVFILEIMPLNDK_HPP_ */
