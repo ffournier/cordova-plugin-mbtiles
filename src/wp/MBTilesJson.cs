@@ -63,13 +63,20 @@ namespace MBTilesPlugin
     }
 
     [DataContract]
+    public class EntryInit
+    {
+        [DataMember(Name = "type")]
+        public string type { get; set; }
+
+        [DataMember(Name = "url")]
+        public string url { get; set; }
+    }
+
+    [DataContract]
     public class EntryOpen
     {
         [DataMember(Name = "name")]
         public string name { get; set; }
-
-        [DataMember(Name = "type")]
-        public string type { get; set; }
     }
 
     [DataContract]
@@ -94,12 +101,5 @@ namespace MBTilesPlugin
         [DataMember(Name = "params")]
         public List<object> param { get; set; }
 
-    }
-
-    [DataContract]
-    public class EntryDirectoryWorking
-    {
-        [DataMember(Name = "type")]
-        public string type { get; set; }
     }
 }

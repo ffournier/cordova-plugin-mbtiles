@@ -16,40 +16,43 @@ namespace MBTilesPlugin
 {
     /// <summary>
     /// class MBTilesActionsFileImpl</summary>
-    class MBTilesActionsFileImpl : IMBTilesActions
+    class MBTilesActionsFileImpl : MBTilesActionsGenImpl
     {
         
         private string mapDirectory = null;
-            
-	    public void open(string path)
+
+        public MBTilesActionsFileImpl()
+            : base()
+        {
+            directory = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "maps//");
+        }
+
+        public override void open(string name)
 	    {
             close();
-            if (path != null)
+            try
             {
-                try
+                using (IsolatedStorageFile isoFile = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    using (IsolatedStorageFile isoFile = IsolatedStorageFile.GetUserStoreForApplication())
+			        /// test if directory exist
+                    string path = getDirectory(); 
+                    if (isoFile.DirectoryExists(path))
                     {
-			/// test if directory exist
-                        if (isoFile.DirectoryExists(path))
-                        {
-                            mapDirectory = path;
-                        }
+                        mapDirectory = path;
                     }
-                } 
-                catch(Exception) {
-                    // Add log
                 }
-
+            } 
+            catch(Exception) {
+                // Add log
             }
-	    }
+        }
 
-	    public bool isOpen()
+        public override bool isOpen()
 	    {
 		    return (this.mapDirectory != null);
 	    }
 
-	    public void close()
+	    public override void close()
 	    {
 		  this.mapDirectory = null;
 	    }
@@ -75,13 +78,13 @@ namespace MBTilesPlugin
             return obj;
         }
 
-        public string getMetadata()
+        public override string getMetadata()
 	    {
             JObject obj = getMetadataObject();
             return obj.ToString(); ;
 		}
 
-        public minzoom_output getMinZoom()
+        public override minzoom_output getMinZoom()
 	    {
             minzoom_output result = null;
             try
@@ -101,7 +104,7 @@ namespace MBTilesPlugin
             return result;
 		}
 
-	    public maxzoom_output getMaxZoom()
+        public override maxzoom_output getMaxZoom()
 	    {
             maxzoom_output result = null;
             try
@@ -120,7 +123,7 @@ namespace MBTilesPlugin
             return result;
 		}
 
-	    public tiles_output getTile(int zoomLevel, int column, int row)
+        public override tiles_output getTile(int zoomLevel, int column, int row)
 	    {
             tiles_output result = null;
             int currentZoomLevel = zoomLevel;
@@ -249,16 +252,16 @@ namespace MBTilesPlugin
 		    return zoomLevels;
         }
 
-        public string executeStatement(String query, List<object> param)
+        public override string executeStatement(String query, List<object> param)
         {
             string result = "";
             // not implemented
             return result;
         }
 
-	    public directory_working_output getDirectoryWorking(String path)
+        public override directory_working_output getDirectoryWorking()
 	    {
-		    return new directory_working_output(path);
+		    return new directory_working_output(getDirectory());
 	    }
 
     }

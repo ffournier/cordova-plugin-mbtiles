@@ -22,7 +22,7 @@ namespace MBTilesPlugin
         public static string KEY_TILE_DATA = "tile_data";
         public static string KEY_QUERY = "query";
         public static string KEY_PARAMS = "params";
-        public static string KEY_EXECUTE_STATMENT = "result_execute";
+        public static string KEY_EXECUTE_STATEMENT = "result_execute";
         
 	    /// <summary>
 	    /// encode a string to a string encoding in base64 </summary>
@@ -35,7 +35,7 @@ namespace MBTilesPlugin
             return System.Convert.ToBase64String(plainTextBytes);
         }
 
-            /// <summary>
+        /// <summary>
 	    /// encode a byte[] to a string encoding in base64 </summary>
 	    /// <returns>
 	    /// return a string encoding in base64 </returns> 
@@ -51,10 +51,10 @@ namespace MBTilesPlugin
     interface IMBTilesActions
     {
     
-            /// <summary>
+        /// <summary>
 	    /// open file</summary>
-	    /// <param name="path"> the path to open</param>
-	    void open(string path);
+	    /// <param name="name"> the name to open</param>
+	    void open(string name);
 	
 	    /// <summary>
 	    /// if the given MBTiles resource is still opened and used.</summary>
@@ -69,11 +69,11 @@ namespace MBTilesPlugin
 	    /// <summary>
 	    /// Gets all metadata for the given MBTiles resource as JSONObject.
 	    /// Five keys are required :
-            /// name : the plain-english name of the tileset
-            /// type : overlay or baselayer
-            /// version : the version of the tileset, as a plain number
-            /// description : a description of the layer as plain text
-            /// format : the image file format of the tile data (png as default format or jpg) </summary>
+        /// name : the plain-english name of the tileset
+        /// type : overlay or baselayer
+        /// version : the version of the tileset, as a plain number
+        /// description : a description of the layer as plain text
+        /// format : the image file format of the tile data (png as default format or jpg) </summary>
 	    /// <returns>
 	    /// the metadata as string in JSonFormat</returns>
 	    string getMetadata();
@@ -81,33 +81,33 @@ namespace MBTilesPlugin
 	    /// <summary>
 	    /// Gets the minimal zoom level as JSONObject.
 	    /// One Key is required :
-            /// min_zoom : minimal zoom of the tileset</summary>
-            /// <returns>
+        /// min_zoom : minimal zoom of the tileset</summary>
+        /// <returns>
 	    /// the minimal zoom level as minzoom_output</returns>
 	    minzoom_output getMinZoom();
 	
 	    /// <summary>
 	    /// Gets the maximum zoom level as JSONObject.
 	    /// One Key is required :
-            /// max_zoom : maximum zoom of the tileset</summary>
-            /// <returns>
+        /// max_zoom : maximum zoom of the tileset</summary>
+        /// <returns>
 	    /// the maximum zoom level as maxzoom_output</returns>
 	    maxzoom_output getMaxZoom();
 	
 	    /// <summary>
 	    /// Retrieves the tile as JSONObject into a Base64 representation according to given parameters.
 	    /// One key is required :
-            /// tile_data : the tile data into a Base64 representation </summary>
-            /// <returns>
+        /// tile_data : the tile data into a Base64 representation </summary>
+        /// <returns>
 	    /// the tile as tiles_output</returns>
   	    /// <param name="zoomLevel"> the current zoom level</param>
 	    /// <param name="column"> column index</param>
 	    /// <param name="row"> row index</param>
 	    tiles_output getTile(int zoomLevel, int column, int row);
 
-            /// <summary>
+        /// <summary>
 	    /// Execute query according to given parameters.</summary>
-            /// <returns>
+         /// <returns>
 	    /// the tile as string in format JSon</returns>
   	    /// <param name="query"> the query to execute</param>
 	    /// <param name="param"> the parameters needed to execute query</param>
@@ -115,9 +115,9 @@ namespace MBTilesPlugin
 
 	    /// <summary>
 	    /// Return the directory of working</summary>
-            /// <returns>
+        /// <returns>
 	    /// Return the directory of working</returns>
   	    /// <param name="path"> the path of working</param>
-	    directory_working_output getDirectoryWorking(String path);
+	    directory_working_output getDirectoryWorking();
     }
 }

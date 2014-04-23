@@ -34,6 +34,53 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         public static string ACTION_OPEN_TYPE_DB = "db";
 	    public static string ACTION_OPEN_TYPE_FILE = "file";
+        public static string ACTION_OPEN_TYPE_CDV = "cdvfile";
+
+        public void init(string options)
+        {
+            string callbackId;
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
+            try
+            {
+                /// name, type
+                string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
+                /// to test maybe is not a string but a JSONObject
+                EntryInit entryInit = JSON.JsonHelper.Deserialize<EntryInit>(args[0]);
+                string type = entryInit.type;
+                string url = entryInit.url;
+                callbackId = args[1];
+
+                if (type != null && type.Equals(ACTION_OPEN_TYPE_DB))
+                {
+                    //string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, name);
+                    mbTilesActions = new MBTilesActionsDatabaseImpl();
+                }
+                else if (type != null && type.Equals(ACTION_OPEN_TYPE_FILE))
+                {
+                    //string dirPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "maps//" + name);
+                    mbTilesActions = new MBTilesActionsFileImpl();
+                }
+                else if (type != null && type.Equals(ACTION_OPEN_TYPE_CDV))
+                {
+                    mbTilesActions = new MBTilesActionsCDVFileImpl(url);
+                }
+
+                if (mbTilesActions != null)
+                {
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.OK), callbackId);
+                }
+                else
+                {
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.IO_EXCEPTION), callbackId);
+                }
+
+            }
+            catch (Exception)
+            {
+                DispatchCommandResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
+            }
+
+        }
 
         public void open(string options)
         {
@@ -46,30 +93,22 @@ namespace WPCordovaClassLib.Cordova.Commands
                 /// to test maybe is not a string but a JSONObject
                 EntryOpen entryOpen = JSON.JsonHelper.Deserialize<EntryOpen>(args[0]);
                 string name = entryOpen.name;
-                string type = entryOpen.type;
                 callbackId = args[1];
 
-                if (type != null && type.Equals(ACTION_OPEN_TYPE_DB))
+                if (mbTilesActions != null)
                 {
-                    string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, name);
-                    mbTilesActions = new MBTilesActionsDatabaseImpl();
-                    mbTilesActions.open(dbPath);
-                   
-                } else if (type != null && type.Equals(ACTION_OPEN_TYPE_FILE))
-                {
-                    string dirPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "maps//" + name);
-                    mbTilesActions = new MBTilesActionsFileImpl();
-                    mbTilesActions.open(dirPath);
-
-                }
-
-                if (mbTilesActions != null && mbTilesActions.isOpen())
-                {
-                    DispatchCommandResult(new PluginResult(PluginResult.Status.OK), callbackId);
+                    mbTilesActions.open(name);
+                    if (mbTilesActions.isOpen()) {
+                        DispatchCommandResult(new PluginResult(PluginResult.Status.OK), callbackId);
+                    }
+                    else
+                    {
+                        DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR), callbackId);
+                    }
                 }
                 else
                 {
-                    DispatchCommandResult(new PluginResult(PluginResult.Status.IO_EXCEPTION), callbackId);
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR), callbackId);
                 }
 
             }
@@ -231,35 +270,18 @@ namespace WPCordovaClassLib.Cordova.Commands
  	    public void get_directory_working(string options)
         {
             string callbackId;
-            
-	        IMBTilesActions actions;
-
-	        options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
             try
             {
-		
-                /// name, type
                 string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
-                /// to test maybe is not a string but a JSONObject
-                EntryDirectoryWorking entryDir = JSON.JsonHelper.Deserialize<EntryDirectoryWorking>(args[0]);
-                string type = entryDir.type;
-                callbackId = args[1];
-
-                if (type != null && type.Equals(ACTION_OPEN_TYPE_DB))
-                {
-                    actions = new MBTilesActionsDatabaseImpl();
-                    directory_working_output dir = actions.getDirectoryWorking(Windows.Storage.ApplicationData.Current.LocalFolder.Path);
+                callbackId = args[0];
+		
+                if (mbTilesActions != null) {
+                     directory_working_output dir = mbTilesActions.getDirectoryWorking();
                     DispatchCommandResult(new PluginResult(PluginResult.Status.OK, dir), callbackId);
                    
-                } else if (type != null && type.Equals(ACTION_OPEN_TYPE_FILE))
-                {
-                    string dirPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "maps//");
-                    actions = new MBTilesActionsFileImpl();
-                    directory_working_output dir = actions.getDirectoryWorking(dirPath);
-		            DispatchCommandResult(new PluginResult(PluginResult.Status.OK, dir), callbackId);
-
                 } else {
-                    DispatchCommandResult(new PluginResult(PluginResult.Status.IO_EXCEPTION), callbackId);
+                    DispatchCommandResult(new PluginResult(PluginResult.Status.ERROR), callbackId);
                 }
 
             }
