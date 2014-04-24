@@ -125,6 +125,13 @@ function verifyingMap(localFileName, remoteFile){
 		fs = fileSystem;
 
 		var mbTilesPlugin = new MBTilesPlugin();
+		mbTilesPlugin.isSDCard(function(rsd) {
+				console.log("sdcard present");
+			}, function(esd) {
+				console.log("sdcard not present");
+			}
+		);
+
 		console.log("after MBTilesPlugin ");
 		mbTilesPlugin.init({type: type}, function(rinit) {
 			mbTilesPlugin.getDirectoryWorking(function(r) {

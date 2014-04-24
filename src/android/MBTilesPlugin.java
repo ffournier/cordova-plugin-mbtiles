@@ -29,6 +29,7 @@ public class MBTilesPlugin extends CordovaPlugin
 	public static final String ACTION_GET_TILE = "get_tile";
 	public static final String ACTION_EXECUTE_STATEMENT = "execute_statement";
 	public static final String ACTION_DIRECTORY_WORKING = "get_directory_working";
+	public static final String ACTION_IS_SDCARD = "is_sdcard";
 	
 	// interface to treat action of plugin 
 	private IMBTilesActions mbTilesActions = null;
@@ -88,6 +89,11 @@ public class MBTilesPlugin extends CordovaPlugin
 					else if (actionFinal.equals(ACTION_DIRECTORY_WORKING))
 					{
 						result = actionGetDirectoryWorking(dataFinal);
+					}
+					
+					else if (actionFinal.equals(ACTION_IS_SDCARD))
+					{
+						result = actionIsSDCard(dataFinal);
 					}
 					
 					if (result == null)
@@ -299,7 +305,6 @@ public class MBTilesPlugin extends CordovaPlugin
 
 	/**
 	 * get directory of working
-	 * @param data : the parameters (type:'type') optional url:'cdvfile://url...'
 	 * @return the pluginResult
 	 */
 	private PluginResult actionGetDirectoryWorking(JSONArray data) throws JSONException
@@ -308,6 +313,22 @@ public class MBTilesPlugin extends CordovaPlugin
 		
 		if (mbTilesActions != null) {
 			result = new PluginResult(PluginResult.Status.OK, mbTilesActions.getDirectoryWorking());
+		} else {
+			result = new PluginResult(PluginResult.Status.ERROR);
+		}
+		return result;
+	}
+	
+	/**
+	 * is sdcard
+	 * @return the pluginResult
+	 */
+	private PluginResult actionIsSDCard(JSONArray data) throws JSONException
+	{
+		PluginResult result = null;
+		
+		if (FileUtils.checkExternalStorageState()) {
+			result = new PluginResult(PluginResult.Status.OK);
 		} else {
 			result = new PluginResult(PluginResult.Status.ERROR);
 		}

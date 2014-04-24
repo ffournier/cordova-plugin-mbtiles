@@ -86,6 +86,16 @@ MBTilesPlugin.prototype.getDirectoryWorking = function(onSuccess, onError)
 {
 	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "get_directory_working", []);
 };
+
+/*
+function isSDCard
+check if the sdcard is present, (always true on wp8 (readonly), and ios (not exist))
+return : success or error callback
+*/
+MBTilesPlugin.prototype.isSDCard = function(onSuccess, onError)
+{
+	return cordova.exec(onSuccess, onError, "MBTilesPlugin", "is_sdcard", []);
+};
 	
 module.exports = MBTilesPlugin;
 
