@@ -365,9 +365,6 @@ To use it :
 
 We will find in this plugin several features :
 
-_Be Careful in BalckBerry we have not return on onError, but return in onSuccess a JSON with a attribut error._
-
-
 Glossary
 ----------------------
 
@@ -394,8 +391,6 @@ __url__ : (optionnal) for cdvfile, pass the choose path in cdvfile
 
 Nothing
 
-Return "OK" in BlackBerry10
-
 open
 ----------------------
 
@@ -412,9 +407,6 @@ __name__: name of database
 ### Return
 
 Nothing
-
-Return "OK" in BlackBerry10
-
 
 getMetadata
 ----------------------
