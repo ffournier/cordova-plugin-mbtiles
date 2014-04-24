@@ -18,8 +18,12 @@
 - (id) init {
     self = [super init];
     _file = nil;
-    self.directory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
     
+    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    dir = [dir stringByAppendingPathComponent:@"maps"];
+    self.directory = [dir stringByAppendingString:@"/"];
+    return self;
+  
     return self;
 }
 

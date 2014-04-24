@@ -15,7 +15,9 @@
 - (id) init {
     self = [super init];
     
-    self.directory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    dir = [dir stringByAppendingPathComponent:@"tiles"];
+    self.directory = [dir stringByAppendingString:@"/"];
     return self;
 }
 
