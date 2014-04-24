@@ -216,4 +216,12 @@
     }];
 }
 
+- (void)is_sdcard:(CDVInvokedUrlCommand*)command {
+    [self.commandDelegate runInBackground:^{
+        // always true
+        // The sendPluginResult method is thread-safe.
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK] callbackId:command.callbackId];
+    }];
+}
+
 @end

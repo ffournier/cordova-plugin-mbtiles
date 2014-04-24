@@ -63,4 +63,9 @@
 */
 - (void)get_directory_working:(CDVInvokedUrlCommand*) command;
 
+/**
+ * action is_sdcard
+ */
+- (void)is_sdcard:(CDVInvokedUrlCommand*)command;
+
 @end
