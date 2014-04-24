@@ -27,6 +27,7 @@
 #define ACTION_GETTILE "get_tile"
 #define ACTION_EXECUTESTATEMENT "execute_statement"
 #define ACTION_GETDIRECTORYWORKING "get_directory_working"
+#define ACTION_IS_SDCARD "is_sdcard"
 
 #define KEY_TYPE "type"
 #define KEY_NAME "name"
@@ -44,6 +45,7 @@
 #define KEY_EXECUTE_STATEMENT "result_execute"
 #define KEY_DIRECTORY_WORKING "directory_working"
 
+
 #define TYPE_DB "db"
 #define TYPE_FILE "file"
 #define TYPE_CDVFILE "cdvfile"
@@ -55,7 +57,9 @@
 #define PLUGIN_ERROR "error"
 #define PLUGIN_NOT_OPEN "not open"
 #define PLUGIN_PARSE_ERROR "Cannot parse JSON object"
-#define PLUGIN_NOT_ACTION "Action not found"
+#define PLUGIN_NO_ACTION "Action not found"
+#define PLUGIN_SDCARD "SDCard Present"
+#define PLUGIN_NO_SDCARD "SDCard Not Present"
 
 namespace webworks {
 

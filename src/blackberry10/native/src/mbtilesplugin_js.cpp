@@ -20,6 +20,7 @@
 #include "mbtilespluginfileimpl_ndk.hpp"
 #include "mbtilesplugincdvfileimpl_ndk.hpp"
 #include "mbtilespluginutils_ndk.hpp"
+#include "mbtilesplugingenimpl_ndk.hpp"
 #include <QList>
 
 using namespace std;
@@ -213,10 +214,18 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 		if (m_pMBTilesPluginController != NULL) {
 			result = m_pMBTilesPluginController->getDirectoryWorking(callbackId);
 		} else {
-			result[PLUGIN_R] = TYPE_UNDEFINED;
+			result[PLUGIN_ERROR] = TYPE_UNDEFINED;
 		}
-	} else {
-		result[PLUGIN_ERROR] = PLUGIN_NOT_ACTION;
+	} else if (strCommand.compare(ACTION_IS_SDCARD) == 0) {
+
+		if (webworks::MBTilesPluginGenImplNDK::detectSDCard()) {
+			result[PLUGIN_RESULT] = PLUGIN_SDCARD;
+		} else {
+			result[PLUGIN_ERROR] = PLUGIN_NO_SDCARD;
+		}
+	}
+	else {
+		result[PLUGIN_ERROR] = PLUGIN_NO_ACTION;
 	}
 	//strCommand.append(";");
 	//strCommand.append(command);

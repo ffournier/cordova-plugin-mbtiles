@@ -77,6 +77,12 @@ module.exports = {
 		var result = new PluginResult(args, env), 
 		response = mbtilesplugin.getInstance().get_directory_working(result.callbackId);
 		result.ok(JSON.parse(response), false);
+	},
+
+	is_sdcard: function (success, fail, args, env) {
+		var result = new PluginResult(args, env), 
+		response = mbtilesplugin.getInstance().is_sdcard(result.callbackId);
+		result.ok(JSON.parse(response), false);
 	}
 };
 
@@ -142,6 +148,10 @@ JNEXT.MBTilesPlugin = function () {
 
 	self.get_directory_working = function (callbackId) {
 		return JNEXT.invoke(self.m_id, "get_directory_working " + callbackId);
+	};
+
+	self.is_sdcard = function (callbackId) {
+		return JNEXT.invoke(self.m_id, "is_sdcard " + callbackId);
 	};
 
 	// JSON.stringify(input)

@@ -36,11 +36,11 @@ class MBTilesPluginGenImplNDK : public MBTilesPluginActionNDK {
 
 	protected:
 
-		bool detectSDCard();
-
-		QString getInstallName();
-
 		QString getDirectory();
+
+	public:
+		static bool detectSDCard();
+		static QString getInstallName();
 
 };
 

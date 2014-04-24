@@ -27,7 +27,7 @@ namespace webworks {
 			directory = QString::fromStdString("/accounts/1000/removable/sdcard/");
 			directory += installName;
 			directory += QString::fromStdString("/tiles/");
-		} else {
+		}else{
 			directory = QString();
 		}
 	}

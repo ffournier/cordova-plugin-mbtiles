@@ -89,5 +89,15 @@ MBTilesPlugin.prototype.getDirectoryWorking = function(onSuccess, onError)
 {
 	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "get_directory_working", null);
 };
+
+/*
+function isSDCard
+test if the sdcard is present
+return : success or error callback
+*/
+MBTilesPlugin.prototype.isSDCard = function(onSuccess, onError)
+{
+	return cordova.exec(onSuccess, onError, "com.makina.offline.mbtiles", "is_sdcard", null);
+};
 	
 module.exports = MBTilesPlugin;
