@@ -15,6 +15,11 @@
     return _directory;
 }
 
+- (NSString*) getFullDirectory {
+    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+    return [dir stringByAppendingPathComponent:_directory];
+}
+
 /**
  * open database with given parameters
  *

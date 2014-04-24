@@ -24,6 +24,7 @@
 }
 
 - (NSString*) getDirectory;
+- (NSString*) getFullDirectory;
 
 @property(readwrite, retain)NSString* directory;
 

@@ -74,7 +74,7 @@
 * return the directory of working
 * @return <code>JSONObject</code>
 */
--(NSDictionary*) getDirectoryWorking;
+- (NSDictionary*) getDirectoryWorking;
 
 
 @end

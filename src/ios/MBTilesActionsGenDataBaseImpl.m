@@ -29,7 +29,7 @@
     [self close];
     
     NSFileManager *filemgr =  [NSFileManager defaultManager];
-    NSString* dir = [self getDirectory];
+    NSString* dir = [self getFullDirectory];
     if (dir != nil) {
         NSString *absolutePath = [dir stringByAppendingPathComponent:name];
         // test if the file exist

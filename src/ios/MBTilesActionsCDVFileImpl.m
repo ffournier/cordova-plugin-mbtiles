@@ -39,4 +39,10 @@
     return self;
 }
 
+- (NSString*) getFullDirectory {
+    return self.directory;
+}
+
+
+
 @end

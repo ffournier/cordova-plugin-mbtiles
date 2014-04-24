@@ -19,9 +19,7 @@
     self = [super init];
     _file = nil;
     
-    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
-    dir = [dir stringByAppendingPathComponent:@"maps"];
-    self.directory = [dir stringByAppendingString:@"/"];
+    self.directory = @"maps/";
     return self;
   
     return self;
@@ -33,7 +31,7 @@
     
     NSFileManager *filemgr =  [NSFileManager defaultManager];
     BOOL value;
-    NSString* dir = [self getDirectory];
+    NSString* dir = [self getFullDirectory];
     
     _file = nil;
     // test if file exist
