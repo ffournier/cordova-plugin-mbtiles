@@ -292,6 +292,24 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         }
 
+        public void is_sdcard(string options)
+        {
+            string callbackId;
+            options = options.Replace("{}", ""); /// empty objects screw up the Deserializer
+            try
+            {
+                string[] args = JSON.JsonHelper.Deserialize<string[]>(options);
+                callbackId = args[0];
+                DispatchCommandResult(new PluginResult(PluginResult.Status.OK), callbackId);
+
+            }
+            catch (Exception)
+            {
+                DispatchCommandResult(new PluginResult(PluginResult.Status.JSON_EXCEPTION));
+            }
+
+        }
+
     }
 	
 }
