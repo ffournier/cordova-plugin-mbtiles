@@ -355,8 +355,9 @@ Feature
 To use it :
 
 	var mbTilesPlugin = new MBTilesPlugin();
-	mbTilesPlugin.getDirectoryWorking(function(result) {
-		console.log("getDirectoryWorking : " + result.directory_working);
+	var type = "db";
+	mbTilesPlugin.init({type: type}, function(result) {
+		console.log("init : ");
 	});
 
 
