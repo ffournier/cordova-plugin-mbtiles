@@ -114,6 +114,22 @@ function buildMap() {
 	});
 }
 
+function toggle_visibility(id) {
+	var e = document.getElementById(id);
+	if (e.style.display == 'block') {
+		console.log("change in non");
+		e.style.display = 'none';	
+	} else {
+		console.log("change in block");
+		e.style.display = 'block';
+	}
+}
+
+function changevalue(newval) {
+	console.log(newval);
+	document.getElementById('progBar').value = newval * 100;
+}
+
 function verifyingMap(localFileName, remoteFile){
 	
 	var fs;				// file system object
@@ -153,21 +169,27 @@ function verifyingMap(localFileName, remoteFile){
 
 					console.log('downloading sqlite file...');
 					ft = new FileTransfer();
+					var loadingStatus;
 					ft.onprogress = function(progressEvent) {
 					    if (progressEvent.lengthComputable) {
-					      //loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
-					      console.log(progressEvent.loaded / progressEvent.total);
+					      loadingStatus = progressEvent.loaded / progressEvent.total;
+					      //console.log(progressEvent.loaded / progressEvent.total);
+					      changevalue(loadingStatus);
 					    } else {
 					      //loadingStatus.increment();
 					      console.log("+1");
 					    }
+
 					};
+					toggle_visibility('progBar');
 					ft.download(remoteFile, absoluteLocalFileName, function (entry) {
+						toggle_visibility('progBar');
 						console.log('download complete: ' + entry.fullPath);
 						buildMap();
 
 					}, function (error) {
 						console.log('error with download', error);
+						toggle_visibility('progBar');
 						navigator.notification.confirm(
 							'You are the winner!',  // message
 							onConfirm(button),              // callback to invoke with index of button pressed
