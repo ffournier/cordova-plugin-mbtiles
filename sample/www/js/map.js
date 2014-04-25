@@ -182,6 +182,11 @@ function verifyingMap(localFileName, remoteFile){
 
 					};
 					toggle_visibility('progBar');
+					// need to add file:// for the plugin blackberry, so bad :/
+					if (cordova.platformId === "blackberry10") {
+					    console.log('pass platformId');
+					    absoluteLocalFileName = "file://" + absoluteLocalFileName;
+					}
 					ft.download(remoteFile, absoluteLocalFileName, function (entry) {
 						toggle_visibility('progBar');
 						console.log('download complete: ' + entry.fullPath);
