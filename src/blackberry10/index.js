@@ -17,7 +17,7 @@
 var mbtilesplugin,
 	resultObjs = {},
 	threadCallback = null,
-   _utils = require("../../lib/utils");
+	 _utils = require("../../lib/utils");
 
 module.exports = {
 
@@ -28,9 +28,12 @@ module.exports = {
 	// These methods call into JNEXT.MBTilesPlugin through the JNEXT plugin to mbtilesplugin_js.cpp
 
 	init: function (success, fail, args, env) {
-		var result = new PluginResult(args, env),
-		data = JSON.parse(decodeURIComponent(args.input)),
-		response = mbtilesplugin.getInstance().init_mbtiles(result.callbackId, data);
+		var result = new PluginResult(args, env);
+		var data = JSON.parse(decodeURIComponent(args.input));
+		if (data.url !== 'undefined') {
+			data.url = decodeURI(data.url).replace(/filesystem:/, '').replace(/file:\/\//, '');	
+		}
+		var response = mbtilesplugin.getInstance().init_mbtiles(result.callbackId, data);
 		result.ok(JSON.parse(response), false);
 	},
 
