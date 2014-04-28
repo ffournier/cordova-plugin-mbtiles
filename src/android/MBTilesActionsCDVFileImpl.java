@@ -15,7 +15,7 @@ public class MBTilesActionsCDVFileImpl extends MBTilesActionsGenDatabaseImpl
 	
 	public MBTilesActionsCDVFileImpl(Context context, String url, CordovaResourceApi resourceApi) {
 		super(context);
-		if (url != null && url.length() > 0) {
+		if (url == null || url.length() <= 0) {
 	 		if (FileUtils.checkExternalStorageState()) {
 	 			url = "cdvfile://localhost/persistent/tiles/";
 			}
