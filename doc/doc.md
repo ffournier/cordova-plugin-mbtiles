@@ -386,7 +386,7 @@ Open the database or save the workspace of file
 
 __type__: 'file' or 'db'
 __typepath__ : (optionnal) 'fullpath' or 'cdvfile'
-__url__ : (optionnal) for cdvfile, pass the choose path in cdvfile
+__url__ : (optionnal) for path
 
 To use the parameters typepath and url we need both !
 
