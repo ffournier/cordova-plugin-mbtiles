@@ -52,7 +52,7 @@
 #define TYPE_UNDEFINED "type undefined"
 
 #define TYPE_PATH_CDVFILE "cdvfile"
-#define TYPE_PATH_FULL "fullPath"
+#define TYPE_PATH_FULL "fullpath"
 #define TYPE_PATH_UNDEFINED "type undefined"
 
 
