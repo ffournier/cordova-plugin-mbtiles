@@ -33,8 +33,6 @@ xmlns:android="http://schemas.android.com/apk/res/android"
         <source-file src="src/android/MBTilesActionsDatabaseImpl.java" target-dir="src/com/makina/offline/mbtiles" />
         <source-file src="src/android/MBTilesActionsFileImpl.java" target-dir="src/com/makina/offline/mbtiles" />
 	<source-file src="src/android/MBTilesPlugin.java" target-dir="src/com/makina/offline/mbtiles" />
-	<source-file src="src/android/MBTilesActionsCDVFileImpl.java" target-dir="src/com/makina/offline/mbtiles" />
-	<source-file src="src/android/MBTilesActionsGenDatabaseImpl.java" target-dir="src/com/makina/offline/mbtiles" />
 	<source-file src="src/android/MBTilesActionsGenImpl.java" target-dir="src/com/makina/offline/mbtiles" />
 
     </platform>

@@ -22,7 +22,8 @@ public class MBTilesPlugin extends CordovaPlugin
 	public static final String ACTION_OPEN = "open";
 	public static final String ACTION_OPEN_TYPE_DB = "db";
 	public static final String ACTION_OPEN_TYPE_FILE = "file";
-	public static final String ACTION_OPEN_TYPE_CDV = "cdvfile";
+	public static final String OPEN_TYPE_PATH_CDV = "cdvfile";
+	public static final String OPEN_TYPE_PATH_FULL = "fullpath";
 	public static final String ACTION_GET_METADATA = "get_metadata";
 	public static final String ACTION_GET_MIN_ZOOM = "get_min_zoom";
 	public static final String ACTION_GET_MAX_ZOOM = "get_max_zoom";
@@ -130,17 +131,19 @@ public class MBTilesPlugin extends CordovaPlugin
 	
 	/**
 	 * open database or file with given name
-	 * @param data : the parameters (type:'type' optional url:'cdvfile://url...')
+	 * @param data : the parameters (type:'type',optional typepath:('fullpath', 'cdvfle'),  url:'cdvfile://url...')
 	 * @return the pluginResult
 	 */
 	private PluginResult actionInit(JSONArray data) throws JSONException
 	{
 		String type = data.getJSONObject(0).getString("type");
 		String url = null;
-		if (data.getJSONObject(0).has("url")) {
+		String typepath = null;
+		if (data.getJSONObject(0).has("typepath") && data.getJSONObject(0).has("url")) {
+			typepath = data.getJSONObject(0).getString("typepath");
 			url = data.getJSONObject(0).getString("url");
 		}
-		return new PluginResult(initAction(type, url) ? PluginResult.Status.OK : PluginResult.Status.IO_EXCEPTION);
+		return new PluginResult(initAction(type, typepath, url) ? PluginResult.Status.OK : PluginResult.Status.IO_EXCEPTION);
 	}
 	
 	/**
@@ -338,10 +341,11 @@ public class MBTilesPlugin extends CordovaPlugin
 	/**
 	 * Init Action
 	 * @param type
+	 * @param typePath
 	 * @param url
 	 * return if type is correct
 	 */
-	boolean initAction(String type, String url) {
+	boolean initAction(String type, String typePath, String url) {
 		if (mbTilesActions != null) {
 			mbTilesActions.close();
 			mbTilesActions = null;
@@ -350,19 +354,13 @@ public class MBTilesPlugin extends CordovaPlugin
 		// database
 		if (type.equals(ACTION_OPEN_TYPE_DB))
 		{
-			mbTilesActions = new MBTilesActionsDatabaseImpl(this.cordova.getActivity());
+			mbTilesActions = new MBTilesActionsDatabaseImpl(this.cordova.getActivity(), webView.getResourceApi(), typePath,  url);
 		}
 		// file
 		else if (type.equals(ACTION_OPEN_TYPE_FILE))
 		{
-			mbTilesActions = new MBTilesActionsFileImpl(this.cordova.getActivity());
+			mbTilesActions = new MBTilesActionsFileImpl(this.cordova.getActivity(), webView.getResourceApi(), typePath,  url);
 		}
-		// cdvfile
- 		else if(type.equals(ACTION_OPEN_TYPE_CDV))
- 		{
- 			mbTilesActions = new MBTilesActionsCDVFileImpl(this.cordova.getActivity(), url, webView.getResourceApi());
-		}
-			
 		return mbTilesActions != null;
 	}
 }

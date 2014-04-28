@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.cordova.CordovaResourceApi;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
@@ -26,12 +28,24 @@ import android.util.Log;
 public class MBTilesActionsFileImpl extends MBTilesActionsGenImpl
 {
 	
-	public MBTilesActionsFileImpl(Context context) {
+	public MBTilesActionsFileImpl(Context context, CordovaResourceApi resourceApi, String typePath, String url) {
 		super(context);
 		
-		if (FileUtils.checkExternalStorageState()) {
-			mDirectory = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" +
-							mContext.getPackageName() + "/maps/";
+		if (typePath != null && typePath.equals(MBTilesPlugin.OPEN_TYPE_PATH_CDV)) {
+			if (url == null || url.length() < 0) {
+		 		url = "cdvfile://localhost/persistent/maps/";
+			}
+			
+			Uri fileURL = resourceApi.remapUri(Uri.parse(url));
+			mDirectory = fileURL.getPath();
+			 
+		} else if (typePath == null || typePath.equals(MBTilesPlugin.OPEN_TYPE_PATH_FULL)) {
+			if (url == null || url.length() < 0) {
+				url = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" +
+						mContext.getPackageName() + "/maps/";
+			}
+			
+			mDirectory = url;
 		}
 	}
 
