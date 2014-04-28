@@ -24,6 +24,11 @@ namespace MBTilesPlugin
         public static string KEY_PARAMS = "params";
         public static string KEY_EXECUTE_STATEMENT = "result_execute";
         
+        public static string OPEN_TYPE_PATH_CDVFILE = "cdvfile";
+        public static string OPEN_TYPE_PATH_FULL = "fullpath";
+        
+
+        
 	    /// <summary>
 	    /// encode a string to a string encoding in base64 </summary>
 	    /// <returns>

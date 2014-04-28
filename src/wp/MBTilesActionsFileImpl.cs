@@ -9,6 +9,7 @@ using WPCordovaClassLib.Cordova.JSON;
 using MBTilesPlugin;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using FileEntry = WPCordovaClassLib.Cordova.Commands.File.FileEntry;
 
 /// <summary>
 /// the namespace of MBTilesPlugin </summary>
@@ -21,10 +22,28 @@ namespace MBTilesPlugin
         
         private string mapDirectory = null;
 
-        public MBTilesActionsFileImpl()
+        public MBTilesActionsFileImpl(string typepath, string url)
             : base()
         {
-            directory = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "maps//");
+            directory = null;
+
+            if (typepath != null && typepath.Equals(ConstantMbTilePlugin.OPEN_TYPE_PATH_CDVFILE))
+            {
+                if (url == null)
+                {
+                    url = "cdvfile://localhost/persistent/maps";
+                }
+                FileEntry entry = new FileEntry(url);
+                directory = entry.FullPath;
+            }
+            else if (typepath == null || typepath.Equals(ConstantMbTilePlugin.OPEN_TYPE_PATH_FULL))
+            {
+                if (url == null)
+                {
+                    url = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "maps//");
+                }
+                directory = url;
+            }
         }
 
         public override void open(string name)

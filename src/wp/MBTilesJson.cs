@@ -68,6 +68,9 @@ namespace MBTilesPlugin
         [DataMember(Name = "type")]
         public string type { get; set; }
 
+        [DataMember(Name = "typepath")]
+        public string typepath { get; set; }
+
         [DataMember(Name = "url")]
         public string url { get; set; }
     }

@@ -34,7 +34,6 @@ namespace WPCordovaClassLib.Cordova.Commands
 
         public static string ACTION_OPEN_TYPE_DB = "db";
 	    public static string ACTION_OPEN_TYPE_FILE = "file";
-        public static string ACTION_OPEN_TYPE_CDV = "cdvfile";
 
         public void init(string options)
         {
@@ -47,23 +46,21 @@ namespace WPCordovaClassLib.Cordova.Commands
                 /// to test maybe is not a string but a JSONObject
                 EntryInit entryInit = JSON.JsonHelper.Deserialize<EntryInit>(args[0]);
                 string type = entryInit.type;
+                string typepath = entryInit.typepath;
                 string url = entryInit.url;
                 callbackId = args[1];
 
                 if (type != null && type.Equals(ACTION_OPEN_TYPE_DB))
                 {
                     //string dbPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, name);
-                    mbTilesActions = new MBTilesActionsDatabaseImpl();
+                    mbTilesActions = new MBTilesActionsDatabaseImpl(typepath, url);
                 }
                 else if (type != null && type.Equals(ACTION_OPEN_TYPE_FILE))
                 {
                     //string dirPath = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "maps//" + name);
-                    mbTilesActions = new MBTilesActionsFileImpl();
+                    mbTilesActions = new MBTilesActionsFileImpl(typepath, url);
                 }
-                else if (type != null && type.Equals(ACTION_OPEN_TYPE_CDV))
-                {
-                    mbTilesActions = new MBTilesActionsCDVFileImpl(url);
-                }
+               
 
                 if (mbTilesActions != null)
                 {
