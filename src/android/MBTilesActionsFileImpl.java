@@ -41,8 +41,12 @@ public class MBTilesActionsFileImpl extends MBTilesActionsGenImpl
 			 
 		} else if (typePath == null || typePath.equals(MBTilesPlugin.OPEN_TYPE_PATH_FULL)) {
 			if (url == null || url.length() < 0) {
-				url = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" +
-						mContext.getPackageName() + "/maps/";
+				if (FileUtils.checkExternalStorageState()) {
+					url = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" +
+							mContext.getPackageName() + "/maps/";
+				} else {
+					url = null;
+				}
 			}
 			
 			mDirectory = url;
@@ -56,8 +60,13 @@ public class MBTilesActionsFileImpl extends MBTilesActionsGenImpl
 	public void open(String name)
 	{
 		String path = getDirectory();
-		Log.d(getClass().getName(), "try to open map directory '" + path + "'");
-		this.mapDirectory = new File(path);
+		if (path != null ) {
+			Log.d(getClass().getName(), "try to open map directory '" + path + "'");
+			this.mapDirectory = new File(path);
+		} else {
+			close();
+		}
+		
 	}
 
 	@Override

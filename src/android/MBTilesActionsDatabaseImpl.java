@@ -45,8 +45,12 @@ public class MBTilesActionsDatabaseImpl extends MBTilesActionsGenImpl
 			 
 		} else if (typePath == null || typePath.equals(MBTilesPlugin.OPEN_TYPE_PATH_FULL)) {
 			if (url == null || url.length() < 0) {
-				url = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" +
+				if (FileUtils.checkExternalStorageState()) {
+					url = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/" +
 						mContext.getPackageName() + "/databases/";
+				} else {
+					url = null;
+				}
 			}
 			
 			mDirectory = url;
@@ -56,15 +60,18 @@ public class MBTilesActionsDatabaseImpl extends MBTilesActionsGenImpl
     @Override
 	public void open(String name)
 	{
-		String path = getDirectory() + name;
-		try {
-			this.db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READONLY);
-			Log.d(getClass().getName(), "openDatabase : " + this.db.getPath());
-		} catch (SQLiteCantOpenDatabaseException e) {
-			close();
-			Log.e(getClass().getName(), "can't open database :" + e.getMessage());
-		}
-		
+    	if (getDirectory() != null) {
+			String path = getDirectory() + name;
+			try {
+				this.db = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READONLY);
+				Log.d(getClass().getName(), "openDatabase : " + this.db.getPath());
+			} catch (SQLiteCantOpenDatabaseException e) {
+				close();
+				Log.e(getClass().getName(), "can't open database :" + e.getMessage());
+			}
+    	} else {
+    		close();
+    	}
 	}
 
 	@Override
