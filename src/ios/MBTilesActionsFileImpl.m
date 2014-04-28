@@ -6,22 +6,49 @@
 //
 
 #import "MBTilesActionsFileImpl.h"
-#import "MBTilesConstant.h"
 
 @implementation MBTilesActionsFileImpl
-@synthesize directory = _directory;
 @synthesize file = _file;
 
 /**
-* initialisation
-*/
-- (id) init {
-    self = [super init];
+ * init the class
+ */
+- (id)init {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:@"-init is not a valid initializer for the class MBTilesActionsFileImpl"
+                                 userInfo:nil];
+    return nil;
+}
+
+- (id) initWithTypePath:(NSString*)tPath {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:@"-initWithTypePath is not a valid initializer for the class MBTilesActionsFileImpl"
+                                 userInfo:nil];
+    return nil;
+}
+
+
+- (id) initWithTypePath:(NSString*)tPath withCDVFile:(CDVFile*)filePlugin withUrl:(NSString*) url {
+    self = [super initWithTypePath:tPath];
     _file = nil;
     
-    self.directory = @"maps/";
-    return self;
-  
+    //
+    if (tPath != nil && [tPath compare:OPEN_TYPE_PATH_CDVFILE]) {
+        if (url == nil) {
+            url = @"cdvfile://localhost/persistent/maps/";
+        }
+        // Get a CDVFilesystem URL object from a URL string
+        CDVFilesystemURL* urlCDV = [CDVFilesystemURL fileSystemURLWithString:url];
+        // Get a path for the URL object, or nil if it cannot be mapped to a file
+        self.directory = [filePlugin filesystemPathForURL:urlCDV];
+        
+    } else if (tPath == nil || [tPath compare:OPEN_TYPE_PATH_FULL]) {
+        if (url == nil) {
+            url = @"maps/";
+        }
+        self.directory = url;
+    }
+    
     return self;
 }
 

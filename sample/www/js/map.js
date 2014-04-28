@@ -188,6 +188,8 @@ function verifyingMap(localFileName, remoteFile){
 					    absoluteLocalFileName = "file://" + absoluteLocalFileName;
 					    
 						new DirManager().create_r( r.directory_working, Log('create sucessfully'));
+					} else if (cordova.platformId === "ios") {
+						absoluteLocalFileName = "cdvfile://localhost/persistent/" + absoluteLocalFileName;
 					}
 					ft.download(remoteFile, absoluteLocalFileName, function (entry) {
 						toggle_visibility('progBar');

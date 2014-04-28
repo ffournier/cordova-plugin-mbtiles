@@ -20,8 +20,10 @@
         NSDictionary* dict = [command.arguments objectAtIndex:0];
         // get the type and name
         NSString* type = dict[KEY_TYPE];
+        NSString* typePath = nil;
         NSString* url = nil;
-        if ([dict objectForKey:KEY_URL] != nil) {
+        if ([dict objectForKey:KEY_URL] != nil && [dict objectForKey:KEY_TYPEPATH] != nil) {
+            typePath = dict[KEY_TYPEPATH];
             url = dict[KEY_URL];
         }
         
@@ -33,23 +35,15 @@
         
         if (type) {
             // init db with name
+            CDVFile* filePlugin = [self.commandDelegate getCommandInstance:@"File"];
+            
             if ([type isEqualToString:@"db"]) {
-                tilesActions = [[MBTilesActionsDataBaseImpl alloc] init];
+                tilesActions = [[MBTilesActionsDataBaseImpl alloc] initWithTypePath:typePath withCDVFile:filePlugin withUrl:url];
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
             }
             // init file name
             else if ([type isEqualToString:@"file"]) {
-                tilesActions = [[MBTilesActionsFileImpl alloc] init];
-                pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-            }
-            // init cdv filename
-            else if ([type isEqualToString:@"cdvfile"]) {
-                CDVFile* filePlugin = [self.commandDelegate getCommandInstance:@"File"];
-                if (url != nil) {
-                    tilesActions = [[MBTilesActionsCDVFileImpl alloc] initWithCDVFile:filePlugin withUrl:url];
-                } else {
-                    tilesActions = [[MBTilesActionsCDVFileImpl alloc] initWithCDVFile:filePlugin];
-                }
+                tilesActions = [[MBTilesActionsFileImpl alloc] initWithTypePath:typePath withCDVFile:filePlugin withUrl:url];
                 pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
             }
             else {

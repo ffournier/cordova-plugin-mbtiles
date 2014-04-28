@@ -10,6 +10,7 @@
 @implementation MBTilesConstant
 
 NSString * const KEY_TYPE = @"type";
+NSString * const KEY_TYPEPATH = @"typepath";
 NSString * const KEY_URL = @"url";
 NSString * const KEY_NAME = @"name";
 NSString * const KEY_Z = @"z";
@@ -24,6 +25,9 @@ NSString * const KEY_QUERY = @"query";
 NSString * const KEY_PARAMS = @"params";
 NSString * const KEY_EXECUTE_STATEMENT = @"result_execute";
 NSString * const KEY_DIRECTORY_WORKING = @"directory_working";
+
+NSString * const OPEN_TYPE_PATH_CDVFILE = @"cdvfile";
+NSString * const OPEN_TYPE_PATH_FULL = @"fullpath";
 
 + (NSString*)base64forData:(NSData*)theData {
     

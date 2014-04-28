@@ -9,7 +9,6 @@
 #import <Cordova/CDVPlugin.h>
 #import "MBTilesActionsDataBaseImpl.h"
 #import "MBTilesActionsFileImpl.h"
-#import "MBTilesActionsCDVFileImpl.h"
 
 
 /**

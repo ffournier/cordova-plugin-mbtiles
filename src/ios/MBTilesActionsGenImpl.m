@@ -10,14 +10,40 @@
 
 @implementation MBTilesActionsGenImpl
 @synthesize directory = _directory;
+@synthesize typePath = _typePath;
+
+/**
+ * init the class
+ */
+- (id)init {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:@"-init is not a valid initializer for the class MBTilesActionsGenImpl"
+                                 userInfo:nil];
+    return nil;
+}
+
+
+- (id) initWithTypePath:(NSString*)tPath {
+    self = [super init];
+    _typePath = tPath;
+    return self;
+}
+
 
 - (NSString*) getDirectory {
     return _directory;
 }
 
 - (NSString*) getFullDirectory {
-    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
-    return [dir stringByAppendingPathComponent:_directory];
+    NSString* dir = nil;
+    if (_typePath != nil && [_typePath compare:OPEN_TYPE_PATH_CDVFILE]) {
+        dir = self.directory;
+        
+    } else if (_typePath == nil || [_typePath compare:OPEN_TYPE_PATH_FULL]) {
+        dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+        dir = [dir stringByAppendingPathComponent:_directory];
+    }
+    return dir;
 }
 
 /**

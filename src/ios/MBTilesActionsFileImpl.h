@@ -6,6 +6,7 @@
 //
 
 #import "MBTilesActionsGenImpl.h"
+#import "CDVFile.h"
 
 /**
 * Treat file
@@ -15,6 +16,11 @@
     // the path of file
     NSString* file;
 }
+
+/*
+ * init with a specific typepath and specific url
+ */
+- (id) initWithTypePath:(NSString*)typePath withCDVFile:(CDVFile*)filePlugin withUrl:(NSString*) url;
 
 /** 
  * test if file exist
