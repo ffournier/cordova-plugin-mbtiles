@@ -18,7 +18,6 @@
 #include "mbtilesplugin_js.hpp"
 #include "mbtilesplugindatabaseimpl_ndk.hpp"
 #include "mbtilespluginfileimpl_ndk.hpp"
-#include "mbtilesplugincdvfileimpl_ndk.hpp"
 #include "mbtilespluginutils_ndk.hpp"
 #include "mbtilesplugingenimpl_ndk.hpp"
 #include <QList>
@@ -109,22 +108,19 @@ string MBTilesPluginJS::InvokeMethod(const string& command) {
 			result[PLUGIN_ERROR] = PLUGIN_PARSE_ERROR;
 		} else {
 			std::string type = root[KEY_TYPE].asString();
+			std::string typePath = "";
+			std::string url = "";
+			if (root.isMember(KEY_URL) && root.isMember(KEY_TYPEPATH)) {
+				typePath = root[KEY_TYPEPATH].asString();
+				url = root[KEY_URL].asString();
+			}
 			if (type.compare(TYPE_DB) == 0) {
-				m_pMBTilesPluginController = new webworks::MBTilesPluginDataBaseImplNDK(this);
+				m_pMBTilesPluginController = new webworks::MBTilesPluginDataBaseImplNDK(this, typePath, url);
 				result[PLUGIN_RESULT] = PLUGIN_OK;
 			} else if (type.compare(TYPE_FILE) == 0) {
-				m_pMBTilesPluginController = new webworks::MBTilesPluginFileImplNDK(this);
+				m_pMBTilesPluginController = new webworks::MBTilesPluginFileImplNDK(this, typePath, url);
 				result[PLUGIN_RESULT] = PLUGIN_OK;
-			} else if (type.compare(TYPE_CDVFILE) == 0) {
-				if (root.isMember(KEY_URL)) {
-					std::string url = root[KEY_URL].asString();
-					m_pMBTilesPluginController = new webworks::MBTilesPluginCDVFileImplNDK(this, url);
-				} else {
-					m_pMBTilesPluginController = new webworks::MBTilesPluginCDVFileImplNDK(this);
-				}
-				result[PLUGIN_RESULT] = PLUGIN_OK;
-			}
-			else {
+			} else {
 				result[PLUGIN_ERROR] = TYPE_UNDEFINED;
 			}
 		}

@@ -19,17 +19,26 @@
 
 namespace webworks {
 
-	MBTilesPluginFileImplNDK::MBTilesPluginFileImplNDK(MBTilesPluginJS *parent)
+	MBTilesPluginFileImplNDK::MBTilesPluginFileImplNDK(MBTilesPluginJS *parent, std::string typePath, std::string url)
 	: MBTilesPluginGenImplNDK(parent)
 	{
-		dirPath = NULL;
-		if (detectSDCard()) {
-			QString installName = getInstallName();
-			directory = QString::fromStdString("/accounts/1000/removable/sdcard/");
-			directory += installName;
-			directory += QString::fromStdString("/maps/");
-		} else {
-			directory = QString();
+		directory = QString();
+
+		if (!typePath.empty() && typePath.compare(TYPE_PATH_CDVFILE) == 0) {
+			if (url.length() >0) {
+				directory = QString::fromStdString(url);
+			}
+		} else if (typePath.empty() || typePath.compare(TYPE_PATH_FULL) == 0) {
+			if (url.length() <=0 ) {
+				if (detectSDCard()) {
+					QString installName = getInstallName();
+					directory = QString::fromStdString("/accounts/1000/removable/sdcard/");
+					directory += installName;
+					directory += QString::fromStdString("/maps/");
+				}
+			} else {
+				directory = QString::fromStdString(url);
+			}
 		}
 	}
 

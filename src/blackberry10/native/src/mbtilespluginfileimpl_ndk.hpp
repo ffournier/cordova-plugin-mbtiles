@@ -32,7 +32,7 @@ class MBTilesPluginFileImplNDK : public MBTilesPluginGenImplNDK {
 		Json::Value getMaxZoom();
 
 	public:
-		explicit MBTilesPluginFileImplNDK(MBTilesPluginJS *parent = NULL);
+		explicit MBTilesPluginFileImplNDK(MBTilesPluginJS *parent, std::string typePath, std::string url);
 		virtual ~MBTilesPluginFileImplNDK();
 
 

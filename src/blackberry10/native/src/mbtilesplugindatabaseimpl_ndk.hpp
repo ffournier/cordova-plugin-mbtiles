@@ -17,18 +17,46 @@
 #ifndef MBTILESPLUGINDATABASEIMPLNDK_HPP_
 #define MBTILESPLUGINDATABASEIMPLNDK_HPP_
 
-#include "mbtilesplugingendatabaseimpl_ndk.hpp"
+#include "mbtilesplugingenimpl_ndk.hpp"
+#include "sqlite3.h"
 
 namespace webworks {
 
-	class MBTilesPluginDataBaseImplNDK : public MBTilesPluginGenDataBaseImplNDK {
+class MBTilesPluginDataBaseImplNDK : public MBTilesPluginGenImplNDK {
 
-		public:
-			explicit MBTilesPluginDataBaseImplNDK(MBTilesPluginJS *parent = NULL);
-			virtual ~MBTilesPluginDataBaseImplNDK();
+	private:
+		sqlite3* database;
 
-	};
+	public:
+		explicit MBTilesPluginDataBaseImplNDK(MBTilesPluginJS *parent, std::string typePath, std::string url);
+		virtual ~MBTilesPluginDataBaseImplNDK();
+
+
+		Json::Value open(const std::string& callbackId, const std::string name);
+
+		bool isOpen();
+
+		Json::Value getMetaData(const std::string& callbackId);
+
+		Json::Value getMinZoom(const std::string& callbackId);
+
+		Json::Value getMaxZoom(const std::string& callbackId);
+
+		int getMaxZoomValue();
+
+		Json::Value getTile(const std::string& callbackId, int zoom_level, int column, int row);
+
+		Json::Value getExecuteStatement(const std::string& callbackId, const std::string query, const QList<Json::Value> params);
+
+		Json::Value getDirectoryWorking(const std::string& callbackId);
+
+		bool bindValue(sqlite3_stmt* stmt, QList<Json::Value> params);
+
+	protected:
+		void close();
+
+};
 
 } // namespace webworks
 
-#endif /* MBTILESPLUGINDATABASEIMPLNDK_HPP_*/
+#endif /* MBTILESPLUGINDATABASEIMPLNDK_HPP_ */

@@ -186,6 +186,8 @@ function verifyingMap(localFileName, remoteFile){
 					if (cordova.platformId === "blackberry10") {
 					    console.log('pass platformId');
 					    absoluteLocalFileName = "file://" + absoluteLocalFileName;
+					    
+						new DirManager().create_r( r.directory_working, Log('create sucessfully'));
 					}
 					ft.download(remoteFile, absoluteLocalFileName, function (entry) {
 						toggle_visibility('progBar');

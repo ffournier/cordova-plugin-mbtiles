@@ -30,6 +30,7 @@
 #define ACTION_IS_SDCARD "is_sdcard"
 
 #define KEY_TYPE "type"
+#define KEY_TYPEPATH "typepath"
 #define KEY_NAME "name"
 #define KEY_URL "url"
 #define KEY_Z "z"
@@ -48,8 +49,12 @@
 
 #define TYPE_DB "db"
 #define TYPE_FILE "file"
-#define TYPE_CDVFILE "cdvfile"
 #define TYPE_UNDEFINED "type undefined"
+
+#define TYPE_PATH_CDVFILE "cdvfile"
+#define TYPE_PATH_FULL "fullPath"
+#define TYPE_PATH_UNDEFINED "type undefined"
+
 
 #define PLUGIN_NAME "MBTilePluginJS"
 #define PLUGIN_RESULT "result"
