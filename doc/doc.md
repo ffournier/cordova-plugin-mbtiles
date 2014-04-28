@@ -384,8 +384,13 @@ Open the database or save the workspace of file
 
 ### Parameters
 
-__type__: 'file' or 'db' or 'cdvfile'
+__type__: 'file' or 'db'
+__typepath__ : (optionnal) 'fullpath' or 'cdvfile'
 __url__ : (optionnal) for cdvfile, pass the choose path in cdvfile
+
+To use the parameters typepath and url we need both !
+
+For iOS the fullPath begin to the local directory of application
 
 
 ### Return
