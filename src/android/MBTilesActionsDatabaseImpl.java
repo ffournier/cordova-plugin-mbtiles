@@ -41,7 +41,7 @@ public class MBTilesActionsDatabaseImpl extends MBTilesActionsGenImpl
 			}
 			
 			Uri fileURL = resourceApi.remapUri(Uri.parse(url));
-			mDirectory = fileURL.getPath();
+			mDirectory = fileURL.getPath() + "/";
 			 
 		} else if (typePath == null || typePath.equals(MBTilesPlugin.OPEN_TYPE_PATH_FULL)) {
 			if (url == null || url.length() < 0) {
