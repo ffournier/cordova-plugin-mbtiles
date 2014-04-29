@@ -182,14 +182,19 @@ function verifyingMap(localFileName, remoteFile){
 
 					};
 					toggle_visibility('progBar');
-					// need to add file:// for the plugin blackberry, so bad :/
+					
+					console.log('platform : ' + cordova.platformId);
 					if (cordova.platformId === "blackberry10") {
-					    console.log('pass platformId');
-					    absoluteLocalFileName = "file://" + absoluteLocalFileName;
+						console.log('pass platformId BB10');
+						// need to add file:// for the plugin blackberry, so bad :/
+						absoluteLocalFileName = "file://" + absoluteLocalFileName;
 					    
 						new DirManager().create_r( r.directory_working, Log('create sucessfully'));
 					} else if (cordova.platformId === "ios") {
 						absoluteLocalFileName = "cdvfile://localhost/persistent/" + absoluteLocalFileName;
+					} else if (cordova.platformId === "windowsphone") {
+						console.log('pass platformId WP8');
+						new DirManager().create_r( r.directory_working, Log('create sucessfully'));
 					}
 					ft.download(remoteFile, absoluteLocalFileName, function (entry) {
 						toggle_visibility('progBar');

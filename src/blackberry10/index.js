@@ -30,8 +30,10 @@ module.exports = {
 	init: function (success, fail, args, env) {
 		var result = new PluginResult(args, env);
 		var data = JSON.parse(decodeURIComponent(args.input));
-		if (data.url !== 'undefined') {
-			data.url = decodeURI(data.url).replace(/filesystem:/, '').replace(/file:\/\//, '');	
+		if (data.typepath !== 'undefined' && data.typepath == "cdvfile") {
+			if (data.url !== 'undefined') {
+				data.url = decodeURI(data.url).replace(/filesystem:/, '').replace(/file:\/\//, '');	
+			}
 		}
 		var response = mbtilesplugin.getInstance().init_mbtiles(result.callbackId, data);
 		result.ok(JSON.parse(response), false);
