@@ -31,10 +31,17 @@ namespace MBTilesPlugin
             {
                 if (url == null)
                 {
-                    url = "cdvfile://localhost/persistent/maps";
+                    url = "maps";
                 }
-                FileEntry entry = new FileEntry(url);
-                directory = entry.FullPath;
+                else if (url.Contains("cdvfile://localhost/persistent/"))
+                {
+                    url = url.Replace("cdvfile://localhost/persistent/", "");
+                }
+                else if (url.Contains("cdvfile://localhost/temporary/"))
+                {
+                    url = url.Replace("cdvfile://localhost/temporary/", "");
+                }
+                directory = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, url);
             }
             else if (typepath == null || typepath.Equals(ConstantMbTilePlugin.OPEN_TYPE_PATH_FULL))
             {
