@@ -6,7 +6,6 @@
 //
 
 #import "MBTilesActionsGenImpl.h"
-#import "CDVFile.h"
 #import <sqlite3.h>
 
 /**
@@ -18,6 +17,7 @@
     sqlite3* database;
     // synchronized
     NSLock* lock;
+
 }
 
 /*

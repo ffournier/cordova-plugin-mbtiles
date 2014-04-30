@@ -11,6 +11,7 @@
 @implementation MBTilesActionsGenImpl
 @synthesize directory = _directory;
 @synthesize typePath = _typePath;
+@synthesize cdvfile = _cdvfile;
 
 /**
  * init the class
@@ -23,23 +24,42 @@
 }
 
 
-- (id) initWithTypePath:(NSString*)tPath {
+- (id) initWithTypePath:(NSString*)tPath withCDVFile:(CDVFile*) fileplugin{
     self = [super init];
     _typePath = tPath;
+    _cdvfile = fileplugin;
     return self;
 }
 
 
 - (NSString*) getDirectory {
-    return _directory;
+    NSString* dir;
+    if (_typePath != nil && [_typePath isEqualToString:OPEN_TYPE_PATH_CDVFILE]) {
+        dir = self.directory;
+        NSRange isRange = [self.directory rangeOfString:@"cdvfile://localhost/persistent/" options:NSCaseInsensitiveSearch];
+        if(isRange.location == 0) {
+            dir = [self.directory stringByReplacingOccurrencesOfString:@"cdvfile://localhost/persistent/" withString:@""];
+        }
+        isRange = [self.directory rangeOfString:@"cdvfile://localhost/temporary/" options:NSCaseInsensitiveSearch];
+        if(isRange.location == 0) {
+            dir = [self.directory stringByReplacingOccurrencesOfString:@"cdvfile://localhost/temporary/" withString:@""];
+        }
+        return dir;
+    } else if (_typePath == nil || [_typePath isEqualToString:OPEN_TYPE_PATH_FULL]) {
+        dir =  _directory;
+    }
+    return dir;
 }
 
 - (NSString*) getFullDirectory {
     NSString* dir = nil;
-    if (_typePath != nil && [_typePath compare:OPEN_TYPE_PATH_CDVFILE]) {
-        dir = self.directory;
+    if (_typePath != nil && [_typePath isEqualToString:OPEN_TYPE_PATH_CDVFILE]) {
+        // Get a CDVFilesystem URL object from a URL string
+        CDVFilesystemURL* urlCDV = [CDVFilesystemURL fileSystemURLWithString:self.directory];
+        // Get a path for the URL object, or nil if it cannot be mapped to a file
+        dir = [_cdvfile filesystemPathForURL:urlCDV];
         
-    } else if (_typePath == nil || [_typePath compare:OPEN_TYPE_PATH_FULL]) {
+    } else if (_typePath == nil || [_typePath isEqualToString:OPEN_TYPE_PATH_FULL]) {
         dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
         dir = [dir stringByAppendingPathComponent:_directory];
     }

@@ -31,21 +31,17 @@
 
 
 - (id) initWithTypePath:(NSString*)tPath withCDVFile:(CDVFile*)filePlugin withUrl:(NSString*) url {
-    self = [super initWithTypePath:tPath];
+    self = [super initWithTypePath:tPath withCDVFile:filePlugin];
     _database = nil;
     _lock = [[NSLock alloc] init];
     
     //
-    if (tPath != nil && [tPath compare:OPEN_TYPE_PATH_CDVFILE]) {
+    if (tPath != nil && [tPath isEqualToString:OPEN_TYPE_PATH_CDVFILE]) {
         if (url == nil) {
             url = @"cdvfile://localhost/persistent/tiles/";
         }
-        // Get a CDVFilesystem URL object from a URL string
-        CDVFilesystemURL* urlCDV = [CDVFilesystemURL fileSystemURLWithString:url];
-        // Get a path for the URL object, or nil if it cannot be mapped to a file
-        self.directory = [filePlugin filesystemPathForURL:urlCDV];
-        
-    } else if (tPath == nil || [tPath compare:OPEN_TYPE_PATH_FULL]) {
+        self.directory = url;
+    } else if (tPath == nil || [tPath isEqualToString:OPEN_TYPE_PATH_FULL]) {
         if (url == nil) {
             url = @"tiles/";
         }
