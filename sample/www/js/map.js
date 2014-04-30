@@ -38,6 +38,9 @@ function buildMap() {
 
 	var name = "tiles-ign.mbtiles";
 	var type = "db";
+	var typepath = "cdvfile";
+	var url = "cdvfile://localhost/persistent/tiles/databases/";
+
 	console.log("before MBTilesPlugin ");
 	var mbTilesPlugin = new MBTilesPlugin();
 	console.log("after MBTilesPlugin ");
@@ -46,6 +49,9 @@ function buildMap() {
 	var params = new Array();
 	params[0] = "1";
 
+	// cdvfile
+	// mbTilesPlugin.init({type: type, typepath: typepath, url: url}, function(rinit) {
+	// fullpath
 	mbTilesPlugin.init({type: type}, function(rinit) {
 
 		mbTilesPlugin.getDirectoryWorking(function(r) {
@@ -135,6 +141,8 @@ function verifyingMap(localFileName, remoteFile){
 	var fs;				// file system object
 	var ft;				// TileTransfer object
 	var type = "db";
+	var typepath = "cdvfile";
+	var url = "cdvfile://localhost/persistent/tiles/databases/";
 	
 	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
 		console.log('file system retrieved.');
@@ -149,6 +157,9 @@ function verifyingMap(localFileName, remoteFile){
 		);
 
 		console.log("after MBTilesPlugin ");
+		// cdvfile
+		// mbTilesPlugin.init({type: type, typepath: typepath, url: url}, function(rinit) {
+		// fullpath
 		mbTilesPlugin.init({type: type}, function(rinit) {
 			mbTilesPlugin.getDirectoryWorking(function(r) {
 				console.log("getDirectoryWorking Verify : " + r.directory_working);
