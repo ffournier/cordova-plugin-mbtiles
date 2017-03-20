@@ -60,7 +60,10 @@ Then
 
 
 ======================
-Thanks to @stihl-sicher, to improve the sample with Leaflet 1.0.1, commit : b6e5d962ce6c08358f48f32d5c7c87cdc34db005
+
+Thanks to @stihl-sicher, to improve the sample with Leaflet 1.0.1, commit : 
+
+![Commit](https://github.com/ffournier/cordova-plugin-mbtiles/commit/b6e5d962ce6c08358f48f32d5c7c87cdc34db005)
 
 ----------------------
 
